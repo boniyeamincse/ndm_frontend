@@ -10,6 +10,8 @@ const JoinUs = lazy(() => import('../pages/JoinUs'));
 const Leadership = lazy(() => import('../pages/Leadership'));
 const Activities = lazy(() => import('../pages/Activities'));
 const Contact = lazy(() => import('../pages/Contact'));
+const Register = lazy(() => import('../pages/Register'));
+const Login = lazy(() => import('../pages/auth/Login'));
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +26,8 @@ export const router = createBrowserRouter([
       { path: 'leadership', element: <Leadership /> },
       { path: 'activities', element: <Activities /> },
       { path: 'contact', element: <Contact /> },
+      { path: 'register', element: <Register /> },
+      { path: 'login', element: <Login /> },
     ],
   },
 ]);

@@ -7,6 +7,7 @@ use App\Enums\MemberStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Member extends Model
@@ -41,6 +42,7 @@ class Member extends Model
         'approved_at',
         'join_year',
         'organizational_unit_id',
+        'mobile',
     ];
 
     protected $casts = [
@@ -54,7 +56,20 @@ class Member extends Model
 
     public function user(): BelongsTo
     {
-        return $belongsTo(User::class);
+        return $this->belongsTo(User::class);
+    }
+
+    /** Granular role assigned by admin (general_member, organizer, admin) */
+    public function memberRole(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(\App\Models\MemberRole::class);
+    }
+
+    public function tasks(): BelongsToMany
+    {
+        return $this->belongsToMany(MemberTask::class, 'task_assignments', 'member_id', 'task_id')
+                    ->withPivot(['status', 'progress_note', 'completed_at'])
+                    ->withTimestamps();
     }
 
     public function organizationalUnit(): BelongsTo

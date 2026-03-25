@@ -16,8 +16,13 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\HandleCors::class,
         ]);
 
+        // Append security headers to every response globally
+        $middleware->append(\App\Http\Middleware\SecurityHeadersMiddleware::class);
+
         $middleware->alias([
-            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'admin'          => \App\Http\Middleware\AdminMiddleware::class,
+            'audit'          => \App\Http\Middleware\AuditMiddleware::class,
+            'active.member'  => \App\Http\Middleware\ActiveMemberMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

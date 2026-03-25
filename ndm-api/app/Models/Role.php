@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\UnitType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Role extends Model
@@ -21,5 +22,15 @@ class Role extends Model
     public function positions(): HasMany
     {
         return $this->hasMany(MemberPosition::class);
+    }
+
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class, 'role_permissions');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', 1);
     }
 }
