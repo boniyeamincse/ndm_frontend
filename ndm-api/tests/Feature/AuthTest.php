@@ -4,13 +4,13 @@ namespace Tests\Feature;
 
 use App\Models\Member;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations;
 
     public function test_can_register_a_new_member(): void
     {
@@ -129,6 +129,8 @@ class AuthTest extends TestCase
         $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,
         ])->postJson('/api/auth/logout')->assertStatus(200);
+
+        auth()->guard('api')->forgetUser();
 
         $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,

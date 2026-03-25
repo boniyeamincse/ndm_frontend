@@ -46,7 +46,7 @@ class AuthController extends Controller
             'gender' => $request->input('gender'),
             'join_year' => now()->year,
             'status' => 'pending',
-            'organizational_unit_id' => $request->input('unit_id'),
+            'organizational_unit_id' => $request->input('organizational_unit_id'),
         ]);
 
         return response()->json([
@@ -80,7 +80,7 @@ class AuthController extends Controller
         $member = $user?->member;
 
         if ($member && ! $member->status->canLogin()) {
-            JWTAuth::invalidate($token);
+            JWTAuth::setToken($token)->invalidate();
 
             return response()->json([
                 'success' => false,
