@@ -1,56 +1,127 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
-import Select from '../../../components/ui/Select';
 import api from '../../../services/api';
 
-const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map((value) => ({ id: value, name: value }));
-const genders = [
-  { id: 'male', name: 'Male' },
-  { id: 'female', name: 'Female' },
-  { id: 'other', name: 'Other' },
+const TABS = [
+  { key: 'overview', label: 'Profile Overview' },
+  { key: 'edit', label: 'Edit Profile' },
+  { key: 'password', label: 'Change Password' },
+  { key: 'photo', label: 'Profile Photo' },
+  { key: 'positions', label: 'My Positions' },
+  { key: 'activity', label: 'Activity Log' },
 ];
 
-const profilePayload = (form) => ({
-  full_name: form.full_name ?? '',
-  father_name: form.father_name ?? '',
-  mother_name: form.mother_name ?? '',
-  date_of_birth: form.date_of_birth ?? '',
-  gender: form.gender ?? '',
-  blood_group: form.blood_group ?? '',
-  mobile: form.mobile ?? '',
-  phone: form.phone ?? '',
-  institution: form.institution ?? '',
-  department: form.department ?? '',
-  session: form.session ?? '',
-  present_address: form.present_address ?? '',
-  permanent_address: form.permanent_address ?? '',
-  division: form.division ?? '',
-  district: form.district ?? '',
-  upazila: form.upazila ?? '',
-  union: form.union ?? '',
-  ward: form.ward ?? '',
-  emergency_contact_name: form.emergency_contact_name ?? '',
-  emergency_contact_phone: form.emergency_contact_phone ?? '',
-});
+const EDITABLE_FIELDS = [
+  'father_name',
+  'mother_name',
+  'phone',
+  'present_address',
+  'permanent_address',
+  'institution',
+  'department',
+  'session',
+];
 
-const normalizeProfile = (data) => ({
-  ...data,
-  date_of_birth: data?.date_of_birth ? String(data.date_of_birth).slice(0, 10) : '',
-});
+const statusClass = (status) => {
+  if (status === 'active') return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+  if (status === 'pending') return 'bg-amber-50 text-amber-700 border-amber-200';
+  if (status === 'suspended') return 'bg-orange-50 text-orange-700 border-orange-200';
+  if (status === 'expelled') return 'bg-red-50 text-red-700 border-red-200';
+  return 'bg-slate-50 text-slate-700 border-slate-200';
+};
+
+const info = (value) => (value === null || value === undefined || value === '' ? '—' : value);
 
 const MemberProfilePage = () => {
-  const [form, setForm] = useState({});
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedTab = searchParams.get('tab');
+  const initialTab = TABS.some((item) => item.key === requestedTab) ? requestedTab : 'overview';
+
+  const [tab, setTab] = useState(initialTab);
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [message, setMessage] = useState('');
+  const [hasMemberProfile, setHasMemberProfile] = useState(true);
+
+  const [editForm, setEditForm] = useState({});
+  const [editErrors, setEditErrors] = useState({});
+  const [editSaving, setEditSaving] = useState(false);
+  const [editMessage, setEditMessage] = useState('');
+
+  const [passwordForm, setPasswordForm] = useState({ current_password: '', new_password: '', new_password_confirmation: '' });
+  const [passwordErrors, setPasswordErrors] = useState({});
+  const [passwordSaving, setPasswordSaving] = useState(false);
+  const [passwordMessage, setPasswordMessage] = useState('');
+
+  const [photoFile, setPhotoFile] = useState(null);
+  const [photoPreview, setPhotoPreview] = useState('');
+  const [photoError, setPhotoError] = useState('');
+  const [photoSaving, setPhotoSaving] = useState(false);
+
+  const [activity, setActivity] = useState([]);
+  const [activityLoading, setActivityLoading] = useState(false);
+  const [activityLoaded, setActivityLoaded] = useState(false);
+
+  const API_BASE = (import.meta.env.VITE_API_URL || '').replace('/api', '');
+
+  const normalizeProfile = (data) => ({
+    ...data,
+    date_of_birth: data?.date_of_birth ? String(data.date_of_birth).slice(0, 10) : '',
+    positions: data?.positions ?? [],
+  });
+
+  useEffect(() => {
+    const nextTab = TABS.some((item) => item.key === requestedTab) ? requestedTab : 'overview';
+    setTab(nextTab);
+  }, [requestedTab]);
+
+  const goToTab = (nextTab) => {
+    setTab(nextTab);
+    setSearchParams(nextTab === 'overview' ? {} : { tab: nextTab });
+  };
+
+  const refreshProfile = async () => {
+    try {
+      const res = await api.get('/profile');
+      const next = normalizeProfile(res.data.data ?? {});
+      setHasMemberProfile(true);
+      setProfile(next);
+      setEditForm(Object.fromEntries(EDITABLE_FIELDS.map((k) => [k, next[k] ?? ''])));
+      return;
+    } catch (error) {
+      if (error.response?.status !== 404) throw error;
+    }
+
+    const me = await api.get('/auth/me');
+    const fallbackUser = me.data?.data ?? {};
+    const member = fallbackUser.member ?? null;
+    const next = normalizeProfile(member ?? {
+      full_name: fallbackUser.name ?? fallbackUser.email ?? 'User',
+      email: fallbackUser.email ?? '',
+      member_id: '',
+      status: fallbackUser.user_type ?? 'user',
+      photo_path: null,
+      institution: '',
+      department: '',
+      session: '',
+      present_address: '',
+      permanent_address: '',
+      phone: '',
+      mobile: '',
+      positions: [],
+      organizational_unit: null,
+    });
+
+    setHasMemberProfile(Boolean(member));
+    setProfile(next);
+    setEditForm(Object.fromEntries(EDITABLE_FIELDS.map((k) => [k, next[k] ?? ''])));
+  };
 
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await api.get('/profile');
-        setForm(normalizeProfile(res.data.data ?? {}));
+        await refreshProfile();
       } finally {
         setLoading(false);
       }
@@ -58,26 +129,157 @@ const MemberProfilePage = () => {
     load();
   }, []);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setForm((current) => ({ ...current, [name]: value }));
-    setErrors((current) => ({ ...current, [name]: null }));
+  useEffect(() => {
+    if (tab !== 'activity' || activityLoaded) return;
+    const loadActivity = async () => {
+      setActivityLoading(true);
+      try {
+        const res = await api.get('/profile/activity');
+        setActivity(res.data?.data?.data ?? []);
+        setActivityLoaded(true);
+      } finally {
+        setActivityLoading(false);
+      }
+    };
+    loadActivity();
+  }, [tab, activityLoaded]);
+
+  const photoUrl = photoPreview || (profile?.photo_path ? `${API_BASE}/storage/${profile.photo_path}` : '');
+  const positions = profile?.positions ?? [];
+  const activePosition = positions.find((p) => p.is_active);
+  const pastPositions = positions.filter((p) => !p.is_active);
+
+  const completionPct = useMemo(() => {
+    if (!profile) return 0;
+    const keys = [
+      'full_name', 'member_id', 'email', 'mobile', 'institution', 'department', 'session',
+      'date_of_birth', 'gender', 'blood_group', 'present_address', 'permanent_address',
+    ];
+    const filled = keys.filter((k) => profile?.[k]).length;
+    return Math.round((filled / keys.length) * 100);
+  }, [profile]);
+
+  const handleEditSubmit = async (event) => {
+    event.preventDefault();
+    if (!profile) return;
+    setEditSaving(true);
+    setEditMessage('');
+    setEditErrors({});
+
+    const payload = {
+      full_name: profile.full_name ?? '',
+      father_name: editForm.father_name ?? '',
+      mother_name: editForm.mother_name ?? '',
+      date_of_birth: profile.date_of_birth ?? '',
+      gender: profile.gender ?? '',
+      blood_group: profile.blood_group ?? '',
+      mobile: profile.mobile ?? '',
+      phone: editForm.phone ?? '',
+      institution: editForm.institution ?? '',
+      department: editForm.department ?? '',
+      session: editForm.session ?? '',
+      present_address: editForm.present_address ?? '',
+      permanent_address: editForm.permanent_address ?? '',
+      division: profile.division ?? '',
+      district: profile.district ?? '',
+      upazila: profile.upazila ?? '',
+      union: profile.union ?? '',
+      ward: profile.ward ?? '',
+      emergency_contact_name: profile.emergency_contact_name ?? '',
+      emergency_contact_phone: profile.emergency_contact_phone ?? '',
+    };
+
+    try {
+      await api.put('/profile', payload);
+      await refreshProfile();
+      setEditMessage('Profile updated successfully.');
+    } catch (error) {
+      setEditErrors(error.response?.data?.errors ?? {});
+    } finally {
+      setEditSaving(false);
+    }
   };
 
-  const handleSubmit = async (event) => {
+  const handlePasswordSubmit = async (event) => {
     event.preventDefault();
-    setSaving(true);
-    setMessage('');
+    setPasswordSaving(true);
+    setPasswordErrors({});
+    setPasswordMessage('');
     try {
-      const res = await api.put('/profile', profilePayload(form));
-      setForm(normalizeProfile(res.data.data ?? form));
-      setMessage('Profile updated successfully.');
-      setErrors({});
+      await api.put('/profile/password', passwordForm);
+      setPasswordMessage('Password changed successfully.');
+      setPasswordForm({ current_password: '', new_password: '', new_password_confirmation: '' });
     } catch (error) {
-      setErrors(error.response?.data?.errors ?? {});
+      setPasswordErrors(error.response?.data?.errors ?? {});
     } finally {
-      setSaving(false);
+      setPasswordSaving(false);
     }
+  };
+
+  const handlePhotoPick = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
+      setPhotoError('Only JPG, PNG, or WEBP files are allowed.');
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      setPhotoError('Image must be under 2MB.');
+      return;
+    }
+
+    setPhotoError('');
+    setPhotoFile(file);
+    setPhotoPreview(URL.createObjectURL(file));
+  };
+
+  const handlePhotoUpload = async () => {
+    if (!photoFile) return;
+    setPhotoSaving(true);
+    setPhotoError('');
+    try {
+      const formData = new FormData();
+      formData.append('photo', photoFile);
+      await api.post('/profile/photo', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      setPhotoFile(null);
+      setPhotoPreview('');
+      await refreshProfile();
+    } catch (error) {
+      setPhotoError(error.response?.data?.message || 'Failed to upload photo.');
+    } finally {
+      setPhotoSaving(false);
+    }
+  };
+
+  const handlePhotoRemove = async () => {
+    setPhotoSaving(true);
+    setPhotoError('');
+    try {
+      await api.delete('/profile/photo');
+      setPhotoFile(null);
+      setPhotoPreview('');
+      await refreshProfile();
+    } catch (error) {
+      setPhotoError(error.response?.data?.message || 'Failed to remove photo.');
+    } finally {
+      setPhotoSaving(false);
+    }
+  };
+
+  const handleIdCardDownload = async () => {
+    if (!hasMemberProfile) return;
+    const res = await api.get('/id-card', { responseType: 'blob' });
+    const blob = new Blob([res.data], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${profile?.member_id || 'member'}_id_card.pdf`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   if (loading) {
@@ -85,72 +287,252 @@ const MemberProfilePage = () => {
   }
 
   return (
-    <div className="max-w-5xl mx-auto p-6 space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Profile Management</h1>
-        <p className="text-sm text-gray-500 mt-1">Update your own profile information. Sensitive fields remain locked.</p>
-      </div>
+    <div className="max-w-7xl mx-auto p-6 grid lg:grid-cols-[320px_1fr] gap-6">
 
-      {form.committee_roles && form.committee_roles.filter(r => r.status === 'active').length > 0 && (
-        <div className="flex flex-wrap gap-3 p-4 bg-white border border-gray-100 shadow-sm rounded-2xl">
-          <div className="w-full text-xs font-bold tracking-widest text-gray-400 uppercase mb-1">Active Political Roles</div>
-          {form.committee_roles.filter(r => r.status === 'active').map(role => (
-            <div key={role.id} className="inline-flex items-center gap-2 bg-gradient-to-r from-gold/20 to-gold/10 border border-gold/30 px-4 py-2 rounded-xl">
-               <span className="text-yellow-800 font-black text-sm">{role.designation}</span>
-               <span className="text-gray-600 text-xs font-semibold px-2 border-l border-gold/30">
-                 {role.committee?.name}
-               </span>
+      <aside className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 h-fit space-y-5">
+        <div className="flex flex-col items-center text-center">
+          {photoUrl ? (
+            <img src={photoUrl} alt="Profile" className="w-28 h-28 rounded-full object-cover border border-gray-200" />
+          ) : (
+            <div className="w-28 h-28 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-3xl font-bold">
+              {profile?.full_name?.[0] ?? '?'}
             </div>
+          )}
+          <h1 className="mt-4 text-lg font-bold text-slate-900">{info(profile?.full_name)}</h1>
+          <p className="text-sm text-slate-500">{info(profile?.member_id || profile?.email)}</p>
+          <span className={`mt-3 inline-flex px-3 py-1 rounded-full text-xs border font-semibold capitalize ${statusClass(profile?.status)}`}>
+            {info(profile?.status)}
+          </span>
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-xs font-semibold text-slate-600">
+            <span>Profile Completion</span>
+            <span>{completionPct}%</span>
+          </div>
+          <div className="h-2.5 rounded-full bg-slate-100 overflow-hidden">
+            <div className="h-full bg-emerald-500" style={{ width: `${completionPct}%` }} />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Button className="w-full" onClick={handleIdCardDownload} disabled={!hasMemberProfile}>Download ID Card</Button>
+          {hasMemberProfile && profile?.member_id && (
+            <a
+              href={`/members/${profile.member_id}`}
+              target="_blank"
+              rel="noreferrer"
+              className="block text-center w-full px-4 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-700 hover:bg-slate-50"
+            >
+              Public Profile Link
+            </a>
+          )}
+        </div>
+
+        <div className="text-xs text-slate-500 border-t border-gray-100 pt-3">
+          {hasMemberProfile
+            ? <>Members can edit only allowed fields in <b>Edit Profile</b>. Sensitive fields are read-only.</>
+            : <>This account is not linked to a full member profile, so only account-safe information is available here.</>
+          }
+        </div>
+      </aside>
+
+      <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5">
+        <div className="flex flex-wrap gap-2">
+          {TABS.map((item) => (
+            <button
+              key={item.key}
+              onClick={() => goToTab(item.key)}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                tab === item.key ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              }`}
+            >
+              {item.label}
+            </button>
           ))}
         </div>
-      )}
 
-      <form onSubmit={handleSubmit} className="grid lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
-          <h2 className="text-base font-semibold text-gray-800">Personal Information</h2>
-          <Input label="Full Name" name="full_name" value={form.full_name ?? ''} onChange={handleChange} error={errors.full_name?.[0]} />
-          <Input label="Father Name" name="father_name" value={form.father_name ?? ''} onChange={handleChange} error={errors.father_name?.[0]} />
-          <Input label="Mother Name" name="mother_name" value={form.mother_name ?? ''} onChange={handleChange} error={errors.mother_name?.[0]} />
-          <Input label="Date of Birth" type="date" name="date_of_birth" value={form.date_of_birth ?? ''} onChange={handleChange} error={errors.date_of_birth?.[0]} />
-          <Select label="Gender" name="gender" value={form.gender ?? ''} onChange={handleChange} options={genders} error={errors.gender?.[0]} />
-          <Select label="Blood Group" name="blood_group" value={form.blood_group ?? ''} onChange={handleChange} options={bloodGroups} error={errors.blood_group?.[0]} />
-        </div>
-
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
-          <h2 className="text-base font-semibold text-gray-800">Contact And Academic</h2>
-          <Input label="Mobile" name="mobile" value={form.mobile ?? ''} onChange={handleChange} error={errors.mobile?.[0]} />
-          <Input label="Phone" name="phone" value={form.phone ?? ''} onChange={handleChange} error={errors.phone?.[0]} />
-          <Input label="Institution" name="institution" value={form.institution ?? ''} onChange={handleChange} error={errors.institution?.[0]} />
-          <Input label="Department" name="department" value={form.department ?? ''} onChange={handleChange} error={errors.department?.[0]} />
-          <Input label="Session" name="session" value={form.session ?? ''} onChange={handleChange} error={errors.session?.[0]} />
-        </div>
-
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4 lg:col-span-2">
-          <h2 className="text-base font-semibold text-gray-800">Political Area</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
-            <Input label="Division" name="division" value={form.division ?? ''} onChange={handleChange} error={errors.division?.[0]} />
-            <Input label="District" name="district" value={form.district ?? ''} onChange={handleChange} error={errors.district?.[0]} />
-            <Input label="Upazila" name="upazila" value={form.upazila ?? ''} onChange={handleChange} error={errors.upazila?.[0]} />
-            <Input label="Union" name="union" value={form.union ?? ''} onChange={handleChange} error={errors.union?.[0]} />
-            <Input label="Ward" name="ward" value={form.ward ?? ''} onChange={handleChange} error={errors.ward?.[0]} />
+        {tab === 'overview' && (
+          <div className="grid md:grid-cols-2 gap-5">
+            <div className="rounded-xl border border-slate-200 p-4">
+              <h3 className="text-sm font-bold text-slate-800 mb-3">Basic Information</h3>
+              <div className="space-y-2 text-sm">
+                <p><span className="text-slate-500 inline-block w-28">Full Name</span>{info(profile?.full_name)}</p>
+                <p><span className="text-slate-500 inline-block w-28">Member ID</span>{info(profile?.member_id)}</p>
+                <p><span className="text-slate-500 inline-block w-28">Email</span>{info(profile?.email)}</p>
+                <p><span className="text-slate-500 inline-block w-28">Phone</span>{info(profile?.phone || profile?.mobile)}</p>
+              </div>
+            </div>
+            <div className="rounded-xl border border-slate-200 p-4">
+              <h3 className="text-sm font-bold text-slate-800 mb-3">Academic Information</h3>
+              <div className="space-y-2 text-sm">
+                <p><span className="text-slate-500 inline-block w-28">Institution</span>{info(profile?.institution)}</p>
+                <p><span className="text-slate-500 inline-block w-28">Department</span>{info(profile?.department)}</p>
+                <p><span className="text-slate-500 inline-block w-28">Session</span>{info(profile?.session)}</p>
+              </div>
+            </div>
+            <div className="rounded-xl border border-slate-200 p-4">
+              <h3 className="text-sm font-bold text-slate-800 mb-3">Personal Information</h3>
+              <div className="space-y-2 text-sm">
+                <p><span className="text-slate-500 inline-block w-28">Date of Birth</span>{info(profile?.date_of_birth)}</p>
+                <p><span className="text-slate-500 inline-block w-28">Gender</span>{info(profile?.gender)}</p>
+                <p><span className="text-slate-500 inline-block w-28">Blood Group</span>{info(profile?.blood_group)}</p>
+              </div>
+            </div>
+            <div className="rounded-xl border border-slate-200 p-4">
+              <h3 className="text-sm font-bold text-slate-800 mb-3">Address</h3>
+              <div className="space-y-2 text-sm">
+                <p><span className="text-slate-500 inline-block w-32">Present</span>{info(profile?.present_address)}</p>
+                <p><span className="text-slate-500 inline-block w-32">Permanent</span>{info(profile?.permanent_address)}</p>
+              </div>
+            </div>
+            <div className="rounded-xl border border-slate-200 p-4 md:col-span-2">
+              <h3 className="text-sm font-bold text-slate-800 mb-3">Organizational Info</h3>
+              <div className="grid md:grid-cols-2 gap-2 text-sm">
+                <p><span className="text-slate-500 inline-block w-32">Assigned Unit</span>{info(profile?.organizational_unit?.name)}</p>
+                <p><span className="text-slate-500 inline-block w-32">Current Position</span>{info(activePosition?.role?.name)}</p>
+              </div>
+            </div>
           </div>
-          <p className="text-xs text-gray-500">Set local political area details for committee-level mapping.</p>
-        </div>
+        )}
 
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4 lg:col-span-2">
-          <h2 className="text-base font-semibold text-gray-800">Address And Emergency Contact</h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            <Input label="Present Address" name="present_address" value={form.present_address ?? ''} onChange={handleChange} error={errors.present_address?.[0]} />
-            <Input label="Permanent Address" name="permanent_address" value={form.permanent_address ?? ''} onChange={handleChange} error={errors.permanent_address?.[0]} />
-            <Input label="Emergency Contact Name" name="emergency_contact_name" value={form.emergency_contact_name ?? ''} onChange={handleChange} error={errors.emergency_contact_name?.[0]} />
-            <Input label="Emergency Contact Phone" name="emergency_contact_phone" value={form.emergency_contact_phone ?? ''} onChange={handleChange} error={errors.emergency_contact_phone?.[0]} />
+        {tab === 'edit' && (
+          !hasMemberProfile ? (
+            <div className="rounded-xl border border-slate-200 p-6 text-sm text-slate-600 bg-slate-50">
+              This account has no member profile record attached, so CV-style profile fields cannot be edited here.
+            </div>
+          ) : (
+          <form onSubmit={handleEditSubmit} className="space-y-4">
+            <div className="grid md:grid-cols-2 gap-4">
+              <Input label="Father Name" name="father_name" value={editForm.father_name ?? ''} onChange={(e) => setEditForm((s) => ({ ...s, father_name: e.target.value }))} error={editErrors.father_name?.[0]} />
+              <Input label="Mother Name" name="mother_name" value={editForm.mother_name ?? ''} onChange={(e) => setEditForm((s) => ({ ...s, mother_name: e.target.value }))} error={editErrors.mother_name?.[0]} />
+              <Input label="Phone" name="phone" value={editForm.phone ?? ''} onChange={(e) => setEditForm((s) => ({ ...s, phone: e.target.value }))} error={editErrors.phone?.[0]} />
+              <Input label="Institution" name="institution" value={editForm.institution ?? ''} onChange={(e) => setEditForm((s) => ({ ...s, institution: e.target.value }))} error={editErrors.institution?.[0]} />
+              <Input label="Department" name="department" value={editForm.department ?? ''} onChange={(e) => setEditForm((s) => ({ ...s, department: e.target.value }))} error={editErrors.department?.[0]} />
+              <Input label="Session" name="session" value={editForm.session ?? ''} onChange={(e) => setEditForm((s) => ({ ...s, session: e.target.value }))} error={editErrors.session?.[0]} />
+              <Input label="Present Address" name="present_address" value={editForm.present_address ?? ''} onChange={(e) => setEditForm((s) => ({ ...s, present_address: e.target.value }))} error={editErrors.present_address?.[0]} />
+              <Input label="Permanent Address" name="permanent_address" value={editForm.permanent_address ?? ''} onChange={(e) => setEditForm((s) => ({ ...s, permanent_address: e.target.value }))} error={editErrors.permanent_address?.[0]} />
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-4 pt-1">
+              <Input label="Member ID (Locked)" value={profile?.member_id ?? ''} disabled />
+              <Input label="Status (Locked)" value={profile?.status ?? ''} disabled />
+              <Input label="Role/Position (Locked)" value={activePosition?.role?.name ?? '—'} disabled />
+            </div>
+
+            <div className="flex items-center justify-between border-t border-gray-100 pt-4">
+              <p className={`text-sm ${editMessage ? 'text-emerald-700' : 'text-slate-500'}`}>{editMessage || 'Editable fields are limited by backend rules.'}</p>
+              <Button type="submit" isLoading={editSaving}>Save Profile</Button>
+            </div>
+          </form>
+          )
+        )}
+
+        {tab === 'password' && (
+          <form onSubmit={handlePasswordSubmit} className="max-w-xl space-y-4">
+            <Input type="password" label="Current Password" value={passwordForm.current_password} onChange={(e) => setPasswordForm((s) => ({ ...s, current_password: e.target.value }))} error={passwordErrors.current_password?.[0]} />
+            <Input type="password" label="New Password" value={passwordForm.new_password} onChange={(e) => setPasswordForm((s) => ({ ...s, new_password: e.target.value }))} error={passwordErrors.new_password?.[0]} />
+            <Input type="password" label="Confirm Password" value={passwordForm.new_password_confirmation} onChange={(e) => setPasswordForm((s) => ({ ...s, new_password_confirmation: e.target.value }))} error={passwordErrors.new_password_confirmation?.[0]} />
+            <div className="flex items-center justify-between">
+              <p className={`text-sm ${passwordMessage ? 'text-emerald-700' : 'text-slate-500'}`}>{passwordMessage || 'Use a strong password with at least 8 characters.'}</p>
+              <Button type="submit" isLoading={passwordSaving}>Change Password</Button>
+            </div>
+          </form>
+        )}
+
+        {tab === 'photo' && (
+          !hasMemberProfile ? (
+            <div className="rounded-xl border border-slate-200 p-6 text-sm text-slate-600 bg-slate-50">
+              Photo management is available only for accounts linked to a member profile.
+            </div>
+          ) : (
+          <div className="space-y-4 max-w-2xl">
+            <div className="flex items-center gap-5">
+              {photoUrl ? (
+                <img src={photoUrl} alt="Preview" className="w-24 h-24 rounded-full object-cover border border-gray-200" />
+              ) : (
+                <div className="w-24 h-24 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">No Photo</div>
+              )}
+              <div className="text-sm text-slate-600">
+                <p>Constraints:</p>
+                <ul className="list-disc ml-5 mt-1">
+                  <li>JPG / PNG / WEBP only</li>
+                  <li>Max size 2MB</li>
+                </ul>
+              </div>
+            </div>
+
+            <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handlePhotoPick} className="block text-sm" />
+            {photoError && <p className="text-sm text-red-600">{photoError}</p>}
+
+            <div className="flex flex-wrap gap-3">
+              <Button onClick={handlePhotoUpload} isLoading={photoSaving} disabled={!photoFile}>Upload / Replace</Button>
+              <Button variant="outline" onClick={handlePhotoRemove} isLoading={photoSaving}>Remove Photo</Button>
+            </div>
           </div>
-          <div className="flex items-center justify-between gap-4 border-t border-gray-100 pt-4">
-            <p className={`text-sm ${message ? 'text-green-700' : 'text-gray-400'}`}>{message || 'Only your own profile-safe fields can be changed here.'}</p>
-            <Button type="submit" isLoading={saving}>Save Changes</Button>
+          )
+        )}
+
+        {tab === 'positions' && (
+          <div className="space-y-4">
+            <div className="rounded-xl border border-slate-200 p-4 bg-emerald-50/40">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Current Active Position</p>
+              <h3 className="text-lg font-bold text-slate-900 mt-1">{activePosition?.role?.name || 'No active position'}</h3>
+              <p className="text-sm text-slate-600">{activePosition?.organizational_unit?.name || '—'}</p>
+            </div>
+
+            <div className="rounded-xl border border-slate-200 overflow-hidden">
+              <table className="w-full text-sm">
+                <thead className="bg-slate-50 border-b border-slate-200">
+                  <tr>
+                    <th className="text-left px-4 py-2.5 text-xs uppercase tracking-wide text-slate-500">Role</th>
+                    <th className="text-left px-4 py-2.5 text-xs uppercase tracking-wide text-slate-500">Unit</th>
+                    <th className="text-left px-4 py-2.5 text-xs uppercase tracking-wide text-slate-500">Assigned Date</th>
+                    <th className="text-left px-4 py-2.5 text-xs uppercase tracking-wide text-slate-500">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {positions.map((pos) => (
+                    <tr key={pos.id} className="border-b border-slate-100 last:border-b-0">
+                      <td className="px-4 py-2.5">{info(pos.role?.name)}</td>
+                      <td className="px-4 py-2.5">{info(pos.organizational_unit?.name)}</td>
+                      <td className="px-4 py-2.5">{pos.assigned_at ? new Date(pos.assigned_at).toLocaleDateString() : '—'}</td>
+                      <td className="px-4 py-2.5">
+                        <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-semibold ${pos.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'}`}>
+                          {pos.is_active ? 'Active' : 'Relieved'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {positions.length === 0 && <div className="p-6 text-center text-sm text-slate-500">No position history available.</div>}
+            </div>
+
+            {pastPositions.length > 0 && (
+              <p className="text-xs text-slate-500">Past Positions: {pastPositions.length}</p>
+            )}
           </div>
-        </div>
-      </form>
+        )}
+
+        {tab === 'activity' && (
+          <div className="space-y-3">
+            {activityLoading && <p className="text-sm text-slate-500">Loading activity…</p>}
+            {!activityLoading && activity.length === 0 && (
+              <div className="rounded-xl border border-slate-200 p-8 text-center text-sm text-slate-500">No activity found yet.</div>
+            )}
+            {activity.map((log) => (
+              <div key={log.id} className="rounded-xl border border-slate-200 p-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5">
+                  <p className="text-sm font-semibold text-slate-800">{log.action?.replaceAll('.', ' ')}</p>
+                  <p className="text-xs text-slate-500">{log.performed_at ? new Date(log.performed_at).toLocaleString() : '—'}</p>
+                </div>
+                <p className="text-xs text-slate-500 mt-2">IP: {info(log.ip_address)} · Device: {info(log.user_agent)}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
     </div>
   );
 };

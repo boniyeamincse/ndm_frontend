@@ -9,6 +9,15 @@ Use these credentials to access the Admin Dashboard at `http://localhost:5174/lo
 | :--- | :--- | :--- |
 | **Super Admin** | `admin@ndm.org.bd` | `password` |
 
+## 👥 Role Testing Members
+Use these seeded member accounts to test role-based behavior.
+
+| Member Role | Email | Password |
+| :--- | :--- | :--- |
+| **General Member** | `test.member@ndm.org.bd` | `password` |
+| **Organizer** | `test.organizer@ndm.org.bd` | `password` |
+| **Admin (Member Role)** | `test.adminmember@ndm.org.bd` | `password` |
+
 ---
 
 ## 📝 Sample Registration Data (Step-by-Step)
