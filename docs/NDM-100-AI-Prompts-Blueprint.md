@@ -99,7 +99,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/hooks/index.js` with all functional hooks.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Task 08 [ ] — Prompt 8 — Environment Config
+### Task 08 [x] — Prompt 8 — Environment Config
 **Goal**: Set up environment variable validation and access patterns.
 **Rules**:
 - Create `.env.local`, `.env.example`, and a validation wrapper.
