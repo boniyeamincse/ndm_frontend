@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { NDM_LOGO_URL } from '../../constants/branding';
+import { NDM_LOGO_URL, NDSM_MOTTO, NDSM_NAME } from '../../constants/branding';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -42,11 +42,11 @@ const Footer = () => {
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-6">
             <Link to="/" className="inline-flex items-center gap-3 text-3xl font-display font-bold text-gold">
-              <img src={NDM_LOGO_URL} alt="NDM logo" className="h-10 w-auto rounded-md border border-white/20" loading="lazy" />
-              <span>Student Movement - NDM</span>
+              <img src={NDM_LOGO_URL} alt="NDSM logo" className="h-10 w-auto rounded-md border border-white/20" loading="lazy" />
+              <span>{NDSM_NAME}</span>
             </Link>
             <p className="text-gray-300 max-w-sm leading-relaxed">
-              Empowering the next generation of leaders through democratic values, integrity, and proactive student movement. Shaping the future of Bangladesh, one student at a time.
+              {NDSM_MOTTO}. Empowering the next generation of leaders through democratic values, integrity, and organized student action across Bangladesh.
             </p>
             <div className="flex space-x-4">
               {socials.map((soc) => (
@@ -83,7 +83,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-sm text-gray-400">
-          <p>© {currentYear} Student Movement - NDM. All rights reserved.</p>
+          <p>© {currentYear} {NDSM_NAME}. All rights reserved.</p>
           <div className="flex space-x-6">
             <Link to="/privacy" className="hover:text-white">Privacy Policy</Link>
             <Link to="/terms" className="hover:text-white">Terms of Service</Link>

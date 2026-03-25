@@ -7,6 +7,7 @@ import DashboardLayout from '../components/layout/DashboardLayout';
 // ── Public pages ─────────────────────────────────────────────────────────────
 const Home          = lazy(() => import('../pages/Home'));
 const About         = lazy(() => import('../pages/About'));
+const Constitution  = lazy(() => import('../pages/Constitution'));
 const News          = lazy(() => import('../pages/News'));
 const Gallery       = lazy(() => import('../pages/Gallery'));
 const Leadership    = lazy(() => import('../pages/Leadership'));
@@ -59,6 +60,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true,                element: <Home /> },
       { path: 'about',              element: <About /> },
+      { path: 'constitution',       element: <Constitution /> },
       { path: 'news',               element: <News /> },
       { path: 'gallery',            element: <Gallery /> },
       { path: 'join',               element: <Navigate to="/register" replace /> },

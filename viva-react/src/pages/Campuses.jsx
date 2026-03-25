@@ -13,7 +13,7 @@ const Campuses = () => {
         <div>
           <h1 className="text-4xl md:text-5xl font-display font-bold text-primary mb-4">Campus Network</h1>
           <p className="text-gray-600 max-w-3xl">
-            Explore Student Movement - NDM campus presence, chapter activities, and coordination points
+            Explore NDSM campus presence, chapter activities, and coordination points
             across universities and colleges.
           </p>
         </div>

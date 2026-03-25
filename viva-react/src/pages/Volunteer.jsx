@@ -13,7 +13,7 @@ const Volunteer = () => {
         <div>
           <h1 className="text-4xl md:text-5xl font-display font-bold text-primary mb-4">Volunteer With Us</h1>
           <p className="text-gray-600 mb-8">
-            Join Student Movement - NDM as a volunteer and support local chapters, community campaigns,
+            Join NDSM as a volunteer and support local chapters, community campaigns,
             youth leadership programs, and civic initiatives.
           </p>
 

@@ -434,7 +434,7 @@ const Register = () => {
                   <div className="bg-primary/5 p-4 rounded-lg border border-primary/10">
                     <p className="text-sm text-primary flex items-start">
                       <span className="mr-2">ℹ️</span>
-                      By submitting this form you agree to follow the principles and discipline of the NDM Student Movement. Your NID number is encrypted and stored securely.
+                      By submitting this form you agree to follow the principles and discipline of the Nationalist Democratic Student Movement - NDSM. Your NID number is encrypted and stored securely.
                     </p>
                   </div>
                 </div>

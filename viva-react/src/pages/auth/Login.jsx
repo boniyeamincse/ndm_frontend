@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/ui/Button';
-import { NDM_LOGO_URL } from '../../constants/branding';
+import { NDM_LOGO_URL, NDSM_NAME } from '../../constants/branding';
 
 const Login = () => {
     const navigate  = useNavigate();
@@ -45,8 +45,8 @@ const Login = () => {
                 <div className="relative hidden md:flex flex-col justify-between p-8 lg:p-10 bg-gradient-to-br from-primary-dark/80 to-primary/60 border-r border-white/10">
                     <div>
                         <Link to="/" className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/10 border border-white/20">
-                            <img src={NDM_LOGO_URL} alt="NDM logo" className="h-10 w-auto rounded-md border border-white/20" loading="lazy" />
-                            <span className="text-lg font-display font-bold text-white">Student Movement - NDM</span>
+                            <img src={NDM_LOGO_URL} alt="NDSM logo" className="h-10 w-auto rounded-md border border-white/20" loading="lazy" />
+                            <span className="text-lg font-display font-bold text-white">{NDSM_NAME}</span>
                         </Link>
                     </div>
                     <div className="space-y-3">
@@ -54,7 +54,7 @@ const Login = () => {
                             Leadership. Unity. Democratic Values.
                         </h1>
                         <p className="text-white/80 text-sm leading-relaxed max-w-md">
-                            Sign in to manage chapters, members, and activities with the official Student Movement - NDM platform.
+                            Sign in to manage chapters, members, and activities with the official NDSM platform.
                         </p>
                     </div>
                 </div>
@@ -67,8 +67,8 @@ const Login = () => {
                     <div className="relative rounded-2xl sm:rounded-3xl border border-white/30 bg-white/95 p-5 sm:p-7 shadow-2xl transform-gpu md:[transform:rotateY(-3deg)_rotateX(2deg)]">
                         <div className="md:hidden mb-5">
                             <Link to="/" className="inline-flex max-w-full items-center gap-2.5 px-3 py-2 rounded-2xl bg-primary/10 border border-primary/20">
-                                <img src={NDM_LOGO_URL} alt="NDM logo" className="h-10 w-auto rounded-md border border-black/10" loading="lazy" />
-                                <span className="text-sm sm:text-base leading-tight font-display font-bold text-primary-dark">Student Movement - NDM</span>
+                                <img src={NDM_LOGO_URL} alt="NDSM logo" className="h-10 w-auto rounded-md border border-black/10" loading="lazy" />
+                                <span className="text-sm sm:text-base leading-tight font-display font-bold text-primary-dark">{NDSM_NAME}</span>
                             </Link>
                         </div>
 
@@ -76,7 +76,7 @@ const Login = () => {
                             Sign In
                         </h2>
                         <p className="mt-2 text-sm text-slate-600">
-                            Access your Student Movement - NDM account
+                            Access your NDSM account
                         </p>
 
                         <form className="mt-6 space-y-5" onSubmit={handleSubmit}>

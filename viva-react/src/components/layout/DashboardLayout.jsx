@@ -606,9 +606,9 @@ const DashboardLayout = () => {
         {/* Brand */}
         <div className="relative px-4 py-4 border-b border-white/10 flex-shrink-0 bg-white/[0.03] backdrop-blur-sm">
           <Link to="/" className="flex items-center gap-3 rounded-2xl px-3 py-2.5 bg-white/[0.04] border border-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-            <img src={NDM_LOGO_URL} alt="NDM logo" className="w-10 h-10 object-cover rounded-2xl border border-white/10 shadow-lg shadow-amber-500/20 flex-shrink-0" loading="lazy" />
+            <img src={NDM_LOGO_URL} alt="NDSM logo" className="w-10 h-10 object-cover rounded-2xl border border-white/10 shadow-lg shadow-amber-500/20 flex-shrink-0" loading="lazy" />
             <div>
-              <p className="text-white font-bold text-sm leading-tight tracking-[0.01em]">Student Movement - NDM</p>
+              <p className="text-white font-bold text-sm leading-tight tracking-[0.01em]">NDSM</p>
               <p className="text-slate-400 text-[10px] uppercase tracking-[0.18em] mt-0.5">
                 {isAdmin ? 'Admin Panel' : 'Member Panel'}
               </p>

@@ -25,14 +25,14 @@ const About = () => {
     >
       <div className="bg-primary text-white">
         <div className="container mx-auto px-6 py-20">
-          <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">About NDM Student Movement</h1>
+          <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">About Nationalist Democratic Student Movement - NDSM</h1>
           <p className="text-white/90 max-w-3xl text-lg">
-            NDM Student Movement is a nationwide youth platform focused on ethical leadership, civic engagement, and student empowerment.
+            NDSM is a nationwide youth platform focused on ethical leadership, civic engagement, student empowerment, and disciplined democratic organization.
           </p>
         </div>
       </div>
 
-      <div className="container mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <div id="mission-vision" className="container mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-2 gap-10 scroll-mt-28">
         <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100 shadow-sm">
           <h2 className="text-2xl font-display font-bold text-primary mb-4">Our Mission</h2>
           <p className="text-gray-700 leading-relaxed">
@@ -58,6 +58,7 @@ const About = () => {
           ))}
         </div>
       </div>
+
     </motion.section>
   );
 };
