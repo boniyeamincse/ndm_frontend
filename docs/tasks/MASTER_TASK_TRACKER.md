@@ -33,6 +33,14 @@ Status logic for **Overall Status**:
 - In Progress: 96
 - Pending: 88
 
+## Development Phase Kickoff (2026-03-25)
+
+- Phase switched from planning/documentation to implementation.
+- Current implementation focus: **Task 05 (RBAC)**.
+- Immediate backend execution item: make `PermissionsSeeder` idempotent and include it in `DatabaseSeeder` flow.
+- Validation target for this step: permission records seed cleanly and remain duplicate-safe on re-run.
+- Next sequential item after seeding baseline: enforce permission checks in admin role workflows and related middleware/tests.
+
 ## Project-Wise Module Map
 
 - **Foundation And Delivery Setup**: Tasks `1-12`
@@ -123,9 +131,9 @@ Status logic for **Overall Status**:
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 49 | Review RBAC domain model | Verify separation between organizational roles, application permissions, and member role elevation logic. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
-| 50 | Complete role CRUD policy | Finalize create, update, delete, activate, and deactivate rules for roles. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
+| 50 | Complete role CRUD policy | Finalize create, update, delete, activate, and deactivate rules for roles. This task can be implemented using AI-assisted development. | Done | Passed | Uploaded | Completed |
 | 51 | Complete permission sync workflow | Ensure permission assignment is safe, idempotent, auditable, and protected against privilege escalation. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
-| 52 | Define default permission matrix | Establish final admin, organizer, and general-member permission sets by module. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
+| 52 | Define default permission matrix | Establish final admin, organizer, and general-member permission sets by module, aligned with `docs/04-API/RBAC_ACCESS_MATRIX_NDSM.md` and backend seeder policy. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
 | 53 | Implement position management APIs | Add promote, relieve, transfer, history, and member-history endpoints for organizational positions. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
 | 54 | Build position service layer | Centralize position assignment, transfer, history logging, and validation rules in backend services. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
 | 55 | Create position request validators | Add dedicated form requests for promote, relieve, and transfer operations. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
