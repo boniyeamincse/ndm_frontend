@@ -43,7 +43,8 @@ class PermissionsSeeder extends Seeder
             'units.manage' => 'Create, edit and delete organisational units',
         ],
         'Reports' => [
-            'reports.view' => 'View dashboard stats and audit logs',
+            'reports.view'   => 'View dashboard stats and audit logs',
+            'reports.export' => 'Export reports and audit logs to CSV/PDF',
         ],
     ];
 
@@ -63,8 +64,8 @@ class PermissionsSeeder extends Seeder
 
         // The built-in 'admin' role (user_type === 'admin') gets all permissions
         $adminRole = Role::firstOrCreate(
-            ['name' => 'admin'],
-            ['description' => 'System administrator — full access', 'is_active' => true]
+            ['title' => 'admin'],
+            ['description' => 'System administrator — full access', 'is_active' => true, 'created_by' => 1]
         );
         $adminRole->permissions()->sync($allIds);
 
@@ -76,8 +77,8 @@ class PermissionsSeeder extends Seeder
         ])->pluck('id')->toArray();
 
         $organizerRole = Role::firstOrCreate(
-            ['name' => 'organizer'],
-            ['description' => 'Unit organizer — member & task management', 'is_active' => true]
+            ['title' => 'organizer'],
+            ['description' => 'Unit organizer — member & task management', 'is_active' => true, 'created_by' => 1]
         );
         $organizerRole->permissions()->sync($organizerPermissions);
 
@@ -87,8 +88,8 @@ class PermissionsSeeder extends Seeder
         ])->pluck('id')->toArray();
 
         $generalRole = Role::firstOrCreate(
-            ['name' => 'general_member'],
-            ['description' => 'General member — read-only access', 'is_active' => true]
+            ['title' => 'general_member'],
+            ['description' => 'General member — read-only access', 'is_active' => true, 'created_by' => 1]
         );
         $generalRole->permissions()->sync($memberPermissions);
 
