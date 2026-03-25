@@ -1,1565 +1,1348 @@
-# 🏛️ NDM Student Movement — 100 AI Prompts Blueprint
-> **Project:** NDM Student Movement Website  
-> **Stack:** React + Tailwind CSS + JavaScript  
-> **Purpose:** Complete development guide using AI-assisted code generation  
-> **Color Theme:** Deep Green `#006A4E` | White `#FFFFFF` | Red `#DC143C`
+# 🏛️ Improved NDM Student Movement — 100 AI Prompts Blueprint
 
----
-
-## 📁 TABLE OF CONTENTS
-
-1. [Project Setup & Architecture](#1-project-setup--architecture) — Prompts 1–10
-2. [Global Styles & Design System](#2-global-styles--design-system) — Prompts 11–20
-3. [Navigation & Layout](#3-navigation--layout) — Prompts 21–30
-4. [Home Page Sections](#4-home-page-sections) — Prompts 31–45
-5. [About, Leadership & Activities](#5-about-leadership--activities) — Prompts 46–60
-6. [News, Gallery & Join Us](#6-news-gallery--join-us) — Prompts 61–72
-7. [Contact, Footer & Utilities](#7-contact-footer--utilities) — Prompts 73–82
-8. [Performance & Accessibility](#8-performance--accessibility) — Prompts 83–90
-9. [SEO & Analytics](#9-seo--analytics) — Prompts 91–95
-10. [Testing & Deployment](#10-testing--deployment) — Prompts 96–100
+This document contains rewritten prompts in a professional format designed for high-quality AI-assisted development.
 
 ---
 
 ## 1. Project Setup & Architecture
 
 ### Prompt 1 — Vite + React + Tailwind Bootstrap
-```
-Create a new React project using Vite with Tailwind CSS v3, React Router v6, and Framer Motion pre-installed. Configure the tailwind.config.js to include a custom color palette:
-- primary: { DEFAULT: '#006A4E', dark: '#004d38', light: '#00835f' }
-- accent: { DEFAULT: '#DC143C', dark: '#b01030' }
-- gold: '#F0C040'
-Output the full vite.config.js, tailwind.config.js, postcss.config.js, index.html, and src/main.jsx files.
-```
+**Goal**: Initialize a React project using Vite with Tailwind CSS v3, React Router v6, and Framer Motion.
+**Rules**:
+- Use Vite for build and development.
+- Configure Tailwind v3 with the brand color palette.
+- Integrate React Router v6 and Framer Motion into the main entry point.
+**Example**:
+- Input: "Setup with colors #006A4E, #DC143C, #F0C040" -> Output: Full `tailwind.config.js`.
+- Input: "Add routing" -> Output: `BrowserRouter` in `main.jsx`.
+- Input: "Initial animations" -> Output: `framer-motion` installed.
+**Deliver**: `vite.config.js`, `tailwind.config.js`, `postcss.config.js`, `index.html`, and `src/main.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 2 — Folder Structure
-```
-Design a scalable React project folder structure for a multi-page organization website called "NDM Student Movement". Include folders for: components/, pages/, hooks/, context/, data/, assets/, utils/, and styles/. For each folder, list the files it should contain with a one-line description. Output as a clean directory tree.
-```
+**Goal**: Design a scalable React project folder structure for "NDM Student Movement".
+**Rules**:
+- Follow a modular architecture (components, pages, hooks, context, etc.).
+- Provide a one-line description for every major folder/file.
+- Ensure the structure supports multi-page scalability.
+**Example**:
+- Input: "Organization website" -> Output: `components/`, `pages/`, `hooks/`.
+- Input: "Scalability" -> Output: `context/`, `utils/`, `data/`.
+- Input: "Directory tree" -> Output: A clean ASCII/Markdown tree.
+**Deliver**: A clean directory tree with descriptions.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 3 — React Router Setup
-```
-Build a complete React Router v6 setup for an 8-page website. Pages: Home, About, Leadership, Activities, News, Gallery, JoinUs, Contact. Use createBrowserRouter with a root Layout component that includes a Navbar and Footer. Add scroll-to-top behavior on route change. Use lazy loading with React.lazy and Suspense for all page components.
-```
+**Goal**: Build a complete React Router v6 setup for an 8-page website.
+**Rules**:
+- Use `createBrowserRouter` for routing.
+- Implement lazy loading with `React.lazy` and `Suspense`.
+- Implement a global `Layout` component with `Navbar` and `Footer`.
+- Add scroll-to-top behavior on all route changes.
+**Example**:
+- Input: "8 pages" -> Output: Home, About, News, etc. routes.
+- Input: "Suspense" -> Output: Loading fallback UI.
+- Input: "Scroll behavior" -> Output: `ScrollToTop` component.
+**Deliver**: `src/router/index.jsx` and the `Layout` wrapper.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 4 — Global Context (Dark Mode + Auth)
-```
-Create a React Context called AppContext that manages:
-1. darkMode (boolean) with toggle function + localStorage persistence
-2. mobileMenuOpen (boolean) with toggle function
-3. currentPage (string) synced with React Router location
-4. isLoading (boolean) for page transitions
-
-Use useReducer internally. Export a useApp() hook. Show the provider wrapping in main.jsx.
-```
+**Goal**: Create an `AppContext` for managing global states.
+**Rules**:
+- Manage `darkMode`, `mobileMenuOpen`, `currentPage`, and `isLoading`.
+- Use `useReducer` for state transitions.
+- Persist `darkMode` preference in `localStorage`.
+- Export a custom `useApp()` hook for easy access.
+**Example**:
+- Input: "Toggle dark mode" -> Output: Reducer action + localStorage update.
+- Input: "Loading state" -> Output: Global Boolean state.
+- Input: "Sync with router" -> Output: Page state update on location change.
+**Deliver**: `AppContext.jsx` and provider implementation in `main.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 5 — Theme Constants File
-```
-Create a src/constants/theme.js file for the NDM Student Movement project. Export:
-- COLORS object with all brand colors as hex values
-- FONTS with display ('Playfair Display') and body ('DM Sans') options
-- BREAKPOINTS as px values (sm, md, lg, xl)
-- SPACING scale (xs through 2xl)
-- TRANSITIONS object with duration + easing presets (fast, normal, slow, bounce)
-- SHADOWS (sm, md, lg, xl) using green-tinted box-shadow values
-```
+**Goal**: Create a central theme constants file at `src/constants/theme.js`.
+**Rules**:
+- Export objects for `COLORS`, `FONTS`, `BREAKPOINTS`, `SPACING`, and `TRANSITIONS`.
+- Use brand-specific values (Playfair Display, DM Sans).
+- Include green-tinted box-shadow variations for `SHADOWS`.
+**Example**:
+- Input: "Primary color" -> Output: `#006A4E`.
+- Input: "Fonts" -> Output: Display and Body font families.
+- Input: "Transitions" -> Output: Fast, normal, and slow presets.
+**Deliver**: `src/constants/theme.js` with all exported objects.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 6 — Data Layer
-```
-Create a src/data/index.js file that exports mock data arrays for:
-1. navLinks — label, href, icon (emoji), hasDropdown
-2. stats — value (number), label, suffix, icon
-3. leaders — name, role, image, bio, social links (fb, tw, li)
-4. activities — title, icon, description, date, frequency, color
-5. newsArticles — id, title, excerpt, date, tag, image, author, readTime
-6. galleryImages — id, src, caption, category
-7. districts — 64 Bangladesh districts as array
-8. footerLinks — grouped by category
-
-Use realistic Bangladesh-specific content.
-```
+**Goal**: Create a `src/data/index.js` file for mock data management.
+**Rules**:
+- Export mock arrays for `navLinks`, `stats`, `leaders`, `activities`, and `news`.
+- Include Bangladesh-specific content (64 districts, local names).
+- Ensure data structures are consistent for use in card components.
+**Example**:
+- Input: "Leaders" -> Output: Array of objects with name, role, bio.
+- Input: "Districts" -> Output: Array of 64 district names.
+- Input: "Footer links" -> Output: Grouped categories of links.
+**Deliver**: `src/data/index.js` with realistic content.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 7 — Custom Hooks Collection
-```
-Create a src/hooks/index.js file exporting these custom React hooks:
-1. useScrollY() — returns current scroll position
-2. useInView(ref, threshold) — returns boolean when element enters viewport
-3. useCounter(target, duration, trigger) — animated number counter
-4. useDebounce(value, delay) — debounced value
-5. useLocalStorage(key, defaultValue) — persisted state
-6. useMediaQuery(query) — responsive breakpoint detection
-7. useLockBodyScroll() — prevent scroll when modal open
-8. useScrollAnimation() — applies fade-up class to .fade-up elements
-
-Each hook should be properly typed with JSDoc comments.
-```
+**Goal**: Create a collection of custom hooks at `src/hooks/index.js`.
+**Rules**:
+- Implement `useScrollY`, `useInView`, `useCounter`, and `useDebounce`.
+- Implement `useLocalStorage`, `useMediaQuery`, and `useLockBodyScroll`.
+- Ensure all hooks are properly typed with JSDoc comments.
+**Example**:
+- Input: "In view" -> Output: `IntersectionObserver` hook.
+- Input: "Debounce" -> Output: Delayed value update hook.
+- Input: "Lock scroll" -> Output: Modal-friendly scroll prevention.
+**Deliver**: `src/hooks/index.js` with all functional hooks.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 8 — Environment Config
-```
-Set up environment variable configuration for the NDM project. Create:
-1. .env.local with variables: VITE_API_URL, VITE_GOOGLE_MAPS_KEY, VITE_GA_TRACKING_ID, VITE_FORMSPREE_ID
-2. src/config/env.js that reads and validates these variables with fallbacks
-3. .env.example file for documentation
-4. .gitignore that properly excludes .env files
-Show how to use config values safely in a component.
-```
+**Goal**: Set up environment variable validation and access patterns.
+**Rules**:
+- Create `.env.local`, `.env.example`, and a validation wrapper.
+- Validate `VITE_API_URL`, `VITE_GOOGLE_MAPS_KEY`, etc.
+- Provide safe fallbacks for missing variables.
+**Example**:
+- Input: "API URL" -> Output: Validated config value.
+- Input: ".gitignore" -> Output: Rule to exclude .env files.
+- Input: "Usage" -> Output: Safe access in a component.
+**Deliver**: `.env` files and `src/config/env.js`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 9 — API Service Layer
-```
-Create a src/services/api.js module for the NDM Student Movement website. Include:
-1. submitJoinForm(data) — POST to Formspree
-2. submitContactForm(data) — POST to contact endpoint
-3. subscribeNewsletter(email) — POST to newsletter service
-4. fetchNews() — GET latest news (mock with realistic delay)
-5. fetchGallery() — GET gallery images
-
-Each function should handle loading states, error states, and return { data, error, loading }. Use fetch API with proper headers and error handling.
-```
+**Goal**: Create an API service layer for handling external requests.
+**Rules**:
+- Implement functions for submitting forms and fetching news/gallery data.
+- Handle loading, error, and data states for every request.
+- Use the Fetch API with proper headers and error management.
+**Example**:
+- Input: "Submit form" -> Output: POST request to endpoint.
+- Input: "Fetch news" -> Output: Mock data with realistic delay.
+- Input: "Error handling" -> Output: Consistent `{ data, error, loading }` return.
+**Deliver**: `src/services/api.js` with all service functions.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 10 — Animation Configuration
-```
-Set up a Framer Motion animation configuration file for the NDM website at src/config/animations.js. Define and export:
-1. fadeUp — fade in from below
-2. fadeIn — simple opacity fade
-3. slideInLeft / slideInRight
-4. staggerContainer — parent container for staggered children
-5. staggerItem — child for stagger effect
-6. scaleOnHover — hover scale + shadow
-7. pageTransition — page enter/exit animation
-8. counterAnimation — number count-up spring
-9. navbarReveal — navbar entry on mount
-
-Use Framer Motion v10 syntax with proper TypeScript-friendly structure.
-```
+**Goal**: Centralize Framer Motion animations in `src/config/animations.js`.
+**Rules**:
+- Define reusable variants for `fadeUp`, `fadeIn`, `slideIn`, and `stagger`.
+- Include configuration for page transitions and hover effects.
+- Use Typescript-friendly structure and v10+ syntax.
+**Example**:
+- Input: "Fade up" -> Output: `opacity: 0, y: 20` -> `opacity: 1, y: 0`.
+- Input: "Stagger" -> Output: Parent and child variants.
+- Input: "Page transition" -> Output: `AnimatePresence` config.
+**Deliver**: `src/config/animations.js` with comprehensive exports.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ---
 
 ## 2. Global Styles & Design System
 
 ### Prompt 11 — CSS Variables & Reset
-```
-Write a comprehensive src/styles/globals.css file for the NDM Student Movement website. Include:
-1. :root CSS custom properties for all colors, fonts, spacing, shadows, border-radius
-2. Dark mode variables under body.dark { ... }
-3. CSS reset (modern, Tailwind-compatible)
-4. Base typography styles (h1–h6, p, a, lists)
-5. Custom scrollbar styling (thin, green-themed)
-6. Smooth scroll behavior
-7. Selection color overrides (green highlight)
-8. Print styles
-9. High contrast media query support
-```
+**Goal**: Create a comprehensive `globals.css` file with brand-specific variables and resets.
+**Rules**:
+- Define CSS custom properties for all brand colors, fonts, and spacing.
+- Implement a modern CSS reset and basic typography styles.
+- Add custom scrollbar styling and selection color overrides.
+**Example**:
+- Input: "Color variables" -> Output: `--brand-green: #006A4E`.
+- Input: "Selection color" -> Output: Green background highlight.
+- Input: "Scrollbar" -> Output: Thin, green-themed scrollbar.
+**Deliver**: `src/styles/globals.css`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 12 — Typography System
-```
-Design a complete typography system for the NDM Student Movement website using:
-- Display font: 'Playfair Display' (700, 900)
-- Body font: 'DM Sans' (300, 400, 500, 600, 700)
-- Optional mono: 'JetBrains Mono' for code elements
-
-Create:
-1. Google Fonts import string
-2. Typography CSS classes (.text-display-xl through .text-body-sm)
-3. Responsive fluid font sizes using clamp()
-4. Line-height and letter-spacing scale
-5. Tailwind extend config for custom fontFamily
-Output as ready-to-use CSS + tailwind.config snippet.
-```
+**Goal**: Design a complete typography system using Playfair Display and DM Sans.
+**Rules**:
+- Provide Google Fonts import and Tailwind `fontFamily` extensions.
+- Create typography classes for sizes and weights (xl to sm).
+- Use `clamp()` for responsive fluid font sizes.
+**Example**:
+- Input: "Playfair Display" -> Output: Display font config.
+- Input: "Responsive sizes" -> Output: `clamp()` values for h1-h6.
+- Input: "Weights" -> Output: Config for light to extra-bold.
+**Deliver**: Ready-to-use CSS and `tailwind.config` snippets.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 13 — Button Component System
-```
-Build a reusable Button component in React for the NDM Student Movement site. Create variants:
-1. primary (green background)
-2. danger (red background)
-3. outline-green
-4. outline-red
-5. ghost (transparent)
-6. gold (CTA variant)
-
-Props: variant, size (sm|md|lg), leftIcon, rightIcon, loading (shows spinner), disabled, fullWidth, as (renders as <a> when href provided).
-
-Use Tailwind classes + Framer Motion for hover/tap animations. Include proper ARIA attributes.
-```
+**Goal**: Build a multi-variant reusable `Button` component with Framer Motion.
+**Rules**:
+- Support variants like `primary`, `danger`, `outline`, and `gold`.
+- Handle states like `loading`, `disabled`, and `size`.
+- Ensure accessibility with proper ARIA attributes and keyboard support.
+**Example**:
+- Input: "Variant: primary" -> Output: Green background button.
+- Input: "Loading state" -> Output: Spinner + disabled click.
+- Input: "Animation" -> Output: `scale: 0.95` on tap.
+**Deliver**: `src/components/ui/Button.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 14 — Card Component Library
-```
-Create a reusable Card component library for the NDM website. Build these variants as sub-components:
-1. Card.Base — wrapper with shadow, border-radius, hover lift
-2. Card.News — image top, tag badge, date, title, excerpt, read more
-3. Card.Leader — profile photo, name, role, social icons, bio tooltip
-4. Card.Activity — icon, title, badge, description, date
-5. Card.Stat — animated number, label, icon
-6. Card.Gallery — image with overlay and zoom icon
-
-Each should accept className for extension. Use forwardRef where appropriate.
-```
+**Goal**: Create a library of reusable card components for news, leaders, and stats.
+**Rules**:
+- Use a base `Card.Base` for shared styling like shadows and radius.
+- Implement specialized sub-components like `Card.News` and `Card.Leader`.
+- Support hover effects (zoom, lift) and responsive layouts.
+**Example**:
+- Input: "News card" -> Output: Image, tag, and title structure.
+- Input: "Hover lift" -> Output: `translate-y-[-4px]` on hover.
+- Input: "Stat card" -> Output: Number + label + icon.
+**Deliver**: `src/components/ui/Card.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 15 — Badge & Tag Components
-```
-Create a Badge component and Tag component for the NDM Student Movement site.
-
-Badge props: variant (success|danger|warning|info|default), size, dot (animated pulse dot), outline
-Tag props: color (custom hex), closable (with onClose), icon
-
-Add these badge variants with Bangladesh-themed colors:
-- "Live Event" — red with pulse
-- "Achievement" — gold
-- "Campaign" — green
-- "Breaking" — red, bold
-
-Use Tailwind + smooth transitions. Include keyboard accessibility for closable tags.
-```
+**Goal**: Create `Badge` and `Tag` components with Bangladesh-inspired variants.
+**Rules**:
+- Implement variants like `success`, `danger`, `warning`, and `achievement`.
+- Support features like animated pulse dots and closable functionality.
+- Ensure smooth transitions and high contrast for readability.
+**Example**:
+- Input: "Live Event badge" -> Output: Red with pulse animation.
+- Input: "Achievement badge" -> Output: Gold themed tag.
+- Input: "Closable tag" -> Output: `onClose` callback + close icon.
+**Deliver**: `src/components/ui/Badge.jsx` and `Tag.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 16 — Icon System
-```
-Set up a consistent icon system for the NDM Student Movement website. 
-1. Install and configure react-icons (choose specific packs: fi for Feather, bi for BoxIcons, hi for Heroicons)
-2. Create src/components/ui/Icon.jsx wrapper with size prop (xs, sm, md, lg, xl), color prop, aria-hidden default
-3. Create an icons constants file mapping semantic names to icon components:
-   - nav: home, about, leadership, activities, news, gallery, join, contact
-   - social: facebook, twitter, youtube, instagram, linkedin
-   - ui: menu, close, arrow, check, alert, search, phone, email, location, calendar
-
-Show usage examples.
-```
+**Goal**: Set up a consistent icon system using `react-icons`.
+**Rules**:
+- Choose specific icon sets for UI and social media (Feather, BoxIcons).
+- Create an `Icon.jsx` wrapper with size and color mapping.
+- Map semantic names to icon components in a constants file.
+**Example**:
+- Input: "Social icons" -> Output: Facebook, Twitter, YouTube mappings.
+- Input: "Icon wrapper" -> Output: Props for size and custom color.
+- Input: "Usage" -> Output: `<Icon name="home" size="lg" />`.
+**Deliver**: `src/components/ui/Icon.jsx` and `src/constants/icons.js`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 17 — Loading States
-```
-Create a comprehensive Loading component system for the NDM site:
-1. PageLoader — full screen with NDM logo + spinning ring + progress bar
-2. Skeleton — animated shimmer skeleton for cards, text, images
-3. ButtonSpinner — inline spinner for form submit buttons
-4. ContentPlaceholder — configurable skeleton grid for news/gallery sections
-5. ProgressBar — top-of-page navigation progress indicator
-
-All should respect prefers-reduced-motion. Use CSS animations (no JS required for basic states). Style with green/red brand colors.
-```
+**Goal**: Build a system for page loaders, skeletons, and spinners.
+**Rules**:
+- Implement a full-screen `PageLoader` with the NDM logo.
+- Create an animated `Skeleton` for placeholders in cards and text.
+- Respect `prefers-reduced-motion` for all loading animations.
+**Example**:
+- Input: "Page loader" -> Output: Full-screen overlay with progress bar.
+- Input: "Skeleton" -> Output: Shimmer animation for card layout.
+- Input: "Inline spinner" -> Output: CSS-based spinner for buttons.
+**Deliver**: `src/components/ui/Loading.jsx` or separate files.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 18 — Toast Notification System
-```
-Build a Toast notification system for the NDM website:
-1. ToastContext with useToast() hook
-2. Methods: toast.success(msg), toast.error(msg), toast.info(msg), toast.warning(msg)
-3. Toast container (fixed, top-right)
-4. Individual Toast component with: icon, message, auto-dismiss (5s), manual close, progress bar
-5. Max 4 toasts visible, stack with animation
-
-Use Framer Motion for slide-in/out. Accessible with role="alert" and aria-live="polite". Show the form submission flow using toasts.
-```
+**Goal**: Create a global toast system with slide-in/out animations.
+**Rules**:
+- Implement a `ToastContext` and a `useToast()` custom hook.
+- Support `success`, `error`, `info`, and `warning` types.
+- Ensure maximum of 4 concurrent toasts with auto-dismiss (5s).
+**Example**:
+- Input: "Success toast" -> Output: Green alert with check icon.
+- Input: "Animation" -> Output: Framer Motion slide-in from right.
+- Input: "Accessibility" -> Output: `aria-live="polite"` region.
+**Deliver**: `src/context/ToastContext.jsx` and UI components.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 19 — Modal System
-```
-Create a reusable Modal component for the NDM website that supports:
-1. Standard modal (title, content, footer with buttons)
-2. Image modal (lightbox variant)
-3. Confirmation modal (with danger variant)
-4. Full-screen mobile modal
-
-Features: backdrop blur, scroll lock, ESC key close, focus trap, smooth animation with Framer Motion, stacked modal support.
-
-Include useModal() hook with open/close/toggle functions. Show example: gallery lightbox and delete confirmation.
-```
+**Goal**: Implement a reusable `Modal` system with backdrop blur and animations.
+**Rules**:
+- Support multiple variants: standard, confirmation, and image lightbox.
+- Manage features: focus trap, body scroll lock, and ESC key close.
+- Export a `useModal()` hook for managing modal state.
+**Example**:
+- Input: "Confirmation modal" -> Output: Title, warning text, and action buttons.
+- Input: "Lightbox" -> Output: Large image view with close button.
+- Input: "Focus trap" -> Output: Interaction limited to the modal.
+**Deliver**: `src/components/ui/Modal.jsx` and `src/hooks/useModal.js`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 20 — Form Component Library
-```
-Build a Form component library for the NDM Student Movement join/contact forms:
-1. Input — text, email, tel, password with label, error, icon, helper text
-2. Select — custom-styled dropdown with options
-3. Textarea — auto-resize with character count
-4. Checkbox — custom styled with label
-5. RadioGroup — with horizontal/vertical layout
-6. FormGroup — label + input + error wrapper
-7. FieldError — animated error message
-8. SubmitButton — loading + success states
-
-All components use react-hook-form integration. Show district selection as example.
-```
+**Goal**: Build a collection of styled form inputs for user interaction.
+**Rules**:
+- Create components for `Input`, `Select`, `Textarea`, and `Checkbox`.
+- Integrate with `react-hook-form` and handle validation errors gracefully.
+- Include a `FormGroup` wrapper for consistent label and error placement.
+**Example**:
+- Input: "Input with error" -> Output: Red border and error message.
+- Input: "Custom select" -> Output: Styled dropdown for districts.
+- Input: "Submit button" -> Output: Loading state support.
+**Deliver**: Components folder at `src/components/ui/forms/`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ---
 
 ## 3. Navigation & Layout
 
 ### Prompt 21 — Sticky Navbar Component
-```
-Build a professional sticky Navbar for the NDM Student Movement website with:
-1. Logo (NDM monogram + full name)
-2. Desktop nav links with animated underline on hover
-3. "Join Us" CTA button (red)
-4. Dark mode toggle (moon/sun icon)
-5. Background transition: transparent → glass blur on scroll
-6. Top announcement bar (red) dismissible
-7. Smooth hide-on-scroll-down, show-on-scroll-up behavior
-8. Active link highlighting based on scroll position (Intersection Observer)
-9. Mobile hamburger → full-screen overlay menu
-
-Use Framer Motion. Full ARIA support. Green/white/red color scheme.
-```
+**Goal**: Build a highly functional sticky navbar with mobile menu and dark mode toggle.
+**Rules**:
+- Implement a hide-on-scroll behavior with smooth transitions.
+- Include desktop nav links with hover animations and a mobile hamburger menu.
+- Integrate active link highlighting and dark mode switching.
+**Example**:
+- Input: "Hide on scroll" -> Output: `translate-y-[-100%]` on scroll down.
+- Input: "Glass effect" -> Output: `backdrop-blur-md` on scroll.
+- Input: "Mobile menu" -> Output: Full-screen overlay trigger.
+**Deliver**: `src/components/layout/Navbar.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 22 — Mobile Navigation Overlay
-```
-Create a full-featured mobile navigation overlay for the NDM site that:
-1. Slides in from the right (Framer Motion)
-2. Shows logo at top + close button
-3. Animated nav links with stagger (each item fades in)
-4. Social media icons row
-5. Join Us + Contact buttons at bottom
-6. Handles nested dropdown menus with expand/collapse
-7. Locks body scroll when open
-8. Closes on backdrop click or ESC key
-9. Shows current active page indicator
-
-Use green gradient background with white text. Accessible focus management.
-```
+**Goal**: Create a full-featured mobile drawer for site navigation.
+**Rules**:
+- Use Framer Motion for slide-in animations and staggered list items.
+- Support nested sub-menus with accordion-style expand/collapse.
+- Include social media icons and primary CTA buttons.
+**Example**:
+- Input: "Slide animation" -> Output: Drawer sliding in from the right.
+- Input: "Staggered items" -> Output: Links fading in sequentially.
+- Input: "Body lock" -> Output: Main site scrolling disabled when open.
+**Deliver**: `src/components/layout/MobileMenu.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 23 — Breadcrumb Component
-```
-Create a Breadcrumb component for the NDM site that:
-1. Auto-generates from React Router location
-2. Supports custom label overrides via props
-3. Shows Home icon for root
-4. Truncates long paths on mobile
-5. Uses structured data (JSON-LD BreadcrumbList schema)
-6. Animated separator (→ in brand green)
-7. Last item is current page (non-clickable, bold)
-
-Style with subtle gray background strip, Tailwind classes. Show usage in About and News detail pages.
-```
+**Goal**: Build an auto-generating breadcrumb component from URL structure.
+**Rules**:
+- Map routes to readable labels (with overrides support).
+- Truncate long paths on mobile for responsiveness.
+- Inject JSON-LD `BreadcrumbList` schema for SEO.
+**Example**:
+- Input: `/about/leadership` -> Output: Home > About > Leadership.
+- Input: "Home icon" -> Output: 🏠 link to root.
+- Input: "Active page" -> Output: Bold, non-clickable current item.
+**Deliver**: `src/components/ui/Breadcrumbs.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 24 — Root Layout Component
-```
-Build the root Layout component for the NDM Student Movement site that:
-1. Wraps all pages with Navbar + Footer
-2. Manages page transition animation (Framer Motion AnimatePresence)
-3. Includes a back-to-top button (appears after 400px scroll)
-4. Handles scroll position restoration on navigation
-5. Injects page-specific meta tags via React Helmet
-6. Shows page loading progress bar (NProgress style)
-7. Contains skip-to-main-content accessibility link
-
-Show integration with React Router Outlet. Include the back-to-top button with smooth animation.
-```
+**Goal**: Create a master `Layout` wrapper for common elements and transitions.
+**Rules**:
+- Wrap all pages with `Navbar` and `Footer` components.
+- Manage page transition animations using `AnimatePresence`.
+- Include a floating "Back to Top" button and scroll position restoration.
+**Example**:
+- Input: "Page transition" -> Output: Fade-out old, fade-in new page.
+- Input: "Meta tags" -> Output: Helmet injection for title/description.
+- Input: "Progress bar" -> Output: Top-of-page navigation loading bar.
+**Deliver**: `src/components/layout/Layout.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 25 — Dropdown Menu Component
-```
-Create an accessible dropdown menu component for the NDM navbar. Requirements:
-1. Trigger: hover on desktop, click on mobile
-2. Animated dropdown panel (scale + fade with Framer Motion)
-3. Support nested menu items with icons and descriptions
-4. Keyboard navigation (arrow keys, Enter, Escape)
-5. Click outside to close
-6. Green top border accent, white background, shadow
-
-Example dropdowns:
-- "About" → Organization, History, Vision & Mission, Leadership
-- "Programs" → All Activities, Events, Campaigns, Scholarships
-
-Full WAI-ARIA menu pattern compliance.
-```
+**Goal**: Create an accessible dropdown for nested navigation links.
+**Rules**:
+- Support hover on desktop and click interaction on mobile devices.
+- Adhere to WAI-ARIA menu patterns for keyboard navigation.
+- Use Framer Motion for scale and opacity animations on state change.
+**Example**:
+- Input: "About dropdown" -> Output: History, Vision, Leadership links.
+- Input: "Keyboard nav" -> Output: Arrow keys to move focus.
+- Input: "Click outside" -> Output: Closes the active dropdown.
+**Deliver**: `src/components/ui/Dropdown.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 26 — Footer Component
-```
-Build a comprehensive Footer for the NDM Student Movement website with:
-1. Newsletter signup bar (full-width, green background) with email input + subscribe button + success state
-2. Main footer grid (4 columns): Brand info + logo, Quick Links, Programs, Contact
-3. Social media icons with hover color effects (Facebook→blue, Twitter→cyan, YouTube→red, Instagram→pink)
-4. Bottom bar: copyright, legal links, Bangladesh flag emoji
-5. Dark footer background (#1a2e28) with proper contrast
-6. Responsive: 4 cols → 2 cols → 1 col
-7. Animated footer links (slide on hover)
-
-Include real Bangladesh contact details format.
-```
+**Goal**: Build a professional multi-column footer with newsletter integration.
+**Rules**:
+- Include a full-width newsletter signup bar with brand colors.
+- Organize links into categories (About, Programs, Social, etc.).
+- Ensure a responsive layout (4 columns on desktop → 1 on mobile).
+**Example**:
+- Input: "Social icons" -> Output: Hover color changes for FB, Twitter, etc.
+- Input: "Newsletter" -> Output: Email input + success state handling.
+- Input: "Bottom bar" -> Output: Copyright + legal + flags.
+**Deliver**: `src/components/layout/Footer.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 27 — Scroll Progress Indicator
-```
-Create a scroll progress indicator for the NDM website:
-1. Thin bar at the very top of the viewport (position: fixed, top: 0, z-index: 9999)
-2. Width transitions from 0% to 100% as user scrolls the page
-3. Color: linear-gradient from green (#006A4E) to red (#DC143C)
-4. Smooth transition (no jitter)
-5. Only visible on article/detail pages (not homepage)
-6. 3px height, no border-radius
-
-Use requestAnimationFrame for performance. Include a useScrollProgress hook that returns 0–100 value.
-```
+**Goal**: Create a visual indicator of reading progress at the top of the viewport.
+**Rules**:
+- Use a `linear-gradient` transition from green to red based on scroll %.
+- Optimize performance using `requestAnimationFrame` or the `useScrollProgress` hook.
+- Implement conditional visibility (only visible on detail/article pages).
+**Example**:
+- Input: "Scroll 50%" -> Output: Bar width at 50% with transition color.
+- Input: "No jitter" -> Output: Smooth CSS-driven width updates.
+- Input: "Hook" -> Output: Reactive value between 0 and 100.
+**Deliver**: `src/components/ui/ScrollProgress.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 28 — Sidebar Component (Mobile Drawer)
-```
-Build a reusable Drawer/Sidebar component for the NDM site that can be used for:
-1. Mobile navigation
-2. Filter panel for Gallery page
-3. News category sidebar
-
-Props: side (left|right), width, overlay (boolean), persistent (boolean for desktop)
-Features: Framer Motion slide animation, backdrop, swipe to close on mobile, keyboard accessible
-
-Show it configured as both the mobile nav drawer and as a filter sidebar for gallery image categories (All, Events, Campaigns, Community).
-```
+**Goal**: Build a reusable drawer for navigation, filters, or side content.
+**Rules**:
+- Support side configuration (`left` or `right`) and custom widths.
+- Implement swipe-to-close on mobile and backdrop interaction.
+- Ensure full keyboard accessibility and focus management.
+**Example**:
+- Input: "Left drawer" -> Output: Sliding sidebar from the left.
+- Input: "Filter sidebar" -> Output: Checkboxes and radio buttons layout.
+- Input: "Overlay" -> Output: Dimmed background with click-to-close.
+**Deliver**: `src/components/ui/Drawer.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 29 — Pagination Component
-```
-Create a Pagination component for the NDM News/Blog page:
-1. Previous / Next buttons with arrows
-2. Page number pills (show 5 at a time with ellipsis)
-3. Active page: green background, white text
-4. Responsive: show fewer pages on mobile
-5. URL-synced (updates ?page= query param)
-6. Keyboard navigable
-7. Shows "Showing X–Y of Z results" text
-
-Include a usePagination hook that calculates page ranges. Show integration with a NewsPage component that filters articles by page.
-```
+**Goal**: Develop a pagination system for news and gallery listings.
+**Rules**:
+- Include previous/next buttons and numbered pills with ellipses.
+- Sync the current page state with the URL query parameters.
+- Provide a `usePagination` hook for range and limit calculations.
+**Example**:
+- Input: "Active page" -> Output: Highlighted pill with green background.
+- Input: "Ellipses" -> Output: "1, 2, ..., 10" when page count is high.
+- Input: "URL sync" -> Output: Updates `?page=X` on navigation.
+**Deliver**: `src/components/ui/Pagination.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 30 — Scroll-Spy Navigation
-```
-Implement scroll-spy for the NDM single-page sections. Create a useScrollSpy hook that:
-1. Tracks which section (home, about, leadership, activities, news, gallery, contact) is in view
-2. Updates the active navbar link accordingly
-3. Uses IntersectionObserver with 40% threshold
-4. Debounces updates for performance
-5. Returns activeSection string
-
-Show how to:
-1. Apply active styles to navbar links (red underline)
-2. Use it in a floating section indicator (dots on the side) — optional progress dots showing which section user is on
-```
+**Goal**: Highlight active navigation sections as the user scrolls.
+**Rules**:
+- Use `IntersectionObserver` to track section visibility under a threshold.
+- Update the active state in the navbar or floating indicator.
+- Debounce updates to maintain high page performance.
+**Example**:
+- Input: "Scroll to About" -> Output: "About" link highlighted in navbar.
+- Input: "Observer threshold" -> Output: 40% visibility trigger.
+- Input: "Dot indicator" -> Output: Visual dots showing progress on side.
+**Deliver**: `src/hooks/useScrollSpy.js` and usage example.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ---
 
 ## 4. Home Page Sections
 
 ### Prompt 31 — Hero Section
-```
-Build a stunning Hero section for the NDM Student Movement homepage:
-1. Full-viewport height
-2. Background: dark overlay gradient on a high-quality background image (youth/leadership theme)
-3. Animated badge: pulsing red dot + "NATIONAL DEMOCRATIC MOVEMENT" text
-4. Headline: "Empowering Future Leaders of Bangladesh" — 'Playfair Display', bold, with "Future Leaders" in gold
-5. Subheading: organization description
-6. Two CTA buttons: "🔥 Join the Movement" (red) and "Learn More →" (glass)
-7. Three quick stats below (50K+ Members, 64 Districts, 18 Years)
-8. Scroll indicator arrow at bottom
-
-Use Framer Motion stagger animations. Mobile-first. WCAG AA contrast.
-```
+**Goal**: Build a stunning full-viewport Hero section with animations and CTAs.
+**Rules**:
+- Use a high-quality background image with a dark gradient overlay.
+- Implement a staggered entrance animation for headline, subtext, and buttons.
+- Include a pulsing red dot badge and a scroll indicator arrow.
+**Example**:
+- Input: "Hero headline" -> Output: "Empowering Future Leaders of Bangladesh".
+- Input: "CTA buttons" -> Output: "Join the Movement" (red) and "Learn More" (glass).
+- Input: "Stats display" -> Output: Members, Districts, and Years counter preview.
+**Deliver**: `src/components/home/Hero.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 32 — News Ticker / Announcement Bar
-```
-Build a live news ticker for the NDM website (below the navbar):
-1. Dark green background (#004d38)
-2. Left side: "BREAKING" label in red box
-3. Right: marquee-style scrolling text with news items
-4. Items: upcoming events, achievements, announcements
-5. Pause on hover
-6. Smooth infinite loop (CSS animation, no JS library)
-7. Each item separated by red dot
-8. Font: 'DM Sans' 0.82rem, white text
-
-Make it accessible: aria-live="polite", role="marquee". Provide the CSS @keyframes ticker animation.
-```
+**Goal**: Build a CSS-only marquee-style news ticker for breaking announcements.
+**Rules**:
+- Implement an infinite loop scrolling animation using keyframes.
+- Include a "BREAKING" label in a fixed red box on the left.
+- Ensure the ticker pauses on hover and is accessible to screen readers.
+**Example**:
+- Input: "Ticker items" -> Output: Scrolling list of upcoming events/achievements.
+- Input: "Pause behavior" -> Output: `animation-play-state: paused` on hover.
+- Input: "Typography" -> Output: DM Sans, white text on dark green background.
+**Deliver**: `src/components/home/NewsTicker.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 33 — Animated Stats Counter
-```
-Create an animated statistics counter section for the NDM homepage with 4 stats:
-- 50,000+ Active Members
-- 64 Districts Covered  
-- 1,200+ Programs Run
-- 18 Years of Service
-
-Features:
-1. Count-up animation triggered by IntersectionObserver (starts when visible)
-2. Each stat: large number (Playfair Display), label, subtle icon
-3. Dividers between stats on desktop
-4. Smooth easing (ease-out-expo) for the counter
-5. Background: slightly tinted off-white strip with top/bottom green border
-6. Mobile: 2x2 grid
-
-Use requestAnimationFrame for smooth animation. Include the useCounter hook.
-```
+**Goal**: Create an animated counter section triggered by intersection visibility.
+**Rules**:
+- Use `requestAnimationFrame` or a library for smooth count-up easing.
+- Trigger the animation only when the section enters the viewport.
+- Design a responsive grid (2x2 on mobile, 4x1 on desktop) for the 4 key stats.
+**Example**:
+- Input: "Count target" -> Output: 50,000+ Active Members.
+- Input: "Observer" -> Output: Animation starts when 20% visible.
+- Input: "Layout" -> Output: Centered numbers with descriptive labels.
+**Deliver**: `src/components/home/StatsCounter.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 34 — Featured Programs Grid
-```
-Create a "Featured Programs" section for the NDM homepage. Design:
-1. Section heading with red label + green title
-2. 3-column card grid (→ 1 col mobile):
-   - Card has: emoji icon, program name, short description, frequency badge, "Learn More" link
-   - Hover: lift + green top border appears
-   - Alternating red/green top border color
-3. "View All Programs →" button below grid
-4. Background: white
-
-Programs to feature: Leadership Training, Digital Skills Lab, Green Campus Drive, Academic Support, Rights Awareness, Community Service.
-
-Animate cards in with stagger using Intersection Observer.
-```
+**Goal**: Create a grid displaying the organization's core programs and activities.
+**Rules**:
+- Use a 3-column layout on desktop that collapses into a single column on mobile.
+- Implement hover states with a lift effect and dynamic top-border colors.
+- Use staggered entrance animations for the program cards.
+**Example**:
+- Input: "Program card" -> Output: Icon, name, description, and "Learn More".
+- Input: "Hover effect" -> Output: Shadow increase and border-color change.
+- Input: "Categories" -> Output: Leadership, Digital Skills, Green Campus.
+**Deliver**: `src/components/home/ProgramsGrid.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 35 — Latest News Preview
-```
-Build a "Latest News" section for the NDM homepage showing 3 news cards:
-1. Section heading with link to full news page
-2. Horizontal card: image left, content right (on desktop)
-3. Card content: colored tag badge (Event/Achievement/Campaign), date, headline, excerpt, "Read more →"
-4. Image: hover zoom effect (overflow:hidden + scale transform)
-5. Featured article (first): larger card spanning full width
-6. Mobile: stacked cards
-
-Animate with fade-up on scroll. Lazy-load images. Include placeholder skeleton while loading.
-```
+**Goal**: Build a section previewing the latest news articles with featured layouts.
+**Rules**:
+- Showcase the most recent article in a larger, full-width featured card.
+- Use horizontal layouts for secondary cards on desktop.
+- Implement lazy loading and skeleton states for news images.
+**Example**:
+- Input: "Featured article" -> Output: Large banner style card with background image.
+- Input: "News list" -> Output: Tag, date, and headline for each item.
+- Input: "Z-image zoom" -> Output: Subtle scale up on card hover.
+**Deliver**: `src/components/home/NewsPreview.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 36 — Mission Banner
-```
-Create an impactful full-width "Mission Banner" section for the NDM homepage between stats and programs:
-1. Background: deep green (#004d38) with subtle pattern overlay (diagonal lines or dots)
-2. Large centered quote: "Together We Build a Democratic Bangladesh" — Playfair Display, white, 2.8rem
-3. Red underline decorative element below quote
-4. Two columns below quote: Vision statement | Mission statement
-5. Subtle animated red-to-green gradient line as divider
-6. CTA row: "Learn About NDM" (outline white) + "See Our Impact" (red solid)
-
-Full-width, padding 5rem vertical. Animate quote in with fade + scale.
-```
+**Goal**: Design a high-impact branding banner between major sections.
+**Rules**:
+- Use a deep green background with a subtle geometric pattern overlay.
+- feature a large, centered quote using Playfair Display typography.
+- Include Vision and Mission statements in secondary columns.
+**Example**:
+- Input: "Main quote" -> Output: "Together We Build a Democratic Bangladesh".
+- Input: "CTA buttons" -> Output: "Learn About NDM" and "Our Impact".
+- Input: "Design accent" -> Output: Red-to-green gradient divider line.
+**Deliver**: `src/components/home/MissionBanner.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 37 — Testimonials / Voices Section
-```
-Build a "Member Voices" testimonials section for NDM:
-1. Auto-rotating carousel (every 5 seconds)
-2. Each testimonial: avatar, name, role/university, quote text, location badge
-3. Navigation: dot indicators + prev/next arrows
-4. Pause on hover or focus
-5. Mobile: single card, swipe-able
-6. Design: off-white background, green quote marks (large, decorative), italic text
-
-Create 6 testimonial entries with realistic Bengali names, universities (DU, BUET, RU, CU), and inspiring quotes about how NDM helped them grow.
-
-Include keyboard navigation and ARIA for the carousel.
-```
+**Goal**: Build an auto-rotating testimonial carousel with user-focused design.
+**Rules**:
+- Implement auto-rotation (5s) with manual overrides (dots/arrows).
+- Pause the carousel on hover or keyboard focus for accessibility.
+- Design cards with large decorative quote marks and italicized body text.
+**Example**:
+- Input: "Member quote" -> Output: Student bio and their positive experience.
+- Input: "Carousel navigation" -> Output: Dot indicators and side arrows.
+- Input: "Animation" -> Output: Horizontal slide between testimonial cards.
+**Deliver**: `src/components/home/Testimonials.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 38 — CTA Join Section (Homepage)
-```
-Create a high-conversion "Call to Action" join section for the NDM homepage:
-1. Two-column layout: left = compelling text, right = mini signup form
-2. Left: bold headline "Be Part of the Change", subtext, 3 bullet benefits (✅)
-3. Right: compact form with Name, Email, District dropdown, Submit button
-4. Form success state: animated checkmark + thank you message
-5. Background: dark green with subtle radial gradient
-6. Decorative: faint map of Bangladesh outline in background (SVG)
-
-Use react-hook-form for validation. Form submits to Formspree. Include error states for each field.
-```
+**Goal**: Create a high-conversion call-to-action section with a integrated form.
+**Rules**:
+- Use a split layout: persuasive benefits on the left, quick-signup on the right.
+- Implement form validation and success/error feedback states.
+- Include a subtle SVG map of Bangladesh in the background for context.
+**Example**:
+- Input: "Headline" -> Output: "Be Part of the Change".
+- Input: "Form fields" -> Output: Name, Email, and District selection.
+- Input: "Success state" -> Output: Celebration checkmark animation.
+**Deliver**: `src/components/home/JoinCTA.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 39 — Partners / Supporters Strip
-```
-Create a "Trusted Partners & Supporters" logo strip for the NDM homepage:
-1. Subtle heading: "Our Partners & Supporters"
-2. Horizontally scrolling logo strip (CSS marquee animation, pause on hover)
-3. 8 partner logos (use placeholder rectangles with org names)
-4. Grayscale logos that become full-color on hover
-5. Smooth infinite scroll loop
-6. Light gray background, subtle top/bottom border
-
-Partner names: Ministry of Education, UNDP Bangladesh, British Council, BGMEA, A2i, BASIS, University Grants Commission, Dhaka University.
-```
+**Goal**: Showcase partner logos in a smooth, continuous scrolling marquee.
+**Rules**:
+- Implement a grayscale-to-color filter transition on logo hover.
+- Use an infinite CSS loop for the marquee to ensure high performance.
+- Include recognizable institutional partners relevant to the organization.
+**Example**:
+- Input: "Logos list" -> Output: Ministry of Education, UNDP, etc.
+- Input: "Hover behavior" -> Output: Color restoration + subtle scale.
+- Input: "Mobile view" -> Output: Slightly faster or smaller marquee.
+**Deliver**: `src/components/home/PartnerStrip.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 40 — District Map Section
-```
-Create a "We Cover All 64 Districts" section for the NDM homepage:
-1. Heading + counter: "Active in 64 Districts"
-2. Simple Bangladesh district visualization using SVG or a CSS grid of district badges
-3. Filter tabs: All | Dhaka Division | Chittagong | Sylhet | Rajshahi | Khulna | Barisal | Rangpur | Mymensingh
-4. Each district as a pill badge: green if active, gray if not, tooltip with member count
-5. "Find Your District Unit →" CTA
-6. Alternative: show a table/grid of districts with member counts
-
-Use useFilter hook to handle tab filtering. Animate badges on tab switch.
-```
+**Goal**: Visualize the organization's reach across Bangladesh's 64 districts.
+**Rules**:
+- Implement a division-based filtering system for district badges.
+- Use district pills that show member status (active/inactive) and count.
+- Animate the entrance of badges during filter changes.
+**Example**:
+- Input: "Division filter" -> Output: Dhaka, Sylhet, Chittagong, etc. tabs.
+- Input: "District pill" -> Output: Green badge showing "Dhaka - 5k Members".
+- Input: "CTA" -> Output: "Find Your District Unit" link.
+**Deliver**: `src/components/home/DistrictMap.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 41 — Video Section
-```
-Create a "Watch Our Story" video section for the NDM homepage:
-1. Full-width section with dark green background
-2. Centered thumbnail with play button overlay (large red play circle)
-3. Click opens video in modal/lightbox
-4. Support YouTube embed URL
-5. Modal: backdrop blur, video iframe, close button
-6. Caption: "NDM in Action — Watch the Documentary"
-7. Below video: 3 quick achievement highlights (icon + text)
-
-Handle: scroll lock on modal open, ESC to close, pause video on close. Show the custom play button CSS animation (pulsing ring).
-```
+**Goal**: Create a section for video content with a custom lightbox player.
+**Rules**:
+- Show a thumbnail with a custom pulsing red "Play" button icon.
+- clicking the button opens a YouTube embed in a focused modal.
+- Ensure the modal handles scroll locking and ESC-key closing.
+**Example**:
+- Input: "Thumb overlay" -> Output: Blurry thumb + persistent play pulse.
+- Input: "Modal behavior" -> Output: Dimmed background and center player.
+- Input: "Highlights" -> Output: 3 achievement points below the video.
+**Deliver**: `src/components/home/VideoSection.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 42 — Event Countdown Timer
-```
-Build an "Upcoming Event" countdown timer component for the NDM homepage:
-1. Target: "NDM National Convention 2026" — Date: April 25, 2026
-2. Shows: Days, Hours, Minutes, Seconds remaining (updates every second)
-3. Each unit: large number + label in separate box
-4. Design: red background cards with white numbers (Playfair Display)
-5. When event passes: shows "Thank you for joining us!"
-6. Includes event details: date, venue (Dhaka), registration link
-7. Animated flip effect on number change (CSS)
-
-Use useEffect with setInterval. Clean up on unmount. Mobile: 2x2 grid of time units.
-```
+**Goal**: Build a live countdown timer for the next major organization event.
+**Rules**:
+- Calculate time remaining in Days, Hours, Minutes, and Seconds.
+- Update the UI every second with a "flip" or subtle pulse effect.
+- Show a specific registration CTA or "Event in Progress" state when reached.
+**Example**:
+- Input: "Target date" -> Output: April 25, 2026.
+- Input: "Timer UI" -> Output: Large red cards with white numbers.
+- Input: "Post-event" -> Output: "Thank you for joining" message.
+**Deliver**: `src/components/home/EventCountdown.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 43 — Impact Timeline
-```
-Create an "Our Journey" timeline section for the NDM homepage/about page:
-Year-by-year milestones from 2007 to 2026:
-- 2007: Founded at Dhaka University
-- 2009: Expanded to 10 districts
-- 2012: First national convention
-- 2015: 10,000 members milestone
-- 2018: Digital Skills Lab launched
-- 2020: COVID relief — 50,000 families helped
-- 2022: 50,000 member milestone
-- 2024: All 64 districts covered
-- 2026: National convention with 15,000 attendees
-
-Design: vertical timeline with alternating left/right cards on desktop, single column on mobile. Year in green circle. Animate each item as user scrolls.
-```
+**Goal**: Design a vertical timeline showcasing major organizational milestones.
+**Rules**:
+- Use an alternating left/right layout for milestones on desktop.
+- Animate individual timeline entries as they enter the viewport.
+- mark the "Current Year" with a distinct visual node or glowing effect.
+**Example**:
+- Input: "Milestones" -> Output: 2007 Founding -> 2024 Expansion.
+- Input: "Design" -> Output: Green vertical track with circular year nodes.
+- Input: "Content" -> Output: Bold title + 2 line description per year.
+**Deliver**: `src/components/home/ImpactTimeline.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 44 — Social Feed / Highlights Strip
-```
-Create a Social Media Highlights strip for the NDM homepage:
-1. Heading: "Follow Us on Social Media"
-2. 4 image cards in a row (simulated Instagram posts)
-3. Each card: square image, hover overlay with like count + comment count
-4. Click opens link to actual Instagram/Facebook
-5. Below: 4 social stat boxes (Facebook Followers, Twitter Followers, YouTube Subscribers, Instagram Followers)
-6. Instagram grid animation: staggered fade-in
-7. "Follow @NDMBangladesh" CTA button (red)
-
-Use realistic social stats: 125K FB, 48K Twitter, 32K YouTube, 67K Instagram.
-```
+**Goal**: Create a visual strip of social media highlights and statistics.
+**Rules**:
+- Implement a 4-card row resembling an Instagram profile feed.
+- Add hover overlays showing mock interaction counts (likes/comments).
+- Include a separate row for total follower counts across platforms.
+**Example**:
+- Input: "Social stats" -> Output: 125K FB, 67K Insta, etc.
+- Input: "Post hover" -> Output: Hearts and comments icon display.
+- Input: "Main CTA" -> Output: "Follow @NDMBangladesh" button.
+**Deliver**: `src/components/home/SocialFeed.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 45 — Quick Links Grid
-```
-Build a "Quick Access" section for the NDM homepage with 8 quick-link cards:
-1. Join Us | 2. Find Branch | 3. Events | 4. Scholarships | 5. News | 6. Downloads | 7. Gallery | 8. Contact
-
-Each card: icon (large emoji or react-icon), label, short description, colored hover background
-Design: 4x2 grid on desktop, 2x4 on tablet, 2x4 on mobile
-Hover: icon bounces, background fills with green, text turns white
-Include keyboard navigation (tab through cards, Enter to activate)
-Animation: stagger reveal on scroll
-```
+**Goal**: Provide a grid of direct links to essential site pages.
+**Rules**:
+- design a 4x2 grid of cards with prominent icons and short labels.
+- Implement a hover effect that switches background colors to brand green.
+- Stagger the entrance of each icon for a dynamic initial experience.
+**Example**:
+- Input: "Links list" -> Output: Join Us, Events, Gallery, Contact, etc.
+- Input: "Hover state" -> Output: Icon bounces + background turns green.
+- Input: "Accessibility" -> Output: Full tab-index and keyboard support.
+**Deliver**: `src/components/home/QuickLinks.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ---
 
 ## 5. About, Leadership & Activities
 
 ### Prompt 46 — About Page Layout
-```
-Build the full About page for NDM Student Movement with these sections:
-1. Page Hero: background image, "About NDM" heading, breadcrumb
-2. Overview section: 2-column (image + text with Vision/Mission cards)
-3. History section: timeline component
-4. Values section: 6 core values as icon cards
-5. Leadership message: quote with photo (President)
-6. Call to action strip
-
-Create the page as src/pages/About.jsx using all the sub-components already built. Use React Helmet for SEO meta tags. Animate sections with IntersectionObserver.
-```
+**Goal**: Assemble the full "About" page using various sub-components.
+**Rules**:
+- Integrate sections for Hero, Overview, History, and Values.
+- Include a specific Presidential message section with a signature area.
+- Add SEO meta tags via React Helmet specifically for the About page.
+**Example**:
+- Input: "Page structure" -> Output: Hero -> Mission -> Timeline -> Team.
+- Input: "Animations" -> Output: Sections fade-up on scroll.
+- Input: "Leadership" -> Output: Blockquote from the National President.
+**Deliver**: `src/pages/About.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 47 — Core Values Section
-```
-Design a "Our Core Values" section for the About page with 6 values:
-1. Democracy — Equal voice for all
-2. Integrity — Transparent in all actions
-3. Excellence — Highest academic standards
-4. Unity — Strength through solidarity
-5. Service — Nation before self
-6. Innovation — Modern solutions to old problems
-
-Design: 3x2 grid of cards. Each card: colored gradient background (green shades), icon (emoji), value name, short description. Hover: scale + shadow. Mobile: 2 columns. Animate with Framer Motion stagger.
-```
+**Goal**: Design a 3x2 grid showcasing the 6 core values of the organization.
+**Rules**:
+- Each value card should have a unique icon (emoji or SVG).
+- Use subtle gradient backgrounds for depth within the cards.
+- Implement a stagger animation during the entrance of the value grid.
+**Example**:
+- Input: "Values" -> Output: Democracy, Integrity, Excellence, Unity, etc.
+- Input: "Card design" -> Output: Colored border + large icon + title.
+- Input: "Mobile view" -> Output: Collapses into 2 columns.
+**Deliver**: `src/components/about/CoreValues.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 48 — Organization Structure Chart
-```
-Create an organizational structure/hierarchy chart for NDM using React and SVG or a CSS tree layout:
-
-Levels:
-- National President → General Secretary
-- Vice Presidents (3) → Secretaries (6)
-- Divisional Presidents (8 divisions) → District Presidents (64)
-
-Design: clean org chart with green connecting lines, white boxes with names/roles, collapse/expand on click for divisions.
-Alternative: use a simple indented list with toggle for mobile.
-
-Add a legend explaining the hierarchy levels. Include print button.
-```
+**Goal**: Create a visual hierarchy tree of the organizational levels.
+**Rules**:
+- Use SVG or CSS tree connectors to link different leadership tiers.
+- Implement collapse/expand functionality for branch levels (Divisions, Districts).
+- ensure the chart remains readable on mobile (potential scrollable container).
+**Example**:
+- Input: "Levels" -> Output: National -> Divisional -> District.
+- Input: "Interactivity" -> Output: Click a division to see its districts.
+- Input: "Print support" -> Output: CSS rules for clean chart layout on paper.
+**Deliver**: `src/components/about/OrgChart.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 49 — Leadership Page
-```
-Build the full Leadership page for NDM with:
-1. Page hero: "Our Leadership" heading
-2. Filter tabs: National | Divisional | District Level
-3. Card grid: photo, name, role, division/district, short bio, social links
-4. Featured leader banner (President) — full-width with large photo
-5. Hover: flip card effect showing bio on back
-6. Search input to filter leaders by name or role
-
-Use LEADERS data array. Implement flip card with CSS transform-style: preserve-3d. Include skeleton loading states.
-```
+**Goal**: Build a filtered directory of current organizational leaders.
+**Rules**:
+- Implement tabs for filtering by level (National, Divisional, District).
+- Include a search input to quickly find leaders by name or role.
+- provide a featured banner for the top-level leader (President).
+**Example**:
+- Input: "Filter tabs" -> Output: Toggle between levels of leadership.
+- Input: "Cards grid" -> Output: Profile photo, name, and social links.
+- Input: "Loading" -> Output: Skeleton card placeholders.
+**Deliver**: `src/pages/Leadership.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 50 — Leader Profile Card (Flip Effect)
-```
-Create a Leader Profile Card component with CSS 3D flip animation:
-
-Front face:
-- Professional photo (full card height)
-- Name overlay at bottom (dark gradient)
-- Role badge
-
-Back face (green background):
-- Name + Role
-- Short bio (2-3 lines)
-- University/District
-- Social links (Facebook, LinkedIn, Twitter)
-- "View Profile" button
-
-Props: name, role, image, bio, university, social, onClick
-
-Animation: smooth 0.6s flip on hover. Touch-friendly (tap to flip on mobile). Keyboard accessible (Enter/Space to flip).
-```
+**Goal**: Create a specialized card with a 3D flip animation for bios.
+**Rules**:
+- Design distinct "Front" (Photo & Role) and "Back" (Bio & Socials) faces.
+- Use `preserve-3d` CSS properties for smooth 0.6s rotation.
+- Support both hover (desktop) and tap (mobile) to trigger the flip.
+**Example**:
+- Input: "Front side" -> Output: Large professional photo + role badge.
+- Input: "Back side" -> Output: Short bio and FB/LinkedIn icons.
+- Input: "Interaction" -> Output: Rotates around the Y-axis.
+**Deliver**: `src/components/ui/LeaderFlipCard.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 51 — Activities Page Layout
-```
-Build the Activities/Programs page for NDM with:
-1. Page hero section
-2. Category filter tabs: All | Education | Environment | Rights | Technology | Community
-3. Activity cards grid (filtered by category)
-4. Featured campaign banner (full-width, current campaign)
-5. Upcoming events list (date, title, location, register button)
-6. Past activities timeline
-
-Implement the category filter with smooth transition (fade cards in/out). Include URL query param sync (?category=education). Mobile-first responsive.
-```
+**Goal**: Build a central hub for all organizational programs and campaigns.
+**Rules**:
+- use a sticky category filter (Education, Environment, etc.) at the top.
+- Highlight current active campaigns in a prominent featured banner.
+- Sync the active filter with the URL for shareable filtered views.
+**Example**:
+- Input: "Filters" -> Output: All, Tech, Rights, Community, etc.
+- Input: "Layout" -> Output: Featured banner + Grid of smaller cards.
+- Input: "Timeline" -> Output: Section for past activities recap.
+**Deliver**: `src/pages/Activities.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 52 — Event Card Component
-```
-Create an Event Card component for the NDM Activities page:
-
-Props: title, date, time, location, category, image, registrationUrl, isPast, attendees
-
-Design:
-- Image header with category badge overlay
-- Date badge (red box: day + month abbreviation)
-- Title, location (📍), time (🕐)
-- Attendees count with avatar stack (3 faces + "+X more")
-- Registration button: "Register Now" (active) or "View Recap" (past)
-- Hover: lift + shadow + image zoom
-
-States: upcoming (green border), ongoing (red badge "LIVE"), past (grayscale)
-
-Include countdown timer for upcoming events.
-```
+**Goal**: Create a specialized card for upcoming and past events.
+**Rules**:
+- display date, time, and location in a clean, icon-supported format.
+- include an attendee avatar stack ("+X more" style) for social proof.
+- Use distinct styles/badges for "LIVE", "Upcoming", and "Past" states.
+**Example**:
+- Input: "Date badge" -> Output: Red box with Day and Month.
+- Input: "Status" -> Output: Green border for upcoming, grayscale for past.
+- Input: "CTA" -> Output: "Register Now" or "View Recap".
+**Deliver**: `src/components/ui/EventCard.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 53 — Campaign Detail Page
-```
-Build a Campaign Detail page for NDM (e.g., "Green Bangladesh Campaign"):
-1. Hero: full-width campaign image + overlay text + "Current Campaign" badge
-2. Campaign stats bar: Trees Planted, Campuses Covered, Volunteers, Days Remaining
-3. Campaign description with rich text
-4. Progress tracker: "Goal: 10,000 trees | Achieved: 7,234" — animated progress bar
-5. How to participate: 3-step guide
-6. Photo gallery: recent activities
-7. Share buttons: Facebook, Twitter, WhatsApp
-8. Volunteer signup form (name, phone, district, date available)
-```
+**Goal**: build a focused landing page for a specific organizational campaign.
+**Rules**:
+- include a dynamic progress bar for specific goals (e.g., trees planted).
+- feature a volunteer signup form integrated directly into the page.
+- Showcase a mini-gallery of recent photos from the campaign.
+**Example**:
+- Input: "Campaign stats" -> Output: Achieved vs Goal display.
+- Input: "Participation" -> Output: 3-step guide on how to help.
+- Input: "Sharing" -> Output: Floating share buttons for WhatsApp/FB.
+**Deliver**: `src/pages/CampaignDetail.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 54 — History Timeline Component
-```
-Create a detailed History Timeline component for the NDM About page:
-
-Style: Vertical timeline, alternating left/right on desktop, single-side on mobile
-Line: thin vertical green line, year nodes as green circles
-
-Each node has:
-- Year (green circle)
-- Decade/era label (e.g., "Founding Era")
-- Event title (bold)
-- 2-3 line description
-- Optional image thumbnail (hover to zoom)
-
-NDM milestones from 2007–2026. Add a "Current Year" blinking indicator at the bottom. Animate each item as it enters viewport (slide in from alternating sides).
-```
+**Goal**: build a detailed, scroll-animated history timeline for the About page.
+**Rules**:
+- use a central vertical line with alternating content blocks.
+- Highlight the "Current Progress" with a blinking indicator at the end.
+- Animate content blocks to slide in from their respective sides on scroll.
+**Example**:
+- Input: "Year node" -> Output: 2007 - Foundation year details.
+- Input: "Indicator" -> Output: Pulsing green dot at 2026.
+- Input: "Imagery" -> Output: Optional thumb preview per milestone.
+**Deliver**: `src/components/about/HistoryTimeline.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 55 — Awards & Recognition Section
-```
-Create an "Awards & Recognition" section for the NDM About page:
-1. Heading: "Recognition We've Earned"
-2. Trophy card grid (3 columns):
-   - Trophy emoji/icon
-   - Award name
-   - Awarding organization
-   - Year
-   - Short description
-
-Awards to include:
-- Best Student Organization 2023 (University Grants Commission)
-- National Youth Service Award 2022 (Ministry of Youth)
-- Green Champion Award 2021 (Environment Ministry)
-- Digital Innovation Award 2024 (BASIS)
-- Community Service Excellence 2020 (UNDP Bangladesh)
-
-Design: gold/green color scheme, subtle shimmer on trophy icon.
-```
+**Goal**: display institutional achievements in a clean, trophy-themed grid.
+**Rules**:
+- each award card should include the organization, year, and a short description.
+- Implement a subtle shimmer effect on the trophy/medal icon.
+- adhere to a premium gold and green color scheme for this section.
+**Example**:
+- Input: "Award" -> Output: Best Student Org 2023 - UGC.
+- Input: "Visuals" -> Output: Large gold trophy emoji + white card.
+- Input: "Layout" -> Output: 3x1 row on desktop.
+**Deliver**: `src/components/about/AwardsSection.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 56 — Scholarship Program Section
-```
-Build a "Scholarship Programs" section for the Activities page:
-1. Hero strip: "NDM Academic Excellence Scholarships"
-2. Three scholarship tiers:
-   - Full Scholarship (৳50,000/year) — for top 10 students
-   - Merit Scholarship (৳25,000/year) — for top 50 students  
-   - Need-Based Grant (৳15,000/year) — for 200 students
-3. Eligibility criteria list
-4. Application process: 4-step visual guide
-5. Application deadline countdown
-6. "Apply Now" form or redirect link
-7. Past recipients testimonials (3 cards)
-
-Use Bangladeshi Taka (৳) symbol. Include last date urgency indicator.
-```
+**Goal**: build a section detailing scholarship opportunities and application steps.
+**Rules**:
+- Use distinct tier cards for different scholarship levels (Full, Merit, Need).
+- highlight eligibility criteria and application deadlines prominently.
+- include a 4-step visual roadmap for the application process.
+**Example**:
+- Input: "Tiers" -> Output: 50k BDT/Year (Full) vs 25k (Merit).
+- Input: "Process" -> Output: Register -> Apply -> Viva -> Award.
+- Input: "Urgency" -> Output: Countdown timer to next deadline.
+**Deliver**: `src/components/activities/Scholarships.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 57 — Volunteer Registration System
-```
-Create a Volunteer Registration feature for NDM Activities:
-1. Multi-step form (3 steps):
-   - Step 1: Personal info (name, age, university, district)
-   - Step 2: Areas of interest (checkbox: Education, Environment, Technology, etc.)
-   - Step 3: Availability (days of week, hours per week, transport)
-2. Progress bar between steps
-3. Step validation before advancing
-4. Final review screen before submit
-5. Success screen with volunteer ID generation
-
-Use react-hook-form with Zod validation. Store progress in localStorage (resume if tab closed). Mobile-friendly step layout.
-```
+**Goal**: build a multi-step registration flow for potential volunteers.
+**Rules**:
+- implement a progressive flow (Personal -> Interest -> Availability).
+- save progress to `localStorage` to allow resuming later.
+- Include a final "Success" screen that generates a temporary Volunteer ID.
+**Example**:
+- Input: "Step 1" -> Output: Name, Age, University input.
+- Input: "Progress" -> Output: Filled circles tracking 1/3, 2/3 done.
+- Input: "Validation" -> Output: Can't proceed if phone is invalid.
+**Deliver**: `src/components/forms/VolunteerForm.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 58 — Activities Search & Filter
-```
-Implement a search and filter system for the NDM Activities page:
-1. Search bar: full-text search across title + description
-2. Category filter: pill buttons (All, Education, Environment, Technology, Rights, Community)
-3. Date filter: dropdown (All Time, This Month, This Year, Past Events)
-4. Sort: Most Recent, Oldest, A-Z
-5. Results count: "Showing 12 of 34 activities"
-6. No results state: illustration + "No activities found" + reset button
-
-Implement with useReducer for filter state. Debounce search input (300ms). Animate result changes with Framer Motion layout transitions.
-```
+**Goal**: build a comprehensive search and filtering utility for activities.
+**Rules**:
+- Implement full-text search and category-based pill filters.
+- debounce the search input to improve performance and reduce reflows.
+- use Framer Motion layout transitions for smooth card re-ordering.
+**Example**:
+- Input: "Search 'Green'" -> Output: Only Green Campus activities shown.
+- Input: "Sort" -> Output: Dropdown for Most Recent vs Oldest.
+- Input: "No results" -> Output: Custom illustration + reset button.
+**Deliver**: `src/components/activities/ActivityFilter.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 59 — Downloadable Resources Page
-```
-Create a "Downloads & Resources" section for the NDM website:
-1. Category tabs: Forms | Publications | Reports | Media Kit | Press Releases
-2. Resource cards: PDF icon, document name, date, file size, download button
-3. Membership form (PDF download)
-4. Annual report 2025 (PDF)
-5. NDM logo pack (ZIP)
-6. Press kit (PDF)
-7. Policy documents
-
-Design: clean list view with hover highlight. Include file type badges (PDF, ZIP, DOCX). Track download count (display only, no backend needed). Simulate download with a notification toast.
-```
+**Goal**: Create a structured list of downloadable documents and media kits.
+**Rules**:
+- group downloads into tabs (Forms, Reports, Media, etc.).
+- show file type badges (PDF, ZIP) and estimated file sizes.
+- simulate the download action with a toast success notification.
+**Example**:
+- Input: "Annual Report" -> Output: PDF icon + "Download (5MB)" button.
+- Input: "Tabs" -> Output: Toggle between public and member-only files.
+- Input: "Styles" -> Output: Hover background color on list items.
+**Deliver**: `src/pages/Downloads.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 60 — Leaders' Blog / Thought Leadership
-```
-Create a "From Our Leaders" thought leadership blog section for NDM:
-1. Featured article: large card with author photo, headline, excerpt (President's message)
-2. Grid of 4 secondary articles: smaller cards with author avatar, role badge, date, 2-line excerpt
-3. Category filter: Leadership | Policy | Youth | Environment | Technology
-4. "Subscribe to Leaders' Insights" email widget
-5. Social share on each article
-
-Design: editorial magazine layout. Author avatar + role badge prominent. Green serif typography for article titles. Include a ReadingTime component (calculated from word count).
-```
+**Goal**: Design an editorial section for articles written by organizational leaders.
+**Rules**:
+- use a "Featured" spotlight for the most important/recent message.
+- Include a "Reading Time" component for every article.
+- Apply high-contrast serif typography for a premium editorial look.
+**Example**:
+- Input: "Featured message" -> Output: Big card with President's photo.
+- Input: "Insights blog" -> Output: Grid of articles on Policy and Environment.
+- Input: "Author" -> Output: Name + Role + Small Avatar.
+**Deliver**: `src/components/about/LeadershipBlog.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ---
 
 ## 6. News, Gallery & Join Us
 
 ### Prompt 61 — News / Blog Page
-```
-Build the full News/Blog page for NDM:
-1. Page hero
-2. Featured article (top): full-width card with large image
-3. Main grid: 3-column article cards
-4. Sidebar (desktop): Categories, Recent Posts, Tags, Newsletter widget
-5. Pagination: load more button (infinite scroll or traditional)
-6. Filter: All | Events | Achievements | Campaigns | Press Releases
-
-Implement with mock data (9+ articles). Include reading time estimate. Lazy-load images. SEO: each card links to /news/:slug route.
-```
+**Goal**: build the master News listing page with featured and grid layouts.
+**Rules**:
+- showcase the most recent post in a full-width spotlight card.
+- implement a sidebar on desktop for categories, recent posts, and tags.
+- integrate a "Read More" pagination or infinite scroll system.
+**Example**:
+- Input: "Posts grid" -> Output: 3-column layout of article cards.
+- Input: "Filter" -> Output: Tabs for Events, Achievements, Campaigns.
+- Input: "Sidebar" -> Output: Newsletter widget + category list.
+**Deliver**: `src/pages/News.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 62 — Article Detail Page
-```
-Create a News Article Detail page for NDM:
-1. Article hero: full-width image + headline overlay
-2. Author info bar: avatar, name, role, date published, reading time
-3. Article body: rich text with green headings, pull quotes (red left border), inline images
-4. Share bar: sticky on desktop (fixed left), inline on mobile (Facebook, Twitter, WhatsApp, Copy Link)
-5. Tags: clickable tag pills
-6. Related articles: 3-card grid at bottom
-7. Comment section placeholder (UI only)
-8. Breadcrumb: Home > News > Article Title
-
-Add JSON-LD Article schema for SEO.
-```
+**Goal**: Create a rich-text article detail view with meta info and sharing.
+**Rules**:
+- include an author info bar with avatar, name, and estimated reading time.
+- apply custom styling for pull quotes (red left border) and subheadings.
+- Feature a sticky social share bar on desktop for easy platform-sharing.
+**Example**:
+- Input: "Hero region" -> Output: Full-width image + headline overlay.
+- Input: "Body" -> Output: MDX or HTML with themed styles.
+- Input: "Related" -> Output: 3-card grid of similar posts at the bottom.
+**Deliver**: `src/pages/NewsArticle.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 63 — Gallery Page with Filtering
-```
-Build the Gallery page for NDM with:
-1. Page hero
-2. Filter tabs: All | Events | Campaigns | Leadership | Community | Awards
-3. Masonry image grid (CSS columns or Masonry.js)
-4. Each image: caption overlay on hover, category badge
-5. Lightbox: full-screen view, prev/next navigation, swipe on mobile, keyboard arrows, download button
-6. "Load More" button (shows 12 initially, loads 6 more)
-7. Image count per category in tab badges
-
-Use IntersectionObserver for lazy loading. Implement keyboard trap in lightbox. Include accessibility: role="dialog" aria-modal="true" for lightbox.
-```
+**Goal**: Build a visual masonry gallery with category-based filtering.
+**Rules**:
+- implement a masonry-style image grid using CSS columns or a library.
+- each image should have a caption overlay and category badge on hover.
+- clicking an image opens the full-screen Lightbox component.
+**Example**:
+- Input: "Filters" -> Output: All, Events, Campaigns, Awards tabs.
+- Input: "Masonry" -> Output: Interlocking image grid with different heights.
+- Input: "Pagination" -> Output: "Load More" button to fetch more images.
+**Deliver**: `src/pages/Gallery.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 64 — Lightbox Component
-```
-Build a fully-featured Lightbox component for the NDM gallery:
-Props: images (array of {src, caption, category}), initialIndex, onClose
-
-Features:
-1. Backdrop: rgba(0,0,0,0.92) blur
-2. Full-size image display with object-fit contain
-3. Caption bar at bottom
-4. Prev/Next arrows (sides)
-5. Thumbnail strip at bottom (scroll to current)
-6. Keyboard: ← → to navigate, ESC to close
-7. Touch: swipe left/right on mobile
-8. Image counter: "5 / 24"
-9. Download button
-10. Loading spinner while image loads
-
-Focus trap, body scroll lock, ARIA: role="dialog" aria-label="Image gallery".
-```
+**Goal**: build a premium, full-screen image viewer with navigation.
+**Rules**:
+- support keyboard arrows (Left/Right) and ESC-key for interaction.
+- include a thumbnail strip at the bottom for quick navigation within the set.
+- ensure a focused modal state with background blur and body scroll locking.
+**Example**:
+- Input: "Backdrop" -> Output: 92% opaque black with blur.
+- Input: "Counter" -> Output: "Image 5 / 24" display.
+- Input: "Mobile" -> Output: Swipe-to-navigate support.
+**Deliver**: `src/components/ui/Lightbox.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 65 — Join Us Page
-```
-Build the comprehensive "Join NDM" page with:
-1. Hero: "Become Part of the Movement" — inspiring background, bold headline
-2. Benefits section: 6 benefits of joining (leadership, network, training, scholarship access, recognition, impact)
-3. Membership tiers:
-   - General Member (free)
-   - Active Member (free + participation requirement)
-   - Executive Member (invitation only)
-4. Registration form: multi-step or single (Name, Email, Phone, DOB, University, District, Level, Motivation)
-5. FAQ accordion section (8 questions)
-6. Testimonials strip (3 members)
-
-Full form validation with react-hook-form + Zod. Success confirmation email mention.
-```
+**Goal**: create a high-impact recruitment landing page for the organization.
+**Rules**:
+- detail 6 core benefits of joining (Leadership, Training, Networking, etc.).
+- implement an FAQ accordion to address common concerns/questions.
+- prominently feature the multi-step registration form.
+**Example**:
+- Input: "Benefits" -> Output: 3x2 grid of icon-rich cards.
+- Input: "FAQ" -> Output: Toggles for Membership fee, Eligibility, etc.
+- Input: "Tiers" -> Output: General, Active, and Executive membership info.
+**Deliver**: `src/pages/JoinUs.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 66 — Multi-Step Join Form
-```
-Create a 4-step Join NDM registration form:
-
-Step 1 — Personal Info: Full Name, Date of Birth, Gender, Phone, Email
-Step 2 — Academic Info: University/College, Department, Year, Student ID
-Step 3 — Location: Division, District, Upazila, Address
-Step 4 — Motivation: Why join (textarea), Which programs interest you (multi-checkbox), How did you hear about NDM (select)
-
-Features:
-- Progress indicator (4 steps, filled circles)
-- Form state preserved between steps
-- Validation per step (can't advance if invalid)
-- Review screen before submit
-- Animated step transitions (slide left/right)
-- Mobile-optimized input types (tel, email, date)
-```
+**Goal**: build a comprehensive 4-step membership application form.
+**Rules**:
+- separate the flow: Personal -> Academic -> Location -> Motivation.
+- Include a persistent progress indicator across all steps.
+- use specific mobile input types (tel, date) for better UX.
+**Example**:
+- Input: "Progression" -> Output: Next/Previous buttons with validation.
+- Input: "Motivation" -> Output: Textarea for "Why join NDM?".
+- Input: "Confirmation" -> Output: Final review of all entered data.
+**Deliver**: `src/components/forms/JoinForm.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 67 — FAQ Accordion Component
-```
-Create an FAQ Accordion component for the NDM Join page with these questions:
-1. Who can join NDM Student Movement?
-2. Is there any membership fee?
-3. What are the benefits of joining?
-4. How long does the application take to process?
-5. Can I join if I'm not a university student?
-6. Are there opportunities for leadership roles?
-7. How do I find my district unit?
-8. Can international students join?
-
-Design: clean accordion with + → × icon rotation, smooth height animation, green border on open item, one item open at a time. ARIA: role="button" aria-expanded on triggers.
-```
+**Goal**: build an accessible FAQ section with smooth height transitions.
+**Rules**:
+- allow only one item to be expanded at a time (standard accordion behavior).
+- Rotate the toggle icon (e.g., + to ×) when an item is opened.
+- ensure full ARIA compliance with appropriate roles and expanded states.
+**Example**:
+- Input: "Question" -> Output: "Is there a membership fee?" toggle.
+- Input: "Styling" -> Output: Green border on active/open item.
+- Input: "Animation" -> Output: Smooth slide-down of answer content.
+**Deliver**: `src/components/ui/Accordion.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 68 — Membership Benefits Section
-```
-Create a "Why Join NDM?" benefits section with visual design:
-6 benefit cards in a 3x2 grid:
-1. 🎓 Leadership Training — Free workshops quarterly
-2. 🌐 National Network — Connect with 50,000+ members
-3. 💰 Scholarship Access — Annual scholarships for active members
-4. 📜 Certificate Programs — Recognized leadership certificates
-5. 🗣️ Amplified Voice — Represent students at national forums
-6. 🌿 Real Impact — Drive change in your community
-
-Design: each card has large icon, title, description. Hover: green fill, white text. "Most Popular" badge on Leadership Training. Animate with stagger on scroll.
-```
+**Goal**: highlight the unique value propositions of joining the organization.
+**Rules**:
+- use large icons and descriptive headers for each of the 6 benefits.
+- Add a "Most Popular" or "Featured" badge to key benefits like Training.
+- ensure the section is fully responsive (3 cols desktop, 1 col mobile).
+**Example**:
+- Input: "Benefit" -> Output: 🎓 Leadership Training - Free workshops.
+- Input: "Hover state" -> Output: Background turns green, text turns white.
+- Input: "Entrance" -> Output: Cards stagger animate on scroll.
+**Deliver**: `src/components/join/JoinBenefits.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 69 — Member Dashboard (UI Only)
-```
-Design a Member Dashboard UI (front-end only, no auth needed) for NDM members:
-1. Sidebar: logo, nav (Dashboard, Profile, Events, Certificates, Messages, Settings)
-2. Main content: Welcome header with member name + avatar
-3. Stats row: Member ID, Membership Type, Events Attended, Certificates Earned
-4. Upcoming events widget (next 3)
-5. Recent activity feed
-6. Announcements card
-7. Quick actions: Register for event, Download Certificate, Update Profile
-
-Use green sidebar (#004d38), white main area. Fully responsive. Mock with hardcoded sample data.
-```
+**Goal**: design a dashboard UI for logged-in members to track their activities.
+**Rules**:
+- implement a vertical sidebar for navigation (Dashboard, Profile, Events).
+- Show a stats row for Member ID, Type, and Earned Certificates.
+- provide "Quick Action" buttons for event registration and profile updates.
+**Example**:
+- Input: "Sidebar" -> Output: Persistent dark green menu.
+- Input: "Activity feed" -> Output: List of recent news and event invites.
+- Input: "Announcement" -> Output: Highlighted card for urgent notices.
+**Deliver**: `src/pages/Dashboard.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 70 — Certificate Generator (UI)
-```
-Create a "Download Certificate" feature for NDM members (UI only):
-1. Certificate preview: A4 landscape orientation
-2. Design: NDM logo, Bangladesh flag colors border, participant name in Playfair Display, event name, date, President's digital signature, unique certificate ID
-3. Two types: Participation Certificate, Leadership Excellence Certificate
-4. "Download as PDF" button (use html2canvas + jsPDF)
-5. "Share on LinkedIn" button (generates LinkedIn certification share URL)
-
-Build the certificate as HTML/CSS that looks professional when printed/exported. Include a print stylesheet.
-```
+**Goal**: create a professional, printable certificate preview and download UI.
+**Rules**:
+- design the certificate in A4 landscape with brand borders and signatures.
+- use `html2canvas` or similar for downloading as a high-quality PDF.
+- Include a "Share on LinkedIn" button with pre-filled certification data.
+**Example**:
+- Input: "Preview" -> Output: Certificate for "Leadership Excellence".
+- Input: "Details" -> Output: Participant Name + Date + Unique ID.
+- Input: "Export" -> Output: "Download as PDF" button.
+**Deliver**: `src/components/dashboard/CertificateUI.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 71 — Photo Upload Component
-```
-Create a Profile Photo Upload component for the NDM membership form:
-1. Drag & drop zone with dashed border + upload icon
-2. Click to browse files
-3. Preview: shows selected image with crop overlay
-4. Validation: max 2MB, JPEG/PNG only
-5. Error states: file too large, wrong format
-6. Basic crop UI: drag to reposition + zoom slider
-7. Remove/change option after selection
-8. Loading state during "upload"
-
-Use the browser's FileReader API. No external libraries. Mobile: opens native camera/gallery. Show base64 preview.
-```
+**Goal**: Build a drag-and-drop zone with image preview and basic cropper.
+**Rules**:
+- implement file validation for size (max 2MB) and type (JPEG/PNG).
+- provide a visual preview after selection with the option to remove/change.
+- ensure the component triggers the mobile camera/gallery natively.
+**Example**:
+- Input: "Zone" -> Output: Dashed border area with upload icon.
+- Input: "Preview" -> Output: Circle/Square crop area for the avatar.
+- Input: "Error" -> Output: "File too large" red warning.
+**Deliver**: `src/components/ui/ImageUpload.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 72 — Referral System (UI)
-```
-Create a "Refer a Friend" UI for NDM members on the Join/Dashboard page:
-1. Unique referral link display with copy button (+ toast "Copied!")
-2. Social share: WhatsApp, Facebook, Twitter pre-filled message
-3. Referral stats: Friends Referred (5), Friends Who Joined (3), Reward Points (150)
-4. Referred friends list: avatar + name + status (Pending/Joined)
-5. Reward tiers: 1 referral = 50 points, 5 = badge, 10 = T-shirt
-
-Design: card-based, gamification feel. Progress bar toward next reward. Green checkmarks for joined, yellow for pending.
-```
+**Goal**: Create a gamified "Refer a Friend" section with sharing and stats.
+**Rules**:
+- include a "One-Click Copy" referral link with toast confirmation.
+- display a list of referred friends and their current status (Pending/Joined).
+- show a progress bar toward the next reward tier (e.g., T-shirt, Badge).
+**Example**:
+- Input: "Stats" -> Output: "Friends Referred: 5 | Points: 150".
+- Input: "Share buttons" -> Output: WhatsApp, FB, and Twitter icons.
+- Input: "Rewards" -> Output: 10 referrals = "Leadership Badge" unlock.
+**Deliver**: `src/components/dashboard/ReferralUI.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ---
 
 ## 7. Contact, Footer & Utilities
 
 ### Prompt 73 — Contact Page
-```
-Build the full Contact page for NDM with:
-1. Page hero: "Get In Touch" heading
-2. Contact info cards: Address (📍), Phone (📞), Email (📧), Office Hours (🕐)
-3. Google Maps embed (Dhaka, Bangladesh)
-4. Contact form: Name, Email, Subject (select), Message, Submit
-5. Response time notice: "We typically respond within 24 hours"
-6. Social media links row
-7. Download vCard button (NDM contact info)
-8. "Find Your Local Branch" district search widget
-
-Form connects to Formspree. Success/error toast notifications.
-```
+**Goal**: build a comprehensive contact hub with office info and map.
+**Rules**:
+- feature info cards for physical address, phone, and official email.
+- Integrate a Google Maps embed centered on the main Dhaka office.
+- implement a validated contact form that connects to an email service.
+**Example**:
+- Input: "Info cards" -> Output: Icons + details for each contact method.
+- Input: "Form" -> Output: Name, Subject, and Message textarea.
+- Input: "Response time" -> Output: "We respond within 24 hours" notice.
+**Deliver**: `src/pages/Contact.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 74 — Interactive Map Component
-```
-Create an interactive "Find Your Branch" map/search for the NDM contact page:
-1. Search input: type district name → filters results
-2. Division tabs: click to filter by division
-3. Results list: District name, Branch address, Phone, President name, Status (Active/New)
-4. Clicking a result: highlights it + scrolls to top of list
-5. "Contact This Branch" button on each result
-6. Google Maps iframe that updates to show selected district (approximate coordinates)
-
-Data: include all 8 divisions with 2-3 districts each. Mobile: list view, no map iframe.
-```
+**Goal**: Create a district-based search tool to find local organizational units.
+**Rules**:
+- implement a searchable list or division-based tabs for filtering branches.
+- Clicking a branch should highlight it and update a mini-map iframe.
+- Include branch-specific contact info (President's name, Address, Phone).
+**Example**:
+- Input: "Search 'Sylhet'" -> Output: List of active Sylhet units.
+- Input: "Branch card" -> Output: Title, Address, and "Contact" button.
+- Input: "Status" -> Output: "Active" vs "Opening Soon" badges.
+**Deliver**: `src/components/contact/BranchFinder.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 75 — Dark Mode Implementation
-```
-Implement a complete dark mode system for the NDM website:
-1. Toggle button in navbar (moon/sun with smooth icon transition)
-2. System preference detection (prefers-color-scheme: dark)
-3. Persistence in localStorage
-4. CSS custom properties approach (redefine --green, --bg, --text in body.dark)
-5. Dark mode colors:
-   - Background: #0a1a14
-   - Surface: #0f2218
-   - Border: #1e3d2d
-   - Text: #e8f0ec
-   - Subtext: #8aab9a
-6. Transition: 0.3s ease on all color properties
-7. Images: slight brightness reduction (filter: brightness(0.85))
-
-Show the React context setup + the CSS custom properties approach.
-```
+**Goal**: implement a persistent dark mode system using CSS variables.
+**Rules**:
+- support system-preference detection and local-storage persistence.
+- redefine variable values (Background, Surface, Text) in a `.dark` class.
+- apply a smooth 0.3s transition to all affected color properties.
+**Example**:
+- Input: "Toggle" -> Output: Sun/Moon icon in the navbar.
+- Input: "Colors" -> Output: #0A1A14 (BG) and #E8F0EC (Text) for dark.
+- Input: "Images" -> Output: Slight brightness reduction via filter.
+**Deliver**: `src/context/ThemeContext.jsx` and global CSS updates.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 76 — Search Functionality
-```
-Build a site-wide search feature for NDM:
-1. Search icon in navbar → expands to search bar (Framer Motion)
-2. Keyboard shortcut: Ctrl+K / Cmd+K to open
-3. Real-time results as user types (debounced 200ms)
-4. Searches across: News, Activities, Pages, Leaders
-5. Results grouped by type with icons
-6. Keyboard navigation of results (arrow keys)
-7. "No results" state with suggestions
-8. ESC to close
-9. Recent searches (localStorage)
-
-Implement as a command palette style overlay. Full ARIA combobox pattern.
-```
+**Goal**: Build a site-wide command palette or search overlay.
+**Rules**:
+- trigger via a keyboard shortcut (Cmd+K) or navbar search icon.
+- provide real-time, grouped results (News, Events, Leaders).
+- support full keyboard navigation (Arrows to select, ESC to exit).
+**Example**:
+- Input: "Search 'Join'" -> Output: Link to Join Us page + recent news.
+- Input: "Shortcuts" -> Output: Ctrl+K mentioned in the search bar.
+- Input: "No results" -> Output: Suggestion list for common terms.
+**Deliver**: `src/components/ui/SearchOverlay.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 77 — Cookie Consent Banner
-```
-Create a GDPR-compliant Cookie Consent banner for the NDM website:
-1. Appears at bottom of screen on first visit
-2. Message: brief explanation of cookie use
-3. Buttons: "Accept All", "Reject All", "Customize"
-4. Customize modal: toggle switches for Analytics, Marketing, Preferences
-5. Persistence: store choice in localStorage for 365 days
-6. If accepted: load Google Analytics
-7. Link to Privacy Policy
-8. Accessible: focus management, keyboard navigable
-
-Design: dark green background, white text, matches brand. Slide up animation on appear.
-```
+**Goal**: create a GDPR-compliant banner for managing tracking preferences.
+**Rules**:
+- display at the bottom of the screen until an action is taken.
+- Allow users to "Accept All", "Reject All", or "Customize" settings.
+- only load analytical scripts (e.g., GA) after explicit user consent.
+**Example**:
+- Input: "Banner" -> Output: Brand-green strip with policy link.
+- Input: "Custom" -> Output: Toggle switches for Marketing/Analytics.
+- Input: "Persistence" -> Output: Saves choice for 365 days.
+**Deliver**: `src/components/ui/CookieConsent.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 78 — Print Styles
-```
-Create a comprehensive print stylesheet for the NDM website in src/styles/print.css:
-1. Hide: navbar, footer, sidebars, CTAs, social buttons, animations
-2. Show: main content, article body, contact info
-3. Add NDM logo + "www.ndmstudent.org" header to every page
-4. Page break rules (avoid breaking inside cards)
-5. Black & white friendly (remove background colors, keep borders)
-6. Font size adjustments for print
-7. Show URL after links: a[href]::after { content: " (" attr(href) ")"; }
-8. A4 page size optimization
-
-Show @media print rules and explain how to import in main CSS.
-```
+**Goal**: define specific CSS rules for high-quality page printing.
+**Rules**:
+- hide navigation, sidebars, and interactive elements (buttons, carousels).
+- Add a specific print header with the organization logo and URL.
+- force links to display their full URL after the link text in brackets.
+**Example**:
+- Input: "Article print" -> Output: Clean black text, no sidebar.
+- Input: "Header" -> Output: "Printed from www.ndmstudent.org".
+- Input: "Break rules" -> Output: Prevents breaking images across pages.
+**Deliver**: `src/styles/print.css`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 79 — Error Pages
-```
-Create custom error pages for the NDM website:
-1. 404 Not Found:
-   - Illustration: lost student with NDM flag
-   - "Page Not Found" heading
-   - "The page you're looking for doesn't exist"
-   - Back to Home button + Search bar
-   - Related links (About, Join, Contact)
-2. 500 Server Error:
-   - Different illustration
-   - "Something went wrong"
-   - Retry button + Contact Us link
-3. Offline page (PWA):
-   - No connection illustration
-   - "You're offline"
-   - Show cached content if available
-
-Use React Router's errorElement. Animate illustration with subtle float.
-```
+**Goal**: Design user-friendly 404 (Not Found) and 500 (Server Error) pages.
+**Rules**:
+- Include branded illustrations (e.g., lost student) and clear explanations.
+- Provide a persistent search bar and a "Back to Home" primary button.
+- add a list of "Helpful Links" to guide the user back to valid content.
+**Example**:
+- Input: "404 page" -> Output: "Page Not Found" + search field.
+- Input: "500 page" -> Output: "Something went wrong" + retry button.
+- Input: "Offline" -> Output: "You're offline" (PWA fallback).
+**Deliver**: `src/pages/ErrorPage.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 80 — Accessibility Enhancements
-```
-Implement comprehensive accessibility features for the NDM website:
-1. Skip to main content link (visible on focus)
-2. Focus indicators: visible 3px ring in green
-3. All images: meaningful alt text
-4. ARIA landmarks: header, nav, main, aside, footer
-5. ARIA live regions for: form errors, toast messages, filter results
-6. Keyboard-only navigation test: document tab order
-7. Color contrast audit: ensure WCAG AA (4.5:1 for text)
-8. Reduced motion: @media (prefers-reduced-motion: reduce) for all animations
-9. Screen reader testing checklist
-
-Output: accessibility checklist + code examples for each enhancement.
-```
+**Goal**: Implement essential web accessibility improvements across the site.
+**Rules**:
+- add a "Skip to Main Content" link visible only on keyboard focus.
+- Ensure all interactive elements have 3px high-visibility focus rings.
+- respect `prefers-reduced-motion` by disabling non-essential animations.
+**Example**:
+- Input: "Focus" -> Output: Yellow/Green ring on tab focus.
+- Input: "Alt tags" -> Output: Descriptive text for all images.
+- Input: "Landmarks" -> Output: Proper `<main>`, `<nav>`, `<aside>`.
+**Deliver**: A global accessibility stylesheet and audit checklist.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 81 — Progressive Web App Setup
-```
-Convert the NDM website into a Progressive Web App (PWA):
-1. public/manifest.json: name, short_name, icons (192 + 512), theme_color (#006A4E), background_color (#ffffff), display: standalone
-2. Service Worker (sw.js): cache-first strategy for static assets, network-first for API calls
-3. Offline fallback page
-4. Install prompt: custom "Add to Home Screen" banner (after 30 seconds)
-5. Register service worker in main.jsx
-6. App icons: NDM logo in all required sizes
-
-Use Vite PWA plugin (vite-plugin-pwa). Include the workbox configuration.
-```
+**Goal**: Configure the site to be installable and offline-capable.
+**Rules**:
+- create a `manifest.json` with brand icons, theme colors, and display mode.
+- implement a service worker with a cache-first strategy for static assets.
+- provide a custom "Install App" banner that triggers after user engagement.
+**Example**:
+- Input: "Home screen" -> Output: Organization icon on smartphone.
+- Input: "Offline" -> Output: Site loads cached content when disconnected.
+- Input: "Splash" -> Output: Branded splash screen during app launch.
+**Deliver**: `public/manifest.json` and service worker configuration.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 82 — Social Sharing Component
-```
-Create a reusable Social Sharing component for NDM news articles and events:
-1. Share button: click → shows share modal or native share (Web Share API if available)
-2. Platforms: Facebook, Twitter/X, WhatsApp, LinkedIn, Copy Link
-3. Pre-filled messages: "[Article Title] — Read on NDM Student Movement: [URL]"
-4. WhatsApp: opens native app with pre-filled message
-5. Copy Link: clipboard API + success toast
-6. Open Graph meta tags setup for rich previews
-7. Share count display (mock: random between 10-500)
-
-Design: circular icon buttons with platform colors on hover. Animate the share popup.
-```
+**Goal**: Build a reusable trigger for sharing content across socials.
+**Rules**:
+- Use the native Web Share API where available, fallback to custom modal.
+- support platforms like Facebook, WhatsApp, and specialized "Copy Link".
+- automatically pre-fill sharing messages with the article title and URL.
+**Example**:
+- Input: "Share news" -> Output: Mobile-style sharing sheet.
+- Input: "WhatsApp" -> Output: Direct link to send message to kontak.
+- Input: "Copy" -> Output: URL copied to clipboard + success toast.
+**Deliver**: `src/components/ui/SocialShare.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ---
 
 ## 8. Performance & Accessibility
 
 ### Prompt 83 — Image Optimization
-```
-Implement image optimization for the NDM website:
-1. Lazy loading: native loading="lazy" + IntersectionObserver fallback
-2. WebP format detection and serving
-3. Responsive images: srcset for 400w, 800w, 1200w
-4. Placeholder: LQIP (Low Quality Image Placeholder) or blur-up technique
-5. Error fallback: broken image → NDM logo placeholder
-6. Progressive JPEG loading effect
-
-Create an OptimizedImage component that wraps <img> with all these features. Show before/after Lighthouse scores explanation. Include blur-up CSS animation.
-```
+**Goal**: Build a highly performant `OptimizedImage` component for the organization.
+**Rules**:
+- provide native `loading="lazy"` with an `IntersectionObserver` fallback for older browsers.
+- support WebP format detection and serve responsive images via `srcset`.
+- implement an LQIP (Low Quality Image Placeholder) or blur-up effect during load.
+**Example**:
+- Input: "Lazy loader" -> Output: Image only loads as it enters the viewport.
+- Input: "Responsive" -> Output: 400w, 800w, and 1200w variations.
+- Input: "Blur-up" -> Output: Low-res thumbnail expands to sharp image.
+**Deliver**: `src/components/ui/OptimizedImage.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 84 — Code Splitting & Lazy Loading
-```
-Implement code splitting for the NDM React app to improve initial load time:
-1. Lazy load all page components with React.lazy + Suspense
-2. Route-based code splitting with React Router
-3. Component-level lazy loading for heavy components (Gallery lightbox, Map)
-4. Dynamic import for rarely-used features (Certificate PDF generator)
-5. Prefetch on hover: preload next likely page when user hovers nav link
-6. Vite bundle analysis setup (rollup-plugin-visualizer)
-
-Show the bundle size before/after with estimates. Include loading fallback UI for each lazy component.
-```
+**Goal**: optimize page load times through tactical code splitting and lazy imports.
+**Rules**:
+- wrap all major page components in `React.lazy` and `Suspense` fallbacks.
+- implement predictive prefetching for next likely pages during link hover.
+- isolate heavy third-party libraries (Maps, PDF gen) into dynamic imports.
+**Example**:
+- Input: "Route splitting" -> Output: Individual bundles per page.
+- Input: "Suspense" -> Output: Global loading bar during chunk fetch.
+- Input: "Prefetch" -> Output: Chunk loading starts when user hovers a nav link.
+**Deliver**: Updated `src/router/index.jsx` and `Layout.jsx`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 85 — Performance Optimization Checklist
-```
-Create a comprehensive performance optimization implementation for the NDM website:
-1. Font optimization: font-display: swap, preconnect to Google Fonts
-2. Critical CSS inlining (above-the-fold styles)
-3. Debounce scroll event handlers
-4. Memoize expensive components with React.memo
-5. useCallback for event handlers passed as props
-6. useMemo for filtered/sorted lists
-7. Virtualize long lists (react-virtual for 64 districts list)
-8. Avoid layout thrashing in animations
-
-Output: annotated code examples for each optimization + explanation of why it matters for NDM's mobile-heavy Bangladesh audience.
-```
+**Goal**: apply advanced front-end performance optimizations across the codebase.
+**Rules**:
+- preconnect to critical domains like Google Fonts and CDNs.
+- memoize expensive UI components using `React.memo` and `useMemo`.
+- implement virtualization (e.g., `react-virtual`) for long lists like the District directory.
+**Example**:
+- Input: "Memoization" -> Output: Prevents re-renders of static sections.
+- Input: "Debounce" -> Output: Rate-limits scroll and resize event handlers.
+- Input: "Critical CSS" -> Output: Above-the-fold styles inlined for speed.
+**Deliver**: Annotated code examples and optimization summary.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 86 — Form Validation System
-```
-Build a comprehensive form validation system for NDM using react-hook-form + Zod:
-
-Validation rules:
-- Name: min 3 chars, max 50, letters only
-- Email: valid format + disposable domain check
-- Phone: Bangladesh format (+880 or 01XXXXXXXXX)
-- District: required, must be one of 64 valid districts
-- Message: min 20 chars, max 500
-- Student ID: alphanumeric, 6-12 chars
-
-Features:
-1. Real-time validation (onBlur mode)
-2. Animated error messages (shake + fade in)
-3. Success indicators (green checkmark per field)
-4. Submit button disabled until form valid
-5. Field-level loading (for async email check)
-```
+**Goal**: Build a robust, real-time validation system with Zod and React Hook Form.
+**Rules**:
+- apply strict rules for Bangladesh phone numbers, student IDs, and districts.
+- Provide real-time feedback (on-blur) with animated error messages.
+- show a success checkmark for each field as it passes validation.
+**Example**:
+- Input: "Phone validation" -> Output: Matches `+880` or `01X` formats.
+- Input: "Error feedback" -> Output: Shake animation + red helpful text.
+- Input: "Submit lock" -> Output: Button remains disabled until all fields valid.
+**Deliver**: `src/utils/validationSchemas.js` and usage guide.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 87 — Internationalization Setup (Bangla/English)
-```
-Set up i18n (internationalization) for the NDM website with English and Bengali support:
-1. Install and configure i18next + react-i18next
-2. Translation files: public/locales/en/common.json + public/locales/bn/common.json
-3. Language switcher component (EN/বাংলা toggle in navbar)
-4. Translate: navbar links, hero section, stats labels, footer
-5. Bengali font: 'Hind Siliguri' from Google Fonts
-6. Right-to-left detection (Bengali is LTR, but setup for future Arabic)
-7. Persist language choice in localStorage
-
-Show the translation key structure and the useTranslation hook usage in components.
-```
+**Goal**: configure multi-language support (i18n) for the entire website.
+**Rules**:
+- utilize `i18next` for managing English and Bengali translation files.
+- implement a language switcher toggle that persists choice in `localStorage`.
+- ensure proper Font-family switching for Bengali characters (Hind Siliguri).
+**Example**:
+- Input: "Switcher" -> Output: EN/বাংলা toggle in the top navbar.
+- Input: "Translation" -> Output: `t('nav.home')` mapping to both languages.
+- Input: "Persist" -> Output: Site remains in selected language on refresh.
+**Deliver**: `src/i18n.js` and JSON translation templates.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 88 — Analytics Integration
-```
-Integrate analytics for the NDM website:
-1. Google Analytics 4 (gtag.js) via Vite plugin
-2. Page view tracking with React Router (track on route change)
-3. Custom events:
-   - join_form_started
-   - join_form_completed
-   - newsletter_subscribed
-   - gallery_image_viewed
-   - cta_clicked (with button label)
-   - social_share (with platform)
-4. Analytics hook: useAnalytics() with trackEvent(name, params)
-5. Cookie consent check before loading GA
-
-Show the gtag configuration and the custom hook implementation.
-```
+**Goal**: Integrate Google Analytics 4 for tracking user engagement and goals.
+**Rules**:
+- track page views automatically on every route change within React Router.
+- implement custom event tracking for form starts, completions, and shares.
+- ensure tracking only begins after the user accepts the cookie consent.
+**Example**:
+- Input: "Page tracking" -> Output: Route changes logged to GA4.
+- Input: "Goal tracking" -> Output: `join_form_completed` event triggered.
+- Input: "Custom hook" -> Output: `useAnalytics()` with `trackEvent` method.
+**Deliver**: `src/hooks/useAnalytics.js` and global setup.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 89 — Error Boundary Implementation
-```
-Implement comprehensive Error Boundaries for the NDM React app:
-1. Global ErrorBoundary wrapping the entire app
-2. Section-level error boundaries (News section won't break whole page)
-3. Error UI: friendly "Something went wrong in this section" with retry button
-4. Error logging: console.error + send to monitoring service (Sentry-ready)
-5. Async error handling for API calls
-6. Network error detection and user-friendly messages
-7. "Try Again" button that resets the error boundary
-
-Create an ErrorBoundary class component + useErrorHandler hook for function components.
-```
+**Goal**: protect the user experience with robust crash-handling and fallbacks.
+**Rules**:
+- wrap the global app and individual high-risk sections in Error Boundaries.
+- provide a friendly "Section Unavailable" UI with a specific retry button.
+- Log errors to the console in development and a monitoring service in production.
+**Example**:
+- Input: "News crash" -> Output: Only the News section shows an error state.
+- Input: "Recovery" -> Output: "Try Again" button resets the local state.
+- Input: "Logging" -> Output: Error details sent to an external service.
+**Deliver**: `src/components/ui/ErrorBoundary.jsx` and hook.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 90 — Testing Setup
-```
-Set up a testing environment for the NDM React project:
-1. Install: Vitest, React Testing Library, MSW (Mock Service Worker)
-2. Configure vitest.config.js
-3. Write tests for:
-   - Navbar: renders all links, hamburger toggles mobile menu
-   - Counter: animates to target value
-   - JoinForm: validates required fields, shows errors, submits successfully
-   - NewsCard: renders title, date, tag correctly
-   - Lightbox: opens on image click, closes on ESC
-4. MSW handlers for: POST /join, POST /contact, POST /newsletter
-5. Coverage report setup
-
-Output: full test files + configuration.
-```
+**Goal**: Configure a comprehensive testing environment for the React project.
+**Rules**:
+- install and setup Vitest, React Testing Library, and Mock Service Worker (MSW).
+- provide example tests for the Navbar, Join Form, and Stats Counter.
+- include coverage report generation and CI/CD ready configurations.
+**Example**:
+- Input: "Navbar test" -> Output: Verifies all 7 links are clickable.
+- Input: "Form test" -> Output: Mocks API response for join submission.
+- Input: "Visual test" -> Output: Confirms modal opens on image click.
+**Deliver**: `vitest.config.js` and initial `__tests__/` directory.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ---
 
 ## 9. SEO & Analytics
 
 ### Prompt 91 — SEO Configuration
-```
-Implement comprehensive SEO for the NDM Student Movement website:
-1. React Helmet for dynamic meta tags per page
-2. Open Graph tags: title, description, image, url, type
-3. Twitter Card tags
-4. Canonical URLs
-5. JSON-LD structured data:
-   - Organization schema
-   - BreadcrumbList
-   - Event schema for events
-   - Article schema for news
-6. XML Sitemap generation (list all URLs)
-7. robots.txt
-
-Create a useSEO(pageConfig) hook that sets all tags. Show configuration for Home, About, News, and Join pages.
-```
+**Goal**: Optimize the website for search engines with dynamic meta data.
+**Rules**:
+- use React Helmet to inject unique Title, Description, and OG tags per page.
+- Implement canonical URL generation to prevent duplicate content issues.
+- include BreadcrumbList and Organization structured data on the homepage.
+**Example**:
+- Input: "OG tags" -> Output: Rich link previews on Facebook/Twitter.
+- Input: "Meta desc" -> Output: Dynamic snippet based on page content.
+- Input: "Canonical" -> Output: Link tag pointing to the source URL.
+**Deliver**: `src/hooks/useSEO.js` and usage examples.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 92 — Open Graph Image Generator
-```
-Create a dynamic Open Graph image generator for NDM news articles:
-1. When sharing a news article, generate a branded OG image
-2. Template: NDM branded background (green), article title (large), author name, NDM logo, date
-3. Use: @vercel/og or canvas-based approach
-4. API endpoint (if using Next.js) or pre-generated images
-5. Fallback: static default OG image for home/about pages
-
-For static React (Vite): create a script that generates OG images from article data using node-canvas. Output to public/og-images/.
-```
+**Goal**: Create a dynamic generator for branded news sharing images.
+**Rules**:
+- dynamically generate an OG image with the article title and NDM branding.
+- ensure high-contrast typography and prominent logo placement in the image.
+- support a default fallback image for pages without specific articles.
+**Example**:
+- Input: "Template" -> Output: Green background + Article Headline.
+- Input: "Node script" -> Output: Pre-renders images for all news posts.
+- Input: "Sharing" -> Output: Branded preview on social platforms.
+**Deliver**: Image generation script for public asset production.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 93 — Sitemap & robots.txt
-```
-Generate a complete sitemap.xml and robots.txt for the NDM website:
-
-sitemap.xml — include:
-- / (Home) — priority 1.0, weekly
-- /about — 0.8, monthly
-- /leadership — 0.8, monthly
-- /activities — 0.9, weekly
-- /news — 0.9, daily
-- /news/:slug — 0.7, monthly (generate for each article)
-- /gallery — 0.7, weekly
-- /join — 0.9, monthly
-- /contact — 0.6, monthly
-
-robots.txt — allow all, disallow /dashboard, /admin. Sitemap location.
-
-Output the raw XML and txt. Show how to serve them from Vite's public/ folder.
-```
+**Goal**: provide crawlers with a clear map of the site's structure and rules.
+**Rules**:
+- generate a `sitemap.xml` with proper priority and frequency for all pages.
+- Create a `robots.txt` that allows crawling of public pages while blocking dash.
+- automate the generation process for dynamic news article slugs.
+**Example**:
+- Input: "Sitemap" -> Output: List of all 100+ site URLs with metadata.
+- Input: "Robots" -> Output: Disallow: /dashboard entries.
+- Input: "Deployment" -> Output: Files served from the root publicly.
+**Deliver**: `public/sitemap.xml` and `public/robots.txt` templates.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 94 — Performance Monitoring
-```
-Set up performance monitoring for the NDM website:
-1. Core Web Vitals measurement using web-vitals library
-2. Report LCP, FID/INP, CLS, FCP, TTFB to console (dev) and GA4 (prod)
-3. Custom performance marks for:
-   - Hero section paint time
-   - Gallery image load time
-   - Form submit response time
-4. Performance budget: Fail build if JS bundle > 300KB
-5. Lighthouse CI setup for automated audits
-
-Create a src/utils/performance.js module. Show the reportWebVitals integration in main.jsx.
-```
+**Goal**: implement real-time monitoring of Core Web Vitals (LCP, FID, CLS).
+**Rules**:
+- use the `web-vitals` library to capture metrics for every user session.
+- report metrics to GA4 for long-term field data analysis.
+- add custom performance marks for critical user actions (e.g., hero paint).
+**Example**:
+- Input: "Metrics" -> Output: LCP and CLS scores logged per visit.
+- Input: "Threshold" -> Output: Warnings if TBT exceeds 200ms.
+- Input: "CI check" -> Output: Build fails if perf budget is exceeded.
+**Deliver**: `src/utils/performance.js` and implementation guide.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 95 — Structured Data / Schema.org
-```
-Implement all Schema.org structured data for NDM website pages:
-1. Home: Organization schema (name, logo, address, social links, contactPoint)
-2. About: AboutPage schema
-3. News listing: CollectionPage with ItemList
-4. Article detail: Article schema (headline, author, datePublished, image, publisher)
-5. Events: Event schema (name, startDate, location, organizer, offers)
-6. Contact: LocalBusiness + ContactPage
-7. Join page: WebPage with potentialAction (JoinAction)
-
-Output as JSON-LD script tags using React Helmet. Validate against Google's Rich Results Test.
-```
+**Goal**: Inject JSON-LD structured data for rich search engine results.
+**Rules**:
+- implement specific schemas for Organization, Article, and Event pages.
+- ensure all scripts are injected into the `<head>` via React Helmet.
+- validate the output against Google's Rich Results Test tool.
+**Example**:
+- Input: "Event schema" -> Output: Search shows date/location in Google.
+- Input: "Article schema" -> Output: Headlines showing in Top Stories.
+- Input: "Org info" -> Output: Logo and social links in Google Knowledge.
+**Deliver**: Comprehensive schema injection utility.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ---
 
 ## 10. Testing & Deployment
 
 ### Prompt 96 — Unit Tests (Components)
-```
-Write unit tests for the following NDM components using Vitest + React Testing Library:
-
-1. Navbar.test.jsx:
-   - Renders logo text "NDM"
-   - All 7 nav links are present
-   - Hamburger button toggles mobile menu
-   - Join Us button has correct href
-
-2. Counter.test.jsx:
-   - Starts at 0
-   - Reaches target value after animation
-   - Triggers only when visible
-
-3. JoinForm.test.jsx:
-   - Shows error on empty submit
-   - Validates phone format
-   - Shows success message on valid submit
-
-4. NewsCard.test.jsx:
-   - Renders title, date, tag
-   - Image has alt text
-   - Link is accessible
-```
+**Goal**: write granular tests for individual UI components and their logic.
+**Rules**:
+- verify rendering, state changes, and event handling for the Navbar.
+- test the countdown logic and animation trigger of the Stats Counter.
+- Ensure form validation rules are correctly enforced in the Join Form.
+**Example**:
+- Input: "Navbar.test" -> Output: Verifies hamburger menu toggles menu.
+- Input: "Counter.test" -> Output: Checks if target value is reached.
+- Input: "Badge.test" -> Output: Confirms correct color variant renders.
+**Deliver**: Comprehensive unit test suite in `__tests__/components`.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 97 — Integration Tests
-```
-Write integration tests for NDM's key user flows:
-
-1. Complete Join Form flow:
-   - Fill all fields → Submit → See success message
-   - Submit with invalid email → See error
-   - Submit empty form → See all required field errors
-
-2. Gallery lightbox flow:
-   - Click image → Lightbox opens
-   - Click next → Second image shown
-   - Press ESC → Lightbox closes
-   - Click backdrop → Closes
-
-3. Dark mode flow:
-   - Toggle dark mode → body.dark class added
-   - Refresh page → dark mode persists from localStorage
-
-Use MSW to mock form submissions.
-```
+**Goal**: test critical user journeys and cross-component interactions.
+**Rules**:
+- simulate a full "Join Us" flow from empty form to success message.
+- verify the Lightbox navigation works as expected within the Gallery page.
+- Test dark mode persistence and appearance across site navigation.
+**Example**:
+- Input: "Join flow" -> Output: Enters data -> clicks -> success check.
+- Input: "Lightbox flow" -> Output: Clicks image -> opens -> clicks next.
+- Input: "Theme flow" -> Output: Toggle -> Reload -> Dark theme remains.
+**Deliver**: Integration test files and MSW handlers.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 98 — Deployment Configuration
-```
-Create a complete deployment configuration for the NDM Student Movement website:
-
-1. Vercel deployment:
-   - vercel.json with routes for SPA (catch-all to index.html)
-   - Environment variables setup in Vercel dashboard
-   - Build command: npm run build
-   - Output directory: dist
-
-2. Netlify alternative:
-   - _redirects file: /* /index.html 200
-   - netlify.toml with build settings
-
-3. GitHub Actions CI/CD pipeline:
-   - On push to main: lint → test → build → deploy
-   - Lighthouse CI check (fail if score < 90)
-   - Bundle size check
-
-4. Domain setup: ndmstudent.org with SSL
-
-Output all configuration files.
-```
+**Goal**: Set up automated CI/CD pipelines and production hosting rules.
+**Rules**:
+- provide `vercel.json` or `netlify.toml` with SPA redirect configurations.
+- Create a GitHub Actions workflow for linting, testing, and building.
+- implement a Lighthouse builder check that fails on low performance scores.
+**Example**:
+- Input: "Vercel config" -> Output: Catch-all routes to `index.html`.
+- Input: "CI workflow" -> Output: `.github/workflows/deploy.yml` content.
+- Input: "Domain" -> Output: SSL and custom domain setup instructions.
+**Deliver**: Full deployment configuration for Vercel/Netlify.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 99 — Documentation
-```
-Write comprehensive documentation for the NDM Student Movement codebase:
-
-1. README.md:
-   - Project overview
-   - Tech stack
-   - Prerequisites
-   - Installation steps
-   - Available scripts
-   - Environment variables
-   - Project structure
-   - Deployment guide
-   - Contributing guidelines
-
-2. COMPONENTS.md:
-   - List all components with props table
-   - Usage examples for Navbar, Button, Card, Modal, Form
-
-3. CHANGELOG.md:
-   - v1.0.0 initial release
-
-4. Code style guide:
-   - Component naming conventions
-   - File organization rules
-   - CSS class naming
-   - Git commit message format
-
-Format all in clean Markdown.
-```
+**Goal**: write clear, professional documentation for the entire project lifecycle.
+**Rules**:
+- create a comprehensive `README.md` with setup, stack, and deploy steps.
+- document every UI component in a `COMPONENTS.md` with props and usage.
+- follow a consistent CHANGELOG and style guide for future contributors.
+**Example**:
+- Input: "README" -> Output: Prerequisites, Install, and Scripts guide.
+- Input: "Props table" -> Output: Markdown table with type and default.
+- Input: "Style guide" -> Output: Naming conventions and folder rules.
+**Deliver**: Markdown documentation suite in the project root.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ### Prompt 100 — Full Stack Upgrade Path
-```
-Provide a comprehensive plan for upgrading the NDM Student Movement website from a static React site to a full-stack application:
-
-Frontend (keep):
-- React + Vite + Tailwind (current)
-
-Add:
-1. Backend: Node.js + Express API or Next.js App Router
-2. Database: PostgreSQL (Supabase hosted) with schema for: members, events, news, contacts
-3. Auth: NextAuth.js or Supabase Auth (member login)
-4. CMS: Sanity.io for news/blog/events management by non-technical staff
-5. File storage: Cloudinary for gallery images (upload + optimize)
-6. Email: Resend.com for join confirmations, newsletters
-7. Payment: (future) SSL Commerz for Bangladesh-local donations
-
-Provide:
-- Database schema (SQL)
-- API endpoints list
-- Migration strategy from current static site
-- Cost estimate (monthly, in BDT)
-```
+**Goal**: provide a roadmap for moving from a static site to a full-stack app.
+**Rules**:
+- detail the migration to a backend like Node.js/Express or Next.js.
+- design a database schema (PostgreSQL) for members, events, and news.
+- integrate a CMS (Sanity) and Authentication (Supabase Auth) system.
+**Example**:
+- Input: "DB Schema" -> Output: SQL table structure for Members.
+- Input: "Future services" -> Output: Resend (Email), Cloudinary (Images).
+- Input: "Migration" -> Output: Step-by-step transition plan and BDT cost.
+**Deliver**: High-level architecture diagram and migration document.
+**Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
 ---
 
@@ -1580,15 +1363,4 @@ Provide:
 
 ---
 
-## 💡 Usage Tips
-
-1. **Use prompts sequentially** — later prompts assume earlier ones are complete
-2. **Specify your AI tool** — these prompts work with Claude, GPT-4o, or GitHub Copilot
-3. **Iterate** — after getting output, follow up with "now make it responsive" or "add dark mode support"
-4. **Combine prompts** — e.g., Prompt 13 (Button) + Prompt 38 (CTA Section) together
-5. **Add context** — prefix any prompt with: "In the context of the NDM Student Movement React project with green/white/red color scheme..."
-
----
-
-*© 2026 NDM Student Movement — All Rights Reserved*  
-*This blueprint is for internal development use only.*
+*© 2026 NDM Student Movement — Professional AI Prompting Edition*
