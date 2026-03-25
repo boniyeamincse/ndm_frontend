@@ -43,6 +43,11 @@ class Member extends Model
         'join_year',
         'organizational_unit_id',
         'mobile',
+        'division',
+        'district',
+        'upazila',
+        'union',
+        'ward',
     ];
 
     protected $casts = [

@@ -3,7 +3,7 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\IdCardController;
 use App\Http\Controllers\API\MemberController;
-use App\Http\Controllers\API\ProfileController;
+use App\Http\Controllers\API\Member\ProfileController;
 use App\Http\Controllers\API\UnitController;
 use App\Http\Controllers\API\Admin\AdminDashboardController;
 use App\Http\Controllers\API\Admin\AdminMemberController;
@@ -42,7 +42,7 @@ Route::prefix('auth')->middleware('api')->group(function () {
 Route::middleware(['auth:api', 'active.member', 'audit'])->group(function () {
 
     // Profile
-    Route::get ('profile',       [ProfileController::class, 'me']);
+    Route::get ('profile',       [ProfileController::class, 'show']);
     Route::put ('profile',       [ProfileController::class, 'update']);
     Route::post('profile/photo', [ProfileController::class, 'uploadPhoto']);
 
