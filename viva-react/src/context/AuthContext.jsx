@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
     const data = await authService.login(credentials);
     const userData = await authService.me();
     setUser(userData);
-    return data;
+    return { data, user: userData };
   };
 
   const logout = async () => {

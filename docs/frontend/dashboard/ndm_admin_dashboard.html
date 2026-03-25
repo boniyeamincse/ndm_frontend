@@ -1,0 +1,355 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .dash { display: flex; height: 100vh; min-height: 700px; background: #F1F5F9; font-size: 13px; }
+  .sidebar { width: 240px; min-width: 240px; background: #0F2B4C; color: #CBD5E1; display: flex; flex-direction: column; overflow-y: auto; }
+  .sb-logo { padding: 18px 16px 14px; border-bottom: 1px solid #1E3A5F; }
+  .sb-logo .org { font-size: 10px; color: #64748B; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 3px; }
+  .sb-logo .title { font-size: 14px; font-weight: 500; color: #F1F5F9; }
+  .sb-logo .subtitle { font-size: 10px; color: #94A3B8; margin-top: 2px; }
+  .sb-section { padding: 12px 0 4px; }
+  .sb-label { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #475569; padding: 0 16px 6px; }
+  .sb-item { display: flex; align-items: center; gap: 9px; padding: 7px 16px; cursor: pointer; border-left: 3px solid transparent; transition: background 0.15s; color: #94A3B8; font-size: 12px; position: relative; }
+  .sb-item:hover { background: #1E3A5F; color: #CBD5E1; }
+  .sb-item.active { background: #1E3A5F; color: #F8FAFC; border-left-color: #D4AF37; }
+  .sb-item .ico { font-size: 13px; width: 16px; text-align: center; }
+  .sb-badge { margin-left: auto; background: #DC2626; color: #fff; font-size: 9px; padding: 1px 5px; border-radius: 8px; font-weight: 500; }
+  .sb-sub { padding-left: 36px; font-size: 11px; color: #64748B; }
+  .sb-sub.active { color: #D4AF37; }
+  .sb-divider { border-top: 1px solid #1E3A5F; margin: 8px 0; }
+  .sb-footer { margin-top: auto; padding: 12px 16px; border-top: 1px solid #1E3A5F; display: flex; align-items: center; gap: 10px; }
+  .avatar-sm { width: 28px; height: 28px; border-radius: 50%; background: #D4AF37; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; color: #0F2B4C; }
+  .sb-footer .name { font-size: 11px; color: #CBD5E1; }
+  .sb-footer .role { font-size: 10px; color: #475569; }
+
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .topbar { background: #fff; border-bottom: 0.5px solid #E2E8F0; padding: 0 24px; height: 52px; display: flex; align-items: center; gap: 16px; }
+  .topbar-title { font-size: 15px; font-weight: 500; color: #0F172A; flex: 1; }
+  .topbar-pill { font-size: 10px; background: #EFF6FF; color: #1D4ED8; padding: 3px 8px; border-radius: 20px; border: 0.5px solid #BFDBFE; }
+  .notif-btn { width: 32px; height: 32px; border-radius: var(--border-radius-md); border: 0.5px solid #E2E8F0; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; font-size: 14px; background: #F8FAFC; }
+  .notif-dot { position: absolute; top: 5px; right: 5px; width: 7px; height: 7px; background: #DC2626; border-radius: 50%; border: 1px solid #fff; }
+
+  .content { flex: 1; overflow-y: auto; padding: 20px 24px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; margin-bottom: 20px; }
+  .kpi-card { background: #fff; border-radius: 10px; border: 0.5px solid #E2E8F0; padding: 16px; }
+  .kpi-label { font-size: 11px; color: #64748B; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .kpi-icon { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+  .kpi-value { font-size: 26px; font-weight: 500; color: #0F172A; }
+  .kpi-delta { font-size: 10px; margin-top: 4px; }
+  .delta-up { color: #16A34A; } .delta-down { color: #DC2626; }
+  .kpi-bar { height: 3px; border-radius: 2px; margin-top: 10px; background: #F1F5F9; overflow: hidden; }
+  .kpi-bar-fill { height: 100%; border-radius: 2px; }
+
+  .grid2 { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px; margin-bottom: 20px; }
+  .grid3 { display: grid; grid-template-columns: minmax(0,2fr) minmax(0,1fr); gap: 12px; margin-bottom: 20px; }
+  .card { background: #fff; border-radius: 10px; border: 0.5px solid #E2E8F0; }
+  .card-header { padding: 14px 16px 10px; border-bottom: 0.5px solid #F1F5F9; display: flex; align-items: center; justify-content: space-between; }
+  .card-title { font-size: 13px; font-weight: 500; color: #0F172A; }
+  .card-sub { font-size: 10px; color: #94A3B8; }
+  .card-body { padding: 14px 16px; }
+
+  .mini-table { width: 100%; border-collapse: collapse; }
+  .mini-table th { font-size: 10px; color: #94A3B8; text-align: left; padding: 0 0 8px; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; }
+  .mini-table td { padding: 8px 0; border-top: 0.5px solid #F8FAFC; color: #334155; font-size: 12px; vertical-align: middle; }
+  .mini-table tr:first-child td { border-top: none; }
+
+  .status { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 500; }
+  .s-pending { background: #FEF9C3; color: #854D0E; }
+  .s-active { background: #DCFCE7; color: #166534; }
+  .s-suspended { background: #FEE2E2; color: #991B1B; }
+
+  .btn-sm { font-size: 10px; padding: 4px 10px; border-radius: 6px; border: 0.5px solid #E2E8F0; cursor: pointer; background: #F8FAFC; color: #334155; }
+  .btn-approve { background: #F0FDF4; border-color: #BBF7D0; color: #166534; }
+  .btn-reject { background: #FFF1F2; border-color: #FECDD3; color: #9F1239; }
+  .btn-gold { background: #D4AF37; border-color: #D4AF37; color: #0F2B4C; font-weight: 500; }
+
+  .hier-grid { display: grid; grid-template-columns: repeat(7, minmax(0,1fr)); gap: 6px; }
+  .hier-node { border-radius: 7px; padding: 8px 6px; text-align: center; font-size: 10px; }
+  .h-central { background: #0F2B4C; color: #D4AF37; }
+  .h-division { background: #1E3A5F; color: #93C5FD; }
+  .h-district { background: #1E40AF; color: #BFDBFE; }
+  .h-upazila { background: #1D4ED8; color: #DBEAFE; }
+  .h-union { background: #2563EB; color: #EFF6FF; }
+  .h-ward { background: #3B82F6; color: #EFF6FF; }
+  .h-campus { background: #60A5FA; color: #1E3A5F; }
+  .hier-label { font-weight: 500; font-size: 9px; margin-bottom: 3px; }
+  .hier-count { font-size: 14px; font-weight: 500; }
+
+  .donut-wrap { display: flex; align-items: center; gap: 16px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #475569; margin-bottom: 6px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  .sparkline { display: flex; align-items: flex-end; gap: 3px; height: 40px; }
+  .spark-bar { flex: 1; border-radius: 3px 3px 0 0; background: #BFDBFE; min-height: 4px; }
+  .spark-bar.high { background: #1D4ED8; }
+
+  .unit-tab { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 10px; }
+  .utab { font-size: 10px; padding: 3px 10px; border-radius: 20px; border: 0.5px solid #E2E8F0; cursor: pointer; background: #F8FAFC; color: #64748B; }
+  .utab.active { background: #0F2B4C; color: #D4AF37; border-color: #0F2B4C; }
+
+  .activity-item { display: flex; gap: 10px; padding: 8px 0; border-bottom: 0.5px solid #F8FAFC; align-items: flex-start; }
+  .activity-item:last-child { border-bottom: none; }
+  .act-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; margin-top: 1px; }
+  .act-text { font-size: 11px; color: #334155; line-height: 1.5; }
+  .act-time { font-size: 10px; color: #94A3B8; margin-top: 2px; }
+</style>
+
+<div class="dash">
+  <div class="sidebar">
+    <div class="sb-logo">
+      <div class="org">Nationalist Democratic Movement</div>
+      <div class="title">NDM Student Wing</div>
+      <div class="subtitle">Admin Dashboard · Laravel 11</div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-label">Overview</div>
+      <div class="sb-item active"><span class="ico">◉</span> Dashboard</div>
+      <div class="sb-item"><span class="ico">📈</span> Analytics & Reports</div>
+    </div>
+
+    <div class="sb-divider"></div>
+    <div class="sb-section">
+      <div class="sb-label">Member Management</div>
+      <div class="sb-item"><span class="ico">👥</span> All Members</div>
+      <div class="sb-item"><span class="ico">⏳</span> Pending Approvals <span class="sb-badge">12</span></div>
+      <div class="sb-item"><span class="ico">✅</span> Active Members</div>
+      <div class="sb-item"><span class="ico">🚫</span> Suspended Members</div>
+      <div class="sb-item"><span class="ico">❌</span> Expelled Members</div>
+    </div>
+
+    <div class="sb-divider"></div>
+    <div class="sb-section">
+      <div class="sb-label">Authentication</div>
+      <div class="sb-item"><span class="ico">🔐</span> Admin Accounts</div>
+      <div class="sb-item"><span class="ico">📋</span> Login Activity Logs</div>
+      <div class="sb-item"><span class="ico">🔑</span> Token Management</div>
+    </div>
+
+    <div class="sb-divider"></div>
+    <div class="sb-section">
+      <div class="sb-label">Organizational Units</div>
+      <div class="sb-item"><span class="ico">🏛</span> Central Committee</div>
+      <div class="sb-item"><span class="ico">🗺</span> Division Committees</div>
+      <div class="sb-item"><span class="ico">📍</span> District Committees</div>
+      <div class="sb-item sb-sub"><span class="ico">·</span> Upazila Committees</div>
+      <div class="sb-item sb-sub"><span class="ico">·</span> Union Committees</div>
+      <div class="sb-item sb-sub"><span class="ico">·</span> Ward Committees</div>
+      <div class="sb-item sb-sub active"><span class="ico">·</span> Campus / Institutions</div>
+    </div>
+
+    <div class="sb-divider"></div>
+    <div class="sb-section">
+      <div class="sb-label">Roles & Positions</div>
+      <div class="sb-item"><span class="ico">🎖</span> Role Definitions</div>
+      <div class="sb-item"><span class="ico">📌</span> Active Positions</div>
+      <div class="sb-item"><span class="ico">➕</span> Assign Position</div>
+      <div class="sb-item"><span class="ico">🕓</span> Position History</div>
+    </div>
+
+    <div class="sb-divider"></div>
+    <div class="sb-section">
+      <div class="sb-label">Promotions</div>
+      <div class="sb-item"><span class="ico">⬆</span> Promote Member</div>
+      <div class="sb-item"><span class="ico">📜</span> Promotion History</div>
+      <div class="sb-item"><span class="ico">⏳</span> Pending Promotions <span class="sb-badge">3</span></div>
+    </div>
+
+    <div class="sb-divider"></div>
+    <div class="sb-section">
+      <div class="sb-label">Other</div>
+      <div class="sb-item"><span class="ico">🌐</span> Public Directory</div>
+      <div class="sb-item"><span class="ico">📊</span> Reports & Export</div>
+      <div class="sb-item"><span class="ico">⚙</span> Settings</div>
+    </div>
+
+    <div class="sb-footer">
+      <div class="avatar-sm">SA</div>
+      <div>
+        <div class="name">Super Admin</div>
+        <div class="role">System Administrator</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title">Dashboard Overview</div>
+      <div class="topbar-pill">API: Laravel 11</div>
+      <div class="notif-btn">🔔<div class="notif-dot"></div></div>
+      <div class="notif-btn">🌐</div>
+      <div class="avatar-sm" style="cursor:pointer;">SA</div>
+    </div>
+
+    <div class="content">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">
+            <div class="kpi-icon" style="background:#EFF6FF; color:#1D4ED8;">👥</div>
+            Total Members
+          </div>
+          <div class="kpi-value">2,847</div>
+          <div class="kpi-delta delta-up">↑ 8.4% from last month</div>
+          <div class="kpi-bar"><div class="kpi-bar-fill" style="width:74%; background:#1D4ED8;"></div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">
+            <div class="kpi-icon" style="background:#FEF9C3; color:#854D0E;">⏳</div>
+            Pending Approvals
+          </div>
+          <div class="kpi-value" style="color:#CA8A04;">12</div>
+          <div class="kpi-delta delta-up">↑ 3 new today</div>
+          <div class="kpi-bar"><div class="kpi-bar-fill" style="width:18%; background:#CA8A04;"></div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">
+            <div class="kpi-icon" style="background:#DCFCE7; color:#166534;">✅</div>
+            Active This Month
+          </div>
+          <div class="kpi-value" style="color:#16A34A;">184</div>
+          <div class="kpi-delta delta-up">↑ 12.1% growth</div>
+          <div class="kpi-bar"><div class="kpi-bar-fill" style="width:62%; background:#16A34A;"></div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">
+            <div class="kpi-icon" style="background:#F3F0FF; color:#6D28D9;">🏛</div>
+            Org. Units
+          </div>
+          <div class="kpi-value">318</div>
+          <div class="kpi-delta" style="color:#64748B;">Across 7 levels</div>
+          <div class="kpi-bar"><div class="kpi-bar-fill" style="width:88%; background:#7C3AED;"></div></div>
+        </div>
+      </div>
+
+      <div class="grid3">
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">Pending Approvals</div><div class="card-sub">GET /api/admin/members?status=pending</div></div>
+            <button class="btn-sm btn-gold">Bulk Approve</button>
+          </div>
+          <div class="card-body">
+            <table class="mini-table">
+              <tr><th>Member</th><th>Phone</th><th>Unit</th><th>Applied</th><th>Actions</th></tr>
+              <tr>
+                <td><div style="font-weight:500; color:#0F172A;">Rafiqul Islam</div><div style="color:#94A3B8; font-size:10px;">Pending ID</div></td>
+                <td style="color:#475569;">+880 1712-334455</td>
+                <td><span class="status" style="background:#EFF6FF; color:#1D4ED8; font-size:10px;">Dhaka Campus</span></td>
+                <td style="color:#94A3B8;">2 hrs ago</td>
+                <td><div style="display:flex; gap:4px;"><button class="btn-sm btn-approve">Approve</button><button class="btn-sm btn-reject">Reject</button></div></td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:500; color:#0F172A;">Sadia Rahman</div><div style="color:#94A3B8; font-size:10px;">Pending ID</div></td>
+                <td style="color:#475569;">+880 1811-556677</td>
+                <td><span class="status" style="background:#EFF6FF; color:#1D4ED8; font-size:10px;">Chittagong Campus</span></td>
+                <td style="color:#94A3B8;">5 hrs ago</td>
+                <td><div style="display:flex; gap:4px;"><button class="btn-sm btn-approve">Approve</button><button class="btn-sm btn-reject">Reject</button></div></td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:500; color:#0F172A;">Tarekur Rahman</div><div style="color:#94A3B8; font-size:10px;">Pending ID</div></td>
+                <td style="color:#475569;">+880 1922-778899</td>
+                <td><span class="status" style="background:#EFF6FF; color:#1D4ED8; font-size:10px;">Rajshahi Campus</span></td>
+                <td style="color:#94A3B8;">1 day ago</td>
+                <td><div style="display:flex; gap:4px;"><button class="btn-sm btn-approve">Approve</button><button class="btn-sm btn-reject">Reject</button></div></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">Status Distribution</div><div class="card-sub">All members breakdown</div></div>
+          </div>
+          <div class="card-body">
+            <svg width="100%" height="110" viewBox="0 0 160 110">
+              <circle cx="75" cy="55" r="42" fill="none" stroke="#F1F5F9" stroke-width="18"/>
+              <circle cx="75" cy="55" r="42" fill="none" stroke="#16A34A" stroke-width="18"
+                stroke-dasharray="197 66" stroke-dashoffset="0" stroke-linecap="butt"/>
+              <circle cx="75" cy="55" r="42" fill="none" stroke="#CA8A04" stroke-width="18"
+                stroke-dasharray="18 245" stroke-dashoffset="-197" stroke-linecap="butt"/>
+              <circle cx="75" cy="55" r="42" fill="none" stroke="#DC2626" stroke-width="18"
+                stroke-dasharray="30 233" stroke-dashoffset="-215" stroke-linecap="butt"/>
+              <text x="75" y="50" text-anchor="middle" font-size="18" font-weight="500" fill="#0F172A">2847</text>
+              <text x="75" y="63" text-anchor="middle" font-size="9" fill="#94A3B8">members</text>
+            </svg>
+            <div style="margin-top:4px;">
+              <div class="legend-item"><div class="legend-dot" style="background:#16A34A;"></div>Active — 2,624 (92%)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#CA8A04;"></div>Pending — 12 (0.5%)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#DC2626;"></div>Suspended — 211 (7.5%)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">Member Growth</div><div class="card-sub">Monthly registrations · last 12 months</div></div>
+          </div>
+          <div class="card-body">
+            <div class="sparkline" style="height:60px; align-items:flex-end; gap:4px;">
+              <div style="flex:1; border-radius:3px 3px 0 0; height:40%; background:#BFDBFE;"></div>
+              <div style="flex:1; border-radius:3px 3px 0 0; height:52%; background:#BFDBFE;"></div>
+              <div style="flex:1; border-radius:3px 3px 0 0; height:38%; background:#BFDBFE;"></div>
+              <div style="flex:1; border-radius:3px 3px 0 0; height:65%; background:#93C5FD;"></div>
+              <div style="flex:1; border-radius:3px 3px 0 0; height:55%; background:#BFDBFE;"></div>
+              <div style="flex:1; border-radius:3px 3px 0 0; height:70%; background:#60A5FA;"></div>
+              <div style="flex:1; border-radius:3px 3px 0 0; height:60%; background:#BFDBFE;"></div>
+              <div style="flex:1; border-radius:3px 3px 0 0; height:80%; background:#3B82F6;"></div>
+              <div style="flex:1; border-radius:3px 3px 0 0; height:72%; background:#BFDBFE;"></div>
+              <div style="flex:1; border-radius:3px 3px 0 0; height:88%; background:#2563EB;"></div>
+              <div style="flex:1; border-radius:3px 3px 0 0; height:94%; background:#1D4ED8;"></div>
+              <div style="flex:1; border-radius:3px 3px 0 0; height:100%; background:#1E40AF;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:9px; color:#94A3B8; margin-top:4px; padding:0 2px;">
+              <span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">Recent Activity</div><div class="card-sub">Live audit trail</div></div>
+          </div>
+          <div class="card-body">
+            <div class="activity-item">
+              <div class="act-dot" style="background:#DCFCE7; color:#166534;">✓</div>
+              <div><div class="act-text">Aminul Haque approved as member <strong>#20261</strong></div><div class="act-time">3 min ago · by Admin</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="act-dot" style="background:#EFF6FF; color:#1D4ED8;">⬆</div>
+              <div><div class="act-text">Nasima Begum promoted to <strong>Secretary, Dhaka Campus</strong></div><div class="act-time">18 min ago · by Admin</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="act-dot" style="background:#FEF9C3; color:#854D0E;">⏳</div>
+              <div><div class="act-text">New registration from <strong>Sylhet Campus</strong></div><div class="act-time">42 min ago</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="act-dot" style="background:#F3F0FF; color:#6D28D9;">🏛</div>
+              <div><div class="act-text">New unit created: <strong>Mymensingh Ward Committee</strong></div><div class="act-time">2 hrs ago · by Admin</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-header">
+          <div><div class="card-title">Organizational Hierarchy</div><div class="card-sub">7-level structure · Central → Campus</div></div>
+          <div class="card-sub">GET /api/admin/units</div>
+        </div>
+        <div class="card-body">
+          <div class="hier-grid">
+            <div class="hier-node h-central"><div class="hier-label">CENTRAL</div><div class="hier-count">1</div><div style="font-size:9px; margin-top:2px; opacity:0.7;">Committee</div></div>
+            <div class="hier-node h-division"><div class="hier-label">DIVISION</div><div class="hier-count">8</div><div style="font-size:9px; margin-top:2px; opacity:0.7;">Committees</div></div>
+            <div class="hier-node h-district"><div class="hier-label">DISTRICT</div><div class="hier-count">64</div><div style="font-size:9px; margin-top:2px; opacity:0.7;">Committees</div></div>
+            <div class="hier-node h-upazila"><div class="hier-label">UPAZILA</div><div class="hier-count">495</div><div style="font-size:9px; margin-top:2px; opacity:0.7;">Active</div></div>
+            <div class="hier-node h-union"><div class="hier-label">UNION</div><div class="hier-count">87</div><div style="font-size:9px; margin-top:2px; opacity:0.7;">Active</div></div>
+            <div class="hier-node h-ward"><div class="hier-label">WARD</div><div class="hier-count">42</div><div style="font-size:9px; margin-top:2px; opacity:0.7;">Active</div></div>
+            <div class="hier-node h-campus"><div class="hier-label">CAMPUS</div><div class="hier-count">121</div><div style="font-size:9px; margin-top:2px; opacity:0.7;">Institutions</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -21,8 +21,8 @@ const Login = () => {
         setLoading(true);
         setError('');
         try {
-            await login({ email, password });
-            const dest = from ?? (user?.user_type === 'admin' ? '/dashboard/admin' : '/dashboard/member');
+            const { user: userData } = await login({ email, password });
+            const dest = from ?? (userData?.user_type === 'admin' ? '/dashboard/admin' : '/dashboard/member');
             navigate(dest, { replace: true });
         } catch (err) {
             setError(err.response?.data?.message ?? err.response?.data?.error ?? 'Login failed. Check your credentials.');

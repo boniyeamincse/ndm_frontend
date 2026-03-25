@@ -1,0 +1,16 @@
+# Task 02 — Database And Backend Core
+
+| S.L | Task Name | Description | Dev Status | Test Status | Upload Status |
+| --- | --- | --- | --- | --- | --- |
+| 13 | Review database schema completeness | Validate all migrations for users, members, units, roles, positions, permissions, tasks, audit logs, and document fields. This task can be implemented using AI-assisted development. | Pending | Pending | Pending |
+| 14 | Validate enum usage | Ensure `Gender`, `MemberStatus`, and `UnitType` enums are applied consistently in models, validation, and business rules. This task can be implemented using AI-assisted development. | Pending | Pending | Pending |
+| 15 | Harden member table constraints | Review indexes, uniqueness, nullable fields, and foreign keys for member lifecycle and reporting requirements. This task can be implemented using AI-assisted development. | Pending | Pending | Pending |
+| 16 | Harden organizational unit hierarchy | Verify recursive unit relationships, parent-child integrity, activation rules, and reporting support. This task can be implemented using AI-assisted development. | Pending | Pending | Pending |
+| 17 | Harden role and permission pivots | Review `roles`, `permissions`, and `role_permissions` schema and prevent duplicate or invalid assignments. This task can be implemented using AI-assisted development. | Pending | Pending | Pending |
+| 18 | Harden member role schema | Verify `member_roles` supports promotion, auditability, and active role resolution for authorization. This task can be implemented using AI-assisted development. | Pending | Pending | Pending |
+| 19 | Harden task and assignment schema | Review task lifecycle, due date handling, parent tasks, assignment uniqueness, and completion fields. This task can be implemented using AI-assisted development. | Pending | Pending | Pending |
+| 20 | Review model relationships | Verify all Laravel model relations, casts, scopes, and helper methods across user, member, unit, role, task, and audit domains. This task can be implemented using AI-assisted development. | Pending | Pending | Pending |
+| 21 | Refine resource/response layer | Add or improve API resources for public member views, private member views, admin lists, tasks, roles, and units. This task can be implemented using AI-assisted development. | Pending | Pending | Pending |
+| 22 | Review seeder sequencing | Confirm `DatabaseSeeder`, admin, unit, role, and permission seeders run in a safe and deterministic order. This task can be implemented using AI-assisted development. | Pending | Pending | Pending |
+| 23 | Add factory coverage for domain models | Create or expand factories for members, units, roles, positions, tasks, and assignments to support testing and seeding. This task can be implemented using AI-assisted development. | Pending | Pending | Pending |
+| 24 | Document schema-to-feature mapping | Produce a table that maps each database table to business features, controllers, and tests. This task can be implemented using AI-assisted development. | Pending | Pending | Pending |
