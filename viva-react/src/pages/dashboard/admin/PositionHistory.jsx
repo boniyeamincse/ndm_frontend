@@ -1,1 +1,5 @@
-import React from 'react';\n\nconst  = () => <div> Page</div>;\n\nexport default ;
+import React from "react";
+
+const PositionHistory = () => <div className="p-8 text-gray-700">PositionHistory — coming soon</div>;
+
+export default PositionHistory;

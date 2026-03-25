@@ -29,7 +29,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             // ── Account fields ────────────────────────────────────────
-            'email'    => ['required', 'string', 'email:rfc,dns', 'max:191', 'unique:users,email'],
+            'email'    => ['required', 'string', 'email:rfc', 'max:191', 'unique:users,email'],
             'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()],
 
             // ── Personal fields ───────────────────────────────────────
@@ -43,7 +43,7 @@ class RegisterRequest extends FormRequest
 
             // ── Contact fields ────────────────────────────────────────
             // Bangladesh mobile: starts with +8801 or 01, digit 3-9 (operator), 8 digits
-            'mobile'  => ['nullable', 'string', 'regex:/^(\+8801|01)[3-9]\d{8}$/', 'unique:members,mobile'],
+            'mobile'  => ['required', 'string', 'regex:/^(\+8801|01)[3-9]\d{8}$/', 'unique:members,mobile'],
             'phone'   => ['nullable', 'string', 'max:20'],
             'present_address'   => ['nullable', 'string', 'max:500'],
             'permanent_address' => ['nullable', 'string', 'max:500'],

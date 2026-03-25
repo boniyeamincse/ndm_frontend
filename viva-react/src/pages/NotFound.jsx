@@ -1,1 +1,5 @@
-import React from 'react';\n\nconst  = () => <div className='pt-20'> Page</div>;\n\nexport default ;
+import React from "react";
+
+const NotFound = () => <div className="p-8 text-gray-700">NotFound — coming soon</div>;
+
+export default NotFound;

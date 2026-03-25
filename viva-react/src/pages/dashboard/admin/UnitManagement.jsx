@@ -1,1 +1,5 @@
-import React from 'react';\n\nconst  = () => <div> Page</div>;\n\nexport default ;
+import React from "react";
+
+const UnitManagement = () => <div className="p-8 text-gray-700">UnitManagement — coming soon</div>;
+
+export default UnitManagement;

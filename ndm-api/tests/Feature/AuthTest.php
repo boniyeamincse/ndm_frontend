@@ -19,6 +19,7 @@ class AuthTest extends TestCase
             'password' => 'Password@123',
             'password_confirmation' => 'Password@123',
             'full_name' => 'Test Member',
+            'mobile' => '01712345678',
             'phone' => '01712345678',
         ]);
 
@@ -119,7 +120,9 @@ class AuthTest extends TestCase
             'father_name' => 'Father Name',
             'mother_name' => 'Mother Name',
             'nid_or_bc' => '1234567890',
+            'mobile' => '01711112222',
             'phone' => '01711111111',
+            'blood_group' => 'A+',
             'emergency_contact_name' => 'Emergency Name',
             'emergency_contact_phone' => '01700000000',
             'skills' => 'Laravel, React',

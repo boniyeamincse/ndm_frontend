@@ -74,6 +74,7 @@ class AuthController extends Controller
             'join_year' => now()->year,
             'status' => 'pending',
             'organizational_unit_id' => $request->input('organizational_unit_id'),
+            'mobile' => $request->input('mobile'),
         ]);
 
         return response()->json([

@@ -1,25 +1,31 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { authService } from '../services/api';
-import Button from '../components/ui/Button';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import Button from '../../components/ui/Button';
 
 const Login = () => {
-    const [email, setEmail] = useState('admin@ndm.org.bd');
-    const [password, setPassword] = useState('password');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState(false);
+    const navigate  = useNavigate();
+    const location  = useLocation();
+    const { login, user } = useAuth();
+    const [email, setEmail]       = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading]   = useState(false);
+    const [error, setError]       = useState('');
+
+    // If already logged in, redirect
+    const from = location.state?.from?.pathname;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError('');
         try {
-            const data = await authService.login({ email, password });
-            console.log('Login Success:', data);
-            setSuccess(true);
+            await login({ email, password });
+            const dest = from ?? (user?.user_type === 'admin' ? '/dashboard/admin' : '/dashboard/member');
+            navigate(dest, { replace: true });
         } catch (err) {
-            setError(err.response?.data?.error || 'Login failed');
+            setError(err.response?.data?.message ?? err.response?.data?.error ?? 'Login failed. Check your credentials.');
         } finally {
             setLoading(false);
         }
@@ -34,10 +40,10 @@ const Login = () => {
             >
                 <div>
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-                        Admin Login Test
+                            Sign In to NDM
                     </h2>
                     <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-                        Testing connection to Laravel API
+                            Access your NDM Student Wing account
                     </p>
                 </div>
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -65,7 +71,6 @@ const Login = () => {
                     </div>
 
                     {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-                    {success && <p className="text-green-500 text-sm text-center font-bold">✅ Backend Login Success! Token Stored.</p>}
 
                     <div>
                         <Button
