@@ -28,10 +28,10 @@ Status logic for **Overall Status**:
 
 ## Summary
 
-- Total Tasks: 199
+- Total Tasks: 200
 - Completed: 10
 - In Progress: 96
-- Pending: 93
+- Pending: 94
 
 ## Development Phase Kickoff (2026-03-25)
 
@@ -61,7 +61,7 @@ Status logic for **Overall Status**:
 - **Membership Renewal And Re-Verification**: Tasks `180-184`
 - **Training And Cadre Development**: Tasks `185-189`
 - **Integration Hub And Mass Outreach Campaigns**: Tasks `190-194`
-- **Role-based Dashboard Design UI**: Tasks `195-199`
+- **Role-based Dashboard Design UI**: Tasks `195-200`
 
 ## Task 01 — Setup Foundation
 
@@ -355,8 +355,9 @@ Status logic for **Overall Status**:
 
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 195 | Build role-based landing redirection logic | Implement automated redirection logic during the login/auth lifecycle to land users on the appropriate role-based dashboard (Admin, Organizer, or Member). | Pending | Pending | Pending | Pending |
-| 196 | Implement dynamic role-based navigation menus | Build the sidebar and header navigation components that dynamically render menu items based on the user's active role and assigned permissions. | Pending | Pending | Pending | Pending |
-| 197 | Create role-specific dashboard summary widgets | Implement summarized KPI cards, active alerts, and task snapshots tailored specifically to the needs of each organizational role level. | Pending | Pending | Pending | Pending |
-| 198 | Build layout switching support for multi-role users | Add support for users with multiple roles to switch between dashboard views or aggregate data from different organizational levels. | Pending | Pending | Pending | Pending |
-| 199 | Standardize dashboard theme and branding per role | Apply role-specific visual cues, theme accents, and branding elements to the dashboard layouts to improve context awareness and user experience. | Pending | Pending | Pending | Pending |
+| 195 | [UI] Refactor DashboardLayout for Glassmorphism | Implement a premium, translucent theme with blur effects, fixed sidebars, and framer-motion staggered entry animations for dashboard widgets. | Pending | Pending | Pending | Pending |
+| 196 | [UI] Unify Sidebar & Permission-Gating | Create a single `RoleSidebar` component that dynamically filters navigation items based on the user's active role and assigned backend permissions. | Pending | Pending | Pending | Pending |
+| 197 | [UI] Build Premium Admin Metric Widgets | Design high-fidelity statistical cards with mini-charts (sparklines) for membership growth, status distribution, and unit-level heatmaps. | Pending | Pending | Pending | Pending |
+| 198 | [UI] Design Organizer-specific Dashboard | Build a tailored view for Unit Organizers that filters stats, tasks, and member lists to their specific assigned organizational unit. | Pending | Pending | Pending | Pending |
+| 199 | [UI] Enhance Member Dashboard Experience | Build an interactive member "at-a-glance" view with activity feeds, upcoming events, quick-access unit links, and improved ID card presence. | Pending | Pending | Pending | Pending |
+| 200 | [UI] Apply Role-specific Theming | Apply role-specific visual cues, theme accents, and branding elements to the dashboard layouts to improve context awareness and user experience. | Pending | Pending | Pending | Pending |
