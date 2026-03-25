@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Button from '../../../components/ui/Button';
 import { useAuth } from '../../../context/AuthContext';
 import { NDSM_MOTTO, NDSM_NAME, NDSM_SHORT_NAME } from '../../../constants/branding';
+import AuditLogs from './AuditLogs';
 
 const SETTINGS_SECTIONS = [
   { key: 'control-center', group: 'Control Center',             label: 'Overview',                    desc: 'Centralized supervision for modules, safeguards, governance, and operational controls.' },
@@ -452,6 +453,10 @@ const AdminSettings = () => {
       );
     }
 
+    if (activeSection.key === 'audit-logs') {
+      return <AuditLogs />;
+    }
+
     if (activeSection.key === 'profile' || activeSection.key === 'account' || activeSection.key === 'security') {
       return (
         <div className="grid md:grid-cols-2 gap-4">
@@ -473,8 +478,8 @@ const AdminSettings = () => {
     return (
       <div className="grid md:grid-cols-2 gap-4">
         <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/60">
-          <h3 className="text-sm font-semibold text-slate-800">Monitoring</h3>
-          <p className="text-sm text-slate-600 mt-2">Review system-level activity, event traces, and administrative operations.</p>
+          <h3 className="text-sm font-semibold text-slate-800">API & Integrations</h3>
+          <p className="text-sm text-slate-600 mt-2">Manage API token policies, webhook configurations, and third-party integrations.</p>
         </div>
         <div className="rounded-xl border border-slate-200 p-4 bg-white">
           <h3 className="text-sm font-semibold text-slate-800">Integration Controls</h3>

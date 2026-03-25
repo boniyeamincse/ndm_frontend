@@ -47,17 +47,22 @@ const activityMeta = (action) => {
 const StatCard = ({ label, value, bar, barColor, sub, accent }) => (
     <motion.div
         whileHover={{ y: -4, transition: { duration: 0.2 } }}
-        className="bg-white/70 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm p-6 flex flex-col gap-2 transition-shadow hover:shadow-lg"
+        className="bg-gradient-to-br from-white via-white/95 to-primary-50/30 backdrop-blur-md rounded-2xl border border-white/50 shadow-card hover:shadow-card-hover p-6 flex flex-col gap-3 transition-all"
     >
-        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{label}</p>
-        <p className={`text-4xl font-black ${accent ?? 'text-slate-900'}`}>{toNum(value).toLocaleString()}</p>
+        <p className="text-[10px] font-bold uppercase tracking-widest text-primary-400">{label}</p>
+        <p className={`text-4xl font-black ${accent ?? 'text-primary-900'}`}>{toNum(value).toLocaleString()}</p>
         {bar !== undefined && (
-            <div className="h-1.5 bg-slate-100/50 rounded-full overflow-hidden mt-1">
-                <div className={`h-full rounded-full ${barColor ?? 'bg-blue-500'}`} style={{ width: `${bar}%` }} />
+            <div className="h-2 bg-primary-100/40 rounded-full overflow-hidden mt-1">
+                <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: `${bar}%` }}
+                    transition={{ duration: 1, delay: Math.random() * 0.3 }}
+                    className={`h-full rounded-full ${barColor ?? 'bg-primary-500'}`} 
+                />
             </div>
         )}
-        {sub && <p className="text-[10px] font-medium text-slate-400 flex items-center gap-1.5">
-            <span className={`w-1 h-1 rounded-full ${barColor ?? 'bg-blue-500'}`} />
+        {sub && <p className="text-[10px] font-medium text-primary-500 flex items-center gap-1.5">
+            <span className={`w-1.5 h-1.5 rounded-full ${barColor ?? 'bg-primary-500'}`} />
             {sub}
         </p>}
     </motion.div>
@@ -68,16 +73,16 @@ const ActionCard = ({ to, label, desc, icon }) => (
     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
         <Link
             to={to}
-            className="flex items-center gap-4 bg-white/70 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm p-5 hover:shadow-md hover:border-primary/30 transition-all group"
+            className="flex items-center gap-4 bg-gradient-to-br from-white via-white/95 to-primary-50/20 backdrop-blur-md rounded-2xl border border-primary-200/40 shadow-card hover:shadow-card-hover p-5 hover:border-primary-300/60 transition-all group"
         >
-            <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary text-2xl flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-100 to-primary-50 text-primary-600 text-2xl flex items-center justify-center shrink-0 group-hover:from-primary-500 group-hover:to-primary-600 group-hover:text-white transition-all shadow-sm shadow-primary-500/20">
                 {icon}
             </div>
             <div>
                 <p className="font-bold text-slate-900 text-sm">{label}</p>
-                <p className="text-[10px] text-slate-400 mt-0.5">{desc}</p>
+                <p className="text-[10px] text-primary-500 mt-0.5 font-medium">{desc}</p>
             </div>
-            <span className="ml-auto text-slate-300 group-hover:text-primary text-lg translate-x-0 group-hover:translate-x-1 transition-transform">›</span>
+            <span className="ml-auto text-primary-300 group-hover:text-primary-600 text-lg translate-x-0 group-hover:translate-x-1 transition-transform">›</span>
         </Link>
     </motion.div>
 );
