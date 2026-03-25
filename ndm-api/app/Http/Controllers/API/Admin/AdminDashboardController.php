@@ -18,43 +18,66 @@ class AdminDashboardController extends Controller
     {
         $members = Member::query();
 
-        $stats = [
-            'total_members'     => (clone $members)->count(),
-            'active_members'    => (clone $members)->where('status', 'active')->count(),
-            'pending_approval'  => (clone $members)->where('status', 'pending')->count(),
-            'suspended_members' => (clone $members)->where('status', 'suspended')->count(),
-            'expelled_members'  => (clone $members)->where('status', 'expelled')->count(),
-            'total_units'       => OrganizationalUnit::where('is_active', 1)->count(),
-            'total_tasks'       => MemberTask::count(),
-            'open_tasks'        => MemberTask::whereIn('status', ['pending', 'in_progress'])->count(),
-        ];
-
-        $recentActivity = AuditLog::with('user')
-            ->orderByDesc('performed_at')
-            ->limit(10)
-            ->get()
-            ->map(fn ($log) => [
-                'action'       => $log->action,
-                'performed_by' => $log->user?->email,
-                'ip'           => $log->ip_address,
-                'at'           => $log->performed_at?->diffForHumans(),
-            ]);
-
         $membersByStatus = Member::selectRaw('status, COUNT(*) as total')
             ->groupBy('status')
-            ->pluck('total', 'status');
+            ->pluck('total', 'status')
+            ->map(fn ($v) => (int) $v);
 
-        $membersByYear = Member::selectRaw('join_year, COUNT(*) as total')
+        $membersByYear = Member::selectRaw('join_year, COUNT(*) as count')
             ->groupBy('join_year')
             ->orderBy('join_year')
-            ->pluck('total', 'join_year');
+            ->get()
+            ->map(fn ($row) => [
+                'year'  => (int) $row->join_year,
+                'count' => (int) $row->count,
+            ])
+            ->values();
 
-        return response()->json([
-            'success'         => true,
-            'stats'           => $stats,
+        $payload = [
+            'members' => [
+                'total'     => (clone $members)->count(),
+                'active'    => (clone $members)->where('status', 'active')->count(),
+                'pending'   => (clone $members)->where('status', 'pending')->count(),
+                'suspended' => (clone $members)->where('status', 'suspended')->count(),
+                'expelled'  => (clone $members)->where('status', 'expelled')->count(),
+            ],
+            'units' => [
+                'total' => OrganizationalUnit::where('is_active', 1)->count(),
+            ],
+            'tasks' => [
+                'total' => MemberTask::count(),
+                'open'  => MemberTask::whereIn('status', ['open', 'pending', 'in_progress'])->count(),
+            ],
             'members_by_status' => $membersByStatus,
             'members_by_year'   => $membersByYear,
-            'recent_activity'   => $recentActivity,
+        ];
+
+        return response()->json([
+            'success' => true,
+            'data'    => $payload,
+        ]);
+    }
+
+    public function recentActivity(): JsonResponse
+    {
+        $logs = AuditLog::with('user')
+            ->orderByDesc('performed_at')
+            ->limit(20)
+            ->get()
+            ->map(fn ($log) => [
+                'id'           => $log->id,
+                'action'       => $log->action,
+                'model_type'   => $log->model_type,
+                'model_id'     => $log->model_id,
+                'performed_at' => $log->performed_at,
+                'performed_by' => $log->user?->email,
+                'ip_address'   => $log->ip_address,
+            ])
+            ->values();
+
+        return response()->json([
+            'success' => true,
+            'data'    => $logs,
         ]);
     }
 }

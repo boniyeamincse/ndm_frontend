@@ -9,8 +9,10 @@ use App\Models\MemberRole;
 use App\Models\User;
 use App\Services\AuditLogService;
 use App\Services\DocumentUploadService;
+use App\Services\MemberIdService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Admin — Full member lifecycle management.
@@ -30,9 +32,80 @@ use Illuminate\Http\Request;
 class AdminMemberController extends Controller
 {
     public function __construct(
-        private readonly AuditLogService      $auditLog,
-        private readonly DocumentUploadService $docService,
+        private readonly AuditLogService       $auditLog,
+        private readonly DocumentUploadService  $docService,
+        private readonly MemberIdService        $memberIdService,
     ) {}
+
+    // ── Store (admin manual add) ──────────────────────────────────────
+
+    public function store(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'full_name'              => ['required', 'string', 'max:191'],
+            'email'                  => ['required', 'email', 'max:191', 'unique:users,email'],
+            'password'               => ['required', 'string', 'min:8', 'max:72'],
+            'mobile'                 => ['nullable', 'string', 'max:20'],
+            'phone'                  => ['nullable', 'string', 'max:20'],
+            'institution'            => ['nullable', 'string', 'max:255'],
+            'department'             => ['nullable', 'string', 'max:191'],
+            'gender'                 => ['nullable', 'in:male,female,other'],
+            'date_of_birth'          => ['nullable', 'date', 'before:today'],
+            'blood_group'            => ['nullable', 'string', 'max:5'],
+            'organizational_unit_id' => ['nullable', 'integer', 'exists:organizational_units,id'],
+            'status'                 => ['nullable', 'in:active,pending'],
+            'join_year'              => ['nullable', 'integer', 'min:2000', 'max:2100'],
+            'present_address'        => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $user = User::create([
+            'email'     => $validated['email'],
+            'password'  => Hash::make($validated['password']),
+            'user_type' => 'member',
+            'is_active' => true,
+        ]);
+
+        $status   = $validated['status'] ?? 'active';
+        $memberId = $this->memberIdService->generate();
+        $joinYear = $validated['join_year'] ?? (int) now()->year;
+
+        $member = Member::create([
+            'user_id'                => $user->id,
+            'member_id'              => $memberId,
+            'full_name'              => $validated['full_name'],
+            'email'                  => $validated['email'],
+            'mobile'                 => $validated['mobile'] ?? null,
+            'phone'                  => $validated['phone'] ?? null,
+            'institution'            => $validated['institution'] ?? null,
+            'department'             => $validated['department'] ?? null,
+            'gender'                 => $validated['gender'] ?? null,
+            'date_of_birth'          => $validated['date_of_birth'] ?? null,
+            'blood_group'            => $validated['blood_group'] ?? null,
+            'organizational_unit_id' => $validated['organizational_unit_id'] ?? null,
+            'present_address'        => $validated['present_address'] ?? null,
+            'status'                 => $status,
+            'join_year'              => $joinYear,
+            'approved_by'            => $status === 'active' ? auth()->id() : null,
+            'approved_at'            => $status === 'active' ? now() : null,
+        ]);
+
+        if ($status === 'active') {
+            MemberRole::create([
+                'member_id'   => $member->id,
+                'role'        => 'general_member',
+                'assigned_by' => auth()->id(),
+                'assigned_at' => now(),
+            ]);
+        }
+
+        $this->auditLog->log('member.created_by_admin', $member, [], $member->only(['member_id', 'full_name', 'status']));
+
+        return response()->json([
+            'success' => true,
+            'message' => "Member {$memberId} created successfully.",
+            'data'    => $member,
+        ], 201);
+    }
 
     // ── List ─────────────────────────────────────────────────────────
 

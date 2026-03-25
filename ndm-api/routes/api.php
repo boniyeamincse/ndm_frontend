@@ -7,6 +7,8 @@ use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\UnitController;
 use App\Http\Controllers\API\Admin\AdminDashboardController;
 use App\Http\Controllers\API\Admin\AdminMemberController;
+use App\Http\Controllers\API\Admin\MemberExportController;
+use App\Http\Controllers\API\Admin\OrganizationalUnitController;
 use App\Http\Controllers\API\Admin\TaskController;
 use App\Http\Controllers\API\Admin\RoleController;
 use Illuminate\Support\Facades\Route;
@@ -65,19 +67,22 @@ Route::prefix('admin')
 
         // Member management
         Route::get   ('members',              [AdminMemberController::class, 'index']);
+        Route::post  ('members',              [AdminMemberController::class, 'store']);
         Route::get   ('members/pending',      [AdminMemberController::class, 'pending']);
-        Route::get   ('members/{id}',         [AdminMemberController::class, 'show']);
-        Route::put   ('members/{id}',         [AdminMemberController::class, 'update']);
-        Route::delete('members/{id}',         [AdminMemberController::class, 'destroy']);
-        Route::post  ('members/{id}/approve', [AdminMemberController::class, 'approve']);
-        Route::post  ('members/{id}/reject',  [AdminMemberController::class, 'reject']);
-        Route::post  ('members/{id}/suspend', [AdminMemberController::class, 'suspend']);
-        Route::post  ('members/{id}/expel',   [AdminMemberController::class, 'expel']);
-        Route::post  ('members/promote-role', [AdminMemberController::class, 'promoteRole']);
+        // Static/named routes MUST come before {id} wildcard
+        Route::get   ('members/export/pdf',     [MemberExportController::class, 'pdf']);
+        Route::get   ('members/export/csv',     [MemberExportController::class, 'csv']);
+        Route::post  ('members/promote-role',   [AdminMemberController::class, 'promoteRole']);
+        // Dynamic {id} wildcard routes
+        Route::get   ('members/{id}',           [AdminMemberController::class, 'show']);
+        Route::put   ('members/{id}',           [AdminMemberController::class, 'update']);
+        Route::delete('members/{id}',           [AdminMemberController::class, 'destroy']);
+        Route::post  ('members/{id}/approve',   [AdminMemberController::class, 'approve']);
+        Route::post  ('members/{id}/reject',    [AdminMemberController::class, 'reject']);
+        Route::post  ('members/{id}/suspend',   [AdminMemberController::class, 'suspend']);
+        Route::post  ('members/{id}/expel',     [AdminMemberController::class, 'expel']);
         Route::get   ('members/{id}/documents', [AdminMemberController::class, 'documents']);
-
-        // ID card (admin can download any)
-        Route::get('members/{id}/id-card', [IdCardController::class, 'downloadByAdmin']);
+        Route::get   ('members/{id}/id-card',   [IdCardController::class, 'downloadByAdmin']);
 
         // Task management
         Route::apiResource('tasks', TaskController::class);
@@ -90,4 +95,7 @@ Route::prefix('admin')
         Route::delete('roles/{id}',                     [RoleController::class, 'destroy']);
         Route::post  ('roles/{id}/permissions',         [RoleController::class, 'syncPermissions']);
         Route::get   ('permissions',                    [RoleController::class, 'permissions']);
+
+        // Organizational units
+        Route::get   ('units',                          [OrganizationalUnitController::class, 'index']);
     });
