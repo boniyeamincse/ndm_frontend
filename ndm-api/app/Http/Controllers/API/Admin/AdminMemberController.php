@@ -114,6 +114,8 @@ class AdminMemberController extends Controller
         $request->validate([
             'status'   => ['nullable', 'in:pending,active,suspended,expelled'],
             'unit_id'  => ['nullable', 'integer', 'exists:organizational_units,id'],
+            'unit_type' => ['nullable', 'in:central,division,district,upazila,union,ward,campus'],
+            'join_year' => ['nullable', 'integer', 'min:2000', 'max:2100'],
             'search'   => ['nullable', 'string', 'max:100'],
             'per_page' => ['nullable', 'integer', 'min:5', 'max:100'],
             'sort_by'  => ['nullable', 'in:full_name,join_year,status,created_at'],
@@ -123,6 +125,10 @@ class AdminMemberController extends Controller
         $query = Member::with(['user', 'organizationalUnit', 'positions.role'])
             ->when($request->status, fn ($q) => $q->where('status', $request->status))
             ->when($request->unit_id, fn ($q) => $q->where('organizational_unit_id', $request->unit_id))
+            ->when($request->unit_type, fn ($q) => $q->whereHas('organizationalUnit', function ($unitQuery) use ($request) {
+                $unitQuery->where('type', $request->unit_type);
+            }))
+            ->when($request->join_year, fn ($q) => $q->where('join_year', $request->join_year))
             ->when($request->search, function ($q) use ($request) {
                 $term = '%' . $request->search . '%';
                 $q->where(function ($inner) use ($term) {
@@ -228,7 +234,7 @@ class AdminMemberController extends Controller
 
         $old = $member->only(['status']);
         $member->update(['status' => 'suspended']);
-        $member->positions()->where('is_active', 1)->update(['is_active' => 0, 'relieved_at' => now()]);
+        $member->deactivateAllPositions('Suspended by admin.');
 
         $this->auditLog->log('member.suspended', $member, $old, $member->only(['status']), $request->input('reason'));
 
@@ -244,7 +250,7 @@ class AdminMemberController extends Controller
         $member = Member::findOrFail($id);
         $old    = $member->only(['status']);
         $member->update(['status' => 'expelled']);
-        $member->positions()->where('is_active', 1)->update(['is_active' => 0, 'relieved_at' => now()]);
+        $member->deactivateAllPositions('Expelled by admin.');
 
         $this->auditLog->log('member.expelled', $member, $old, $member->only(['status']), $request->input('reason'));
 

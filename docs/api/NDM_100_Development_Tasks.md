@@ -303,7 +303,7 @@
 - **How:** Extend `JsonResource`, include all fillable fields plus `status_label`
 - **Test:** `GET /api/members/me` with own JWT → should show all personal fields
 - **Google:** `laravel resource whenLoaded relationship`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -313,7 +313,7 @@
 - **How:** `auth()->user()->member->load(['unit', 'positions.role', 'positions.unit'])`
 - **Test:** `GET /api/members/me` with valid JWT → full profile with positions
 - **Google:** `laravel eager loading multiple levels`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -323,7 +323,7 @@
 - **How:** Create `UpdateProfileRequest` — allow: `full_name, phone, present_address, institution, department`. Block: `member_id, status, join_year`
 - **Test:** PUT `/api/members/me` with `{"phone": "01799999999"}` → profile updated
 - **Google:** `laravel form request only validated fields`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -333,7 +333,7 @@
 - **How:** `Storage::disk('public')->put()`, validate mime type, max 2MB, delete old photo if exists
 - **Test:** Upload a valid JPG → returns `photo_url`. Upload a PDF → returns 422
 - **Google:** `laravel storage disk public upload validation`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -343,7 +343,7 @@
 - **How:** `$request->validate(['photo' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048'])` → `PhotoService::upload()`
 - **Test:** Upload photo → `photo_url` returned and accessible in browser
 - **Google:** `laravel multipart file upload storage link`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -363,7 +363,7 @@
 - **How:** Full-text LIKE search on `full_name, member_id, institution`. Filter by `unit_id` if provided
 - **Test:** `GET /api/members/search?q=ahmed` → returns matching active members
 - **Google:** `laravel where like search paginate`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -373,7 +373,7 @@
 - **How:** Mock photo upload with `UploadedFile::fake()->image()`. Test 404 for pending members
 - **Test:** `php artisan test --filter MemberTest` → all pass
 - **Google:** `pest laravel uploadedfile fake image test`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -387,7 +387,7 @@
 - **How:** Accept query params: `status, unit_id, unit_type, join_year, search, sort_by, sort_dir, per_page`
 - **Test:** `GET /api/admin/members?status=pending` → only pending members returned
 - **Google:** `laravel query builder where filter paginate`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -397,7 +397,7 @@
 - **How:** `Member::pending()->with(['unit'])->latest()->paginate(20)`
 - **Test:** Register 3 members → pending endpoint should return all 3
 - **Google:** `laravel scope query paginate`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -407,7 +407,7 @@
 - **How:** Check `status === pending` → update to `active`, set `approved_by`, `approved_at`
 - **Test:** Approve pending member → login with their credentials → should succeed now
 - **Google:** `laravel update model multiple fields`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -417,7 +417,7 @@
 - **How:** Delete `user` record → CASCADE deletes `member` record too
 - **Test:** Reject member → user and member records should be gone from DB
 - **Google:** `laravel cascade delete relationship`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -427,7 +427,7 @@
 - **How:** Update `status = suspended` → call `deactivateAllPositions()`
 - **Test:** Suspend member with active position → login blocked, position count = 0
 - **Google:** `laravel update status revoke positions`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -437,7 +437,7 @@
 - **How:** Same as suspend but `status = expelled`
 - **Test:** Expel → all positions deactivated → `position_history` records with action `relieved`
 - **Google:** `laravel mass update related records`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -451,7 +451,7 @@
   ```
 - **Test:** Member with 3 positions → call method → 0 active positions, 3 history records
 - **Google:** `laravel model helper method bulk update`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -461,7 +461,7 @@
 - **How:** Allow updating: `full_name, institution, department, organizational_unit_id` etc.
 - **Test:** Admin updates member's `institution` → change reflected in profile
 - **Google:** `laravel admin update model fillable`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -471,7 +471,7 @@
 - **How:** Delete `user` → CASCADE handles member + positions
 - **Test:** Delete member → all DB records gone including positions and history
 - **Google:** `laravel delete cascade all related records`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -481,7 +481,7 @@
 - **How:** Create test admin user, create members in various states, test each action
 - **Test:** `php artisan test --filter AdminMemberTest` → all pass
 - **Google:** `pest laravel actingas admin test`
-- [ ] Done
+- [x] Done
 
 ---
 

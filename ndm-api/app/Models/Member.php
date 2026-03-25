@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class Member extends Model
 {
@@ -59,6 +61,8 @@ class Member extends Model
         'nid_or_bc' => 'encrypted',
     ];
 
+    protected $appends = ['photo_url'];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -82,6 +86,11 @@ class Member extends Model
         return $this->belongsTo(OrganizationalUnit::class);
     }
 
+    public function unit(): BelongsTo
+    {
+        return $this->organizationalUnit();
+    }
+
     public function positions(): HasMany
     {
         return $this->hasMany(MemberPosition::class);
@@ -95,5 +104,32 @@ class Member extends Model
     public function committeeRoles(): HasMany
     {
         return $this->hasMany(CommitteeRole::class);
+    }
+
+    public function getPhotoUrlAttribute(): ?string
+    {
+        return $this->photo_path ? Storage::disk('public')->url($this->photo_path) : null;
+    }
+
+    public function deactivateAllPositions(string $remarks = 'Position deactivated'): void
+    {
+        $activePositions = $this->positions()->where('is_active', true)->get();
+
+        foreach ($activePositions as $position) {
+            $position->update([
+                'is_active' => false,
+                'relieved_at' => now(),
+            ]);
+
+            PositionHistory::create([
+                'member_id' => $position->member_id,
+                'role_id' => $position->role_id,
+                'unit_id' => $position->unit_id,
+                'action' => 'relieved',
+                'performed_by' => Auth::id(),
+                'performed_at' => now(),
+                'remarks' => $remarks,
+            ]);
+        }
     }
 }

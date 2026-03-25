@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API\Member;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateProfileRequest;
+use App\Http\Resources\MemberResource;
 use App\Models\AuditLog;
 use App\Services\AuditLogService;
 use App\Services\DocumentUploadService;
@@ -19,6 +21,14 @@ class ProfileController extends Controller
     ) {}
 
     /**
+     * Task alias: GET /members/me
+     */
+    public function me(Request $request): JsonResponse
+    {
+        return $this->show($request);
+    }
+
+    /**
      * Get the authenticated member's profile.
      */
     public function show(Request $request): JsonResponse
@@ -31,20 +41,20 @@ class ProfileController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $member->load([
+            'data' => new MemberResource($member->load([
                 'organizationalUnit', 
                 'memberRole.role',
                 'positions.role',
-                'positions.organizationalUnit',
+                'positions.unit',
                 'committeeRoles.committee'
-            ])
+            ]))
         ]);
     }
 
     /**
      * Update the authenticated member's profile.
      */
-    public function update(Request $request): JsonResponse
+    public function update(UpdateProfileRequest $request): JsonResponse
     {
         $member = $request->user()->member;
 
@@ -52,57 +62,7 @@ class ProfileController extends Controller
             return response()->json(['message' => 'Member profile not found.'], 404);
         }
 
-        $updatableFields = [
-            'full_name',
-            'father_name',
-            'mother_name',
-            'date_of_birth',
-            'gender',
-            'blood_group',
-            'mobile',
-            'phone',
-            'institution',
-            'department',
-            'session',
-            'present_address',
-            'permanent_address',
-            'division',
-            'district',
-            'upazila',
-            'union',
-            'ward',
-            'emergency_contact_name',
-            'emergency_contact_phone',
-        ];
-
-        $validator = Validator::make($request->only($updatableFields), [
-            'full_name' => 'required|string|max:255',
-            'father_name' => 'nullable|string|max:255',
-            'mother_name' => 'nullable|string|max:255',
-            'date_of_birth' => 'nullable|date|before:today',
-            'gender' => 'nullable|in:male,female,other',
-            'blood_group' => 'nullable|string|max:5',
-            'mobile' => 'nullable|string|max:20',
-            'phone' => 'nullable|string|max:20',
-            'institution' => 'nullable|string|max:255',
-            'department' => 'nullable|string|max:191',
-            'session' => 'nullable|string|max:50',
-            'present_address' => 'required|string|max:500',
-            'permanent_address' => 'required|string|max:500',
-            'division' => 'nullable|string|max:100',
-            'district' => 'nullable|string|max:100',
-            'upazila' => 'nullable|string|max:100',
-            'union' => 'nullable|string|max:100',
-            'ward' => 'nullable|string|max:100',
-            'emergency_contact_name' => 'nullable|string|max:255',
-            'emergency_contact_phone' => 'nullable|string|max:20',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $validated = $validator->validated();
+        $validated = $request->validated();
         $oldData = $member->only(array_keys($validated));
 
         $member->update($validated);
@@ -113,7 +73,13 @@ class ProfileController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Profile updated successfully!',
-            'data' => $member->fresh(['organizationalUnit'])
+            'data' => new MemberResource($member->fresh([
+                'organizationalUnit',
+                'memberRole.role',
+                'positions.role',
+                'positions.unit',
+                'committeeRoles.committee'
+            ]))
         ]);
     }
 

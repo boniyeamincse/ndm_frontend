@@ -23,9 +23,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('units/campus', [UnitController::class, 'index']);
 Route::get('news', [NewsController::class, 'index']);
 Route::get('news/{slug}', [NewsController::class, 'show']);
+Route::get('members/search', [MemberController::class, 'search']);
 
 // Public member profile (by NDM member ID string, e.g. NDM-SW-2026-0001)
-Route::get('members/{member_id}', [MemberController::class, 'publicProfile']);
+Route::get('members/{member_id}', [MemberController::class, 'publicProfile'])
+    ->where('member_id', '^(?!me$).+');
 
 // ── Auth ────────────────────────────────────────────────────────────────────
 
@@ -49,6 +51,9 @@ Route::prefix('auth')->middleware('api')->group(function () {
 Route::middleware(['auth:api', 'active.member', 'audit'])->group(function () {
 
     // Profile
+    Route::get ('members/me',       [ProfileController::class, 'me']);
+    Route::put ('members/me',       [ProfileController::class, 'update']);
+    Route::post('members/me/photo', [ProfileController::class, 'uploadPhoto']);
     Route::get ('profile',       [ProfileController::class, 'show']);
     Route::put ('profile',       [ProfileController::class, 'update']);
     Route::put ('profile/password', [ProfileController::class, 'changePassword']);
