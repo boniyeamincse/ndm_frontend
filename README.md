@@ -1,43 +1,94 @@
-# 🏛️ NDM Student Movement — Frontend Platform
+# NDM Student Movement Monorepo
 
-A professional, scalable, and responsive web platform for the NDM Student Movement, built with React, Vite, and Tailwind CSS.
+This repository contains the NDM Student Movement platform:
+- `viva-react` → Frontend web app (React + Vite + Tailwind)
+- `ndm-api` → Backend API (Laravel + JWT auth package)
+- `docs` → Product, API, and implementation blueprints
 
-## 🚀 Current Project Status
-We are currently in the **Infrastructure & Design System** phase. The foundation of the application is fully implemented, including routing, global state, and decentralized design tokens.
+## Project Structure
 
-### ✅ Completed Milestones
-- **Task 01**: Project Initialization (Vite + React + Tailwind v3 + Router + Framer Motion)
-- **Task 02**: Modular Architecture & Scalable Folder Structure
-- **Task 03**: 8-Page Routing System with Lazy Loading
-- **Task 04**: Global State Management (AppContext with useReducer)
-- **Task 05**: Centralized Theme Constants (Colors, Fonts, Shadows)
-- **Task 06**: Localized Mock Data (64 Districts, Leaders, News, Activities)
-- **Task 07**: Professional Custom Hooks Library (useScroll, useInView, etc.)
-- **Task 08**: Environment Variable Validation and Configuration
-- **Task 11**: Global CSS Variables & Modern Reset
-- **Task 12**: Brand Typography System (Playfair Display & DM Sans)
-- **Task 13**: High-Performance Reusable Button System
-- **Task 21**: Glassmorphic Navbar with Responsive Mobile Menu
-- **Task 23**: Professional Multi-Column Footer System
-- **Task 31**: Modern, Animated Home Hero Section
+```text
+ndm/
+├── docs/
+│   ├── NDM-100-AI-Prompts-Blueprint.md
+│   └── api/
+│       ├── NDM_100_Development_Tasks.md
+│       └── NDM_Laravel_API_Blueprint.md
+├── ndm-api/      # Laravel backend API
+└── viva-react/   # React frontend
+```
 
-## 🛠️ Technology Stack
-- **Framework**: [React 19](https://react.dev/)
-- **Build Tool**: [Vite 8](https://vitejs.dev/)
-- **Styling**: [Tailwind CSS v3](https://tailwindcss.com/)
-- **Animation**: [Framer Motion](https://www.framer.com/motion/)
-- **Routing**: [React Router v6/7](https://reactrouter.com/)
+## Current Status
 
-## 📁 Project Organization
-- **`/viva-react`**: Frontend (React + Vite)
-- **`/ndm-api`**: Backend (Laravel 11 API)
-- **`/docs`**: API Blueprint and Roadmap
+### Frontend (`viva-react`)
+- Core architecture is in place (routing, context state, reusable design foundations).
+- Built with React 19, Vite 8, Tailwind CSS 3, and Framer Motion.
 
-## 🏃 How to Run Locally
-1. Navigate to the project directory: `cd viva-react`
-2. Install dependencies: `npm install`
-3. Start the development server: `npm run dev`
-4. Open the browser at `http://localhost:5173` (or the port shown in terminal)
+### Backend (`ndm-api`)
+- Laravel project is set up with JWT package installed (`tymon/jwt-auth`).
+- Domain models/migrations exist for the membership system.
+- API implementation is guided by the blueprint docs in `docs/api`.
 
----
-*Created and maintained by Antigravity AI for NDM Student Movement.*
+## Requirements
+
+- Node.js 20+
+- npm 10+
+- PHP 8.3+
+- Composer 2+
+- SQLite (default) or MySQL/PostgreSQL
+
+## Quick Start
+
+### 1) Run Frontend
+
+```bash
+cd viva-react
+npm install
+npm run dev
+```
+
+Open the URL shown by Vite (usually `http://localhost:5173`).
+
+### 2) Run Backend API
+
+```bash
+cd ndm-api
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+npm install
+php artisan serve
+```
+
+API usually runs on `http://127.0.0.1:8000`.
+
+## Useful Commands
+
+### Frontend
+```bash
+cd viva-react
+npm run dev
+npm run build
+npm run preview
+```
+
+### Backend
+```bash
+cd ndm-api
+php artisan serve
+php artisan migrate
+php artisan test
+composer run dev
+```
+
+## Documentation Index
+
+- Product/UI prompt blueprint: `docs/NDM-100-AI-Prompts-Blueprint.md`
+- Backend implementation tasks: `docs/api/NDM_100_Development_Tasks.md`
+- Backend architecture/API blueprint: `docs/api/NDM_Laravel_API_Blueprint.md`
+
+## Notes
+
+- The backend API blueprint is comprehensive and may describe endpoints/features beyond the currently wired routes. Use it as the implementation target.
+- The `ndm-api/README.md` is still the default Laravel template; this root README is the project-level entry point.
