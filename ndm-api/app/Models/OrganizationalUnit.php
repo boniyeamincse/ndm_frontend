@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Enums\UnitType;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrganizationalUnit extends Model
 {
+    use HasFactory;
     protected $fillable = ['name', 'type', 'parent_id', 'code', 'description', 'is_active'];
 
     protected $casts = ['type' => UnitType::class];
