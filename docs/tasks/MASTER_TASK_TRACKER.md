@@ -28,10 +28,10 @@ Status logic for **Overall Status**:
 
 ## Summary
 
-- Total Tasks: 194
+- Total Tasks: 199
 - Completed: 10
 - In Progress: 96
-- Pending: 88
+- Pending: 93
 
 ## Development Phase Kickoff (2026-03-25)
 
@@ -61,6 +61,7 @@ Status logic for **Overall Status**:
 - **Membership Renewal And Re-Verification**: Tasks `180-184`
 - **Training And Cadre Development**: Tasks `185-189`
 - **Integration Hub And Mass Outreach Campaigns**: Tasks `190-194`
+- **Role-based Dashboard Design UI**: Tasks `195-199`
 
 ## Task 01 — Setup Foundation
 
@@ -349,3 +350,13 @@ Status logic for **Overall Status**:
 | 192 | Build audience segmentation and targeting engine | Create targeting rules for all-members, role-based, unit-based, status-based, and custom-segment outreach campaigns with preview and count estimation. | Pending | Pending | Pending | Pending |
 | 193 | Build email campaign to all members workflow | Implement bulk email campaign workflows with template management, send scheduling, send throttling, unsubscribe handling, and delivery/open/click analytics for all-member campaigns. | Pending | Pending | Pending | Pending |
 | 194 | Add compliance and communication governance controls | Implement consent checks, unsubscribe enforcement, campaign approval policies, content moderation checks, and communication audit history for all outreach channels. | Pending | Pending | Pending | Pending |
+
+## Task 22 — Role-based Dashboard Design UI
+
+| ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| 195 | Build role-based landing redirection logic | Implement automated redirection logic during the login/auth lifecycle to land users on the appropriate role-based dashboard (Admin, Organizer, or Member). | Pending | Pending | Pending | Pending |
+| 196 | Implement dynamic role-based navigation menus | Build the sidebar and header navigation components that dynamically render menu items based on the user's active role and assigned permissions. | Pending | Pending | Pending | Pending |
+| 197 | Create role-specific dashboard summary widgets | Implement summarized KPI cards, active alerts, and task snapshots tailored specifically to the needs of each organizational role level. | Pending | Pending | Pending | Pending |
+| 198 | Build layout switching support for multi-role users | Add support for users with multiple roles to switch between dashboard views or aggregate data from different organizational levels. | Pending | Pending | Pending | Pending |
+| 199 | Standardize dashboard theme and branding per role | Apply role-specific visual cues, theme accents, and branding elements to the dashboard layouts to improve context awareness and user experience. | Pending | Pending | Pending | Pending |
