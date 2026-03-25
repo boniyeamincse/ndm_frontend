@@ -7,6 +7,7 @@ use App\Http\Requests\AssignTaskRequest;
 use App\Models\Member;
 use App\Models\MemberTask;
 use App\Models\TaskAssignment;
+use Illuminate\Support\Facades\DB;
 use App\Services\AuditLogService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -97,6 +98,78 @@ class TaskController extends Controller
         $task->delete(); // soft-deletes
 
         return response()->json(['success' => true, 'message' => 'Task deleted.']);
+    }
+
+    public function summary(Request $request): JsonResponse
+    {
+        $request->validate([
+            'unit_id' => ['nullable', 'integer', 'exists:organizational_units,id'],
+            'from' => ['nullable', 'date'],
+            'to' => ['nullable', 'date', 'after_or_equal:from'],
+        ]);
+
+        $taskQuery = MemberTask::query()
+            ->when($request->filled('from'), fn ($query) => $query->whereDate('created_at', '>=', $request->input('from')))
+            ->when($request->filled('to'), fn ($query) => $query->whereDate('created_at', '<=', $request->input('to')))
+            ->when($request->filled('unit_id'), function ($query) use ($request) {
+                $query->whereHas('assignments.member', fn ($memberQuery) =>
+                    $memberQuery->where('organizational_unit_id', $request->integer('unit_id'))
+                );
+            });
+
+        $overview = [
+            'total' => (clone $taskQuery)->count(),
+            'open' => (clone $taskQuery)->whereIn('status', ['open', 'in_progress'])->count(),
+            'completed' => (clone $taskQuery)->where('status', 'completed')->count(),
+            'cancelled' => (clone $taskQuery)->where('status', 'cancelled')->count(),
+            'overdue' => (clone $taskQuery)
+                ->whereDate('due_date', '<', now()->toDateString())
+                ->whereNotIn('status', ['completed', 'cancelled'])
+                ->count(),
+        ];
+
+        $byPriority = (clone $taskQuery)
+            ->selectRaw('priority, COUNT(*) as count')
+            ->groupBy('priority')
+            ->orderByRaw("FIELD(priority, 'urgent', 'high', 'normal', 'low')")
+            ->get()
+            ->map(fn ($row) => ['priority' => $row->priority, 'count' => (int) $row->count])
+            ->values();
+
+        $today = now()->toDateString();
+
+        $unitBreakdown = DB::table('task_assignments')
+            ->join('members', 'task_assignments.member_id', '=', 'members.id')
+            ->leftJoin('organizational_units', 'members.organizational_unit_id', '=', 'organizational_units.id')
+            ->join('member_tasks', 'task_assignments.task_id', '=', 'member_tasks.id')
+            ->whereNull('member_tasks.deleted_at')
+            ->when($request->filled('from'), fn ($query) => $query->whereDate('member_tasks.created_at', '>=', $request->input('from')))
+            ->when($request->filled('to'), fn ($query) => $query->whereDate('member_tasks.created_at', '<=', $request->input('to')))
+            ->when($request->filled('unit_id'), fn ($query) => $query->where('members.organizational_unit_id', $request->integer('unit_id')))
+            ->selectRaw("COALESCE(organizational_units.id, 0) as unit_id, COALESCE(organizational_units.name, 'Unassigned') as unit_name,
+                SUM(CASE WHEN member_tasks.status IN ('open','in_progress') THEN 1 ELSE 0 END) as open_count,
+                SUM(CASE WHEN member_tasks.status = 'completed' THEN 1 ELSE 0 END) as completed_count,
+                SUM(CASE WHEN member_tasks.due_date < ? AND member_tasks.status NOT IN ('completed','cancelled') THEN 1 ELSE 0 END) as overdue_count", [$today])
+            ->groupBy('organizational_units.id', 'organizational_units.name')
+            ->orderByDesc('overdue_count')
+            ->get()
+            ->map(fn ($row) => [
+                'unit_id' => $row->unit_id === 0 ? null : (int) $row->unit_id,
+                'unit_name' => $row->unit_name,
+                'open' => (int) $row->open_count,
+                'completed' => (int) $row->completed_count,
+                'overdue' => (int) $row->overdue_count,
+            ])
+            ->values();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'overview' => $overview,
+                'by_priority' => $byPriority,
+                'by_unit' => $unitBreakdown,
+            ],
+        ]);
     }
 
     // ── Member: Progress ──────────────────────────────────────────────

@@ -102,6 +102,7 @@ Route::prefix('admin')
         Route::get   ('members/{id}/id-card',   [IdCardController::class, 'downloadByAdmin']);
 
         // Task management
+        Route::get('tasks/summary', [TaskController::class, 'summary']);
         Route::apiResource('tasks', TaskController::class);
 
         // RBAC
