@@ -7,6 +7,10 @@ use App\Http\Requests\PromoteMemberRoleRequest;
 use App\Models\Member;
 use App\Models\MemberRole;
 use App\Models\User;
+use App\Notifications\MemberApprovedNotification;
+use App\Notifications\MemberExpelledNotification;
+use App\Notifications\MemberRejectedNotification;
+use App\Notifications\MemberSuspendedNotification;
 use App\Services\AuditLogService;
 use App\Services\DocumentUploadService;
 use App\Services\MemberIdService;
@@ -193,6 +197,8 @@ class AdminMemberController extends Controller
 
         $this->auditLog->log('member.approved', $member, $old, $member->only(['status', 'approved_by', 'approved_at']));
 
+        $member->user?->notify(new MemberApprovedNotification($member));
+
         return response()->json([
             'success' => true,
             'message' => "Member {$member->member_id} approved successfully.",
@@ -213,6 +219,9 @@ class AdminMemberController extends Controller
         }
 
         $this->auditLog->log('member.rejected', $member, $member->only(['status']), [], $request->input('reason'));
+
+        // Notify the registrant before deleting the user record
+        $member->user?->notify(new MemberRejectedNotification($member, $request->input('reason')));
 
         // Cascade-deletes member record via DB constraint
         User::destroy($member->user_id);
@@ -238,6 +247,8 @@ class AdminMemberController extends Controller
 
         $this->auditLog->log('member.suspended', $member, $old, $member->only(['status']), $request->input('reason'));
 
+        $member->user?->notify(new MemberSuspendedNotification($member, $request->input('reason')));
+
         return response()->json(['success' => true, 'message' => "Member {$member->member_id} suspended."]);
     }
 
@@ -253,6 +264,8 @@ class AdminMemberController extends Controller
         $member->deactivateAllPositions('Expelled by admin.');
 
         $this->auditLog->log('member.expelled', $member, $old, $member->only(['status']), $request->input('reason'));
+
+        $member->user?->notify(new MemberExpelledNotification($member, $request->input('reason')));
 
         return response()->json(['success' => true, 'message' => "Member {$member->member_id} expelled."]);
     }
