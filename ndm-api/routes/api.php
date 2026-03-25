@@ -24,6 +24,8 @@ Route::get('units/campus', [UnitController::class, 'index']);
 Route::get('news', [NewsController::class, 'index']);
 Route::get('news/{slug}', [NewsController::class, 'show']);
 Route::get('members/search', [MemberController::class, 'search']);
+Route::get('id-cards/verify/{member_id}', [IdCardController::class, 'verify'])
+    ->where('member_id', '^(?!me$).+');
 
 // Public member profile (by NDM member ID string, e.g. NDM-SW-2026-0001)
 Route::get('members/{member_id}', [MemberController::class, 'publicProfile'])

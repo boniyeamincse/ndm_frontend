@@ -21,6 +21,57 @@ class IdCardController extends Controller
     public function __construct(private readonly IdCardService $idCardService) {}
 
     /**
+     * Public verification endpoint for QR scans.
+     */
+    public function verify(string $memberId): JsonResponse
+    {
+        $member = Member::query()
+            ->where('member_id', $memberId)
+            ->where('status', 'active')
+            ->with([
+                'organizationalUnit',
+                'positions' => function ($query) {
+                    $query->where('is_active', 1)->with('role', 'unit');
+                },
+            ])
+            ->first();
+
+        if (! $member) {
+            return response()->json([
+                'success' => false,
+                'verified' => false,
+                'message' => 'Card could not be verified.',
+            ], 404);
+        }
+
+        $activePosition = $member->positions
+            ->sortBy(fn ($position) => $position->role?->rank_order ?? PHP_INT_MAX)
+            ->first();
+
+        return response()->json([
+            'success' => true,
+            'verified' => true,
+            'data' => [
+                'member_id' => $member->member_id,
+                'full_name' => $member->full_name,
+                'status' => $member->status->value,
+                'join_year' => $member->join_year,
+                'organization' => 'Nationalist Democratic Student Movement (NDSM)',
+                'unit' => $member->organizationalUnit ? [
+                    'id' => $member->organizationalUnit->id,
+                    'name' => $member->organizationalUnit->name,
+                    'type' => $member->organizationalUnit->type,
+                ] : null,
+                'active_position' => $activePosition ? [
+                    'role' => $activePosition->role?->title,
+                    'unit' => $activePosition->unit?->name,
+                    'assigned_at' => optional($activePosition->assigned_at)?->toDateString(),
+                ] : null,
+            ],
+        ]);
+    }
+
+    /**
      * Download the authenticated member's own ID card.
      */
     public function download(): Response

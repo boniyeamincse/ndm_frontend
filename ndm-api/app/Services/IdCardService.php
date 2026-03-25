@@ -26,7 +26,7 @@ class IdCardService
             'member_id' => $member->member_id,
             'name'      => $member->full_name,
             'status'    => $member->status->value,
-            'verify'    => url('/api/members/' . $member->member_id),
+            'verify'    => url('/api/id-cards/verify/' . $member->member_id),
         ]);
 
         // Generate QR as SVG string for embedding in HTML
