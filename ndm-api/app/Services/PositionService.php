@@ -2,8 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\Member;
 use App\Models\MemberPosition;
+use App\Models\OrganizationalUnit;
 use App\Models\PositionHistory;
+use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
@@ -25,6 +28,13 @@ class PositionService
     public function assign(array $data, int $actorId): MemberPosition
     {
         return DB::transaction(function () use ($data, $actorId) {
+            $member = Member::findOrFail($data['member_id']);
+            $role = Role::findOrFail($data['role_id']);
+            $unit = OrganizationalUnit::findOrFail($data['unit_id']);
+
+            $this->assertEligibleMember($member);
+            $this->assertCompatibleRoleAndUnit($role, $unit);
+
             // Guard: prevent duplicate active assignment
             if (MemberPosition::where([
                 'member_id' => $data['member_id'],
@@ -93,6 +103,12 @@ class PositionService
     public function transfer(MemberPosition $position, int $newMemberId, int $actorId, ?string $notes = null): MemberPosition
     {
         return DB::transaction(function () use ($position, $newMemberId, $actorId, $notes) {
+            $position->loadMissing(['role', 'unit']);
+            $newMember = Member::findOrFail($newMemberId);
+
+            $this->assertEligibleMember($newMember);
+            $this->assertCompatibleRoleAndUnit($position->role, $position->unit);
+
             // Guard: prevent re-assigning to the same member
             if ($position->member_id === $newMemberId) {
                 throw new InvalidArgumentException('Cannot transfer position to the same member.');
@@ -145,5 +161,27 @@ class PositionService
             'performed_at' => now(),
             'remarks'      => $remarks,
         ]);
+    }
+
+    private function assertEligibleMember(Member $member): void
+    {
+        if (! $member->status->canHoldPosition()) {
+            throw new InvalidArgumentException('Only active members can hold organizational positions.');
+        }
+    }
+
+    private function assertCompatibleRoleAndUnit(Role $role, OrganizationalUnit $unit): void
+    {
+        if (! $role->is_active) {
+            throw new InvalidArgumentException('Cannot assign an inactive role to a member.');
+        }
+
+        if (! $unit->is_active) {
+            throw new InvalidArgumentException('Cannot assign a position inside an inactive organizational unit.');
+        }
+
+        if ($role->unit_type?->value !== $unit->type?->value) {
+            throw new InvalidArgumentException('The selected role is not eligible for the selected organizational unit type.');
+        }
     }
 }

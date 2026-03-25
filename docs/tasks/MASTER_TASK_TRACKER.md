@@ -141,8 +141,8 @@ Status logic for **Overall Status**:
 | 56 | Complete unit management APIs | Add unit tree listing, by-type lookup, create, update, archive, and delete behavior. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
 | 57 | Harden hierarchical unit rules | Prevent illegal parent-child relationships and invalid unit-type transitions. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
 | 58 | Add unit code and naming policy | Standardize organization codes, slug strategy, naming uniqueness, and display labels. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
-| 59 | Add role-position-unit integration tests | Validate that role eligibility and unit hierarchy rules hold across transfers and promotions. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
-| 60 | Document org-structure governance | Write operational guidance for how admins should manage units, positions, and promotions in production. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
+| 59 | Add role-position-unit integration tests | Validate that role eligibility and unit hierarchy rules hold across transfers and promotions. This task can be implemented using AI-assisted development. | Done | Passed | In Progress | In Progress |
+| 60 | Document org-structure governance | Write operational guidance for how admins should manage units, positions, and promotions in production. This task can be implemented using AI-assisted development. | Done | Pending | In Progress | In Progress |
 ## Task 06 — Tasks, Audit, And ID Cards
 
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |

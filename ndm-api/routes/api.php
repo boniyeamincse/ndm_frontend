@@ -117,6 +117,11 @@ Route::prefix('admin')
 
         // Organizational units
         Route::get   ('units',                          [OrganizationalUnitController::class, 'index']);
+        Route::post  ('units',                          [OrganizationalUnitController::class, 'store']);
+        Route::get   ('units/{id}',                     [OrganizationalUnitController::class, 'show']);
+        Route::put   ('units/{id}',                     [OrganizationalUnitController::class, 'update']);
+        Route::patch ('units/{id}/toggle',              [OrganizationalUnitController::class, 'toggle']);
+        Route::delete('units/{id}',                     [OrganizationalUnitController::class, 'destroy']);
 
         // Positions (static /history route must come before the {id} wildcard)
         Route::get   ('positions/history',    [PositionController::class, 'history']);

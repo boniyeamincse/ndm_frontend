@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 /**
@@ -55,8 +56,33 @@ return new class extends Migration
 
     private function indexExists(string $table, string $index): bool
     {
-        $conn = Schema::getConnection();
-        $indexes = $conn->getDoctrineSchemaManager()->listTableIndexes($table);
-        return array_key_exists($index, $indexes);
+        $connection = Schema::getConnection();
+        $driver = $connection->getDriverName();
+
+        if ($driver === 'sqlite') {
+            $indexes = DB::select("PRAGMA index_list('{$table}')");
+
+            foreach ($indexes as $existingIndex) {
+                if (($existingIndex->name ?? null) === $index) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        if ($driver === 'mysql') {
+            $indexes = DB::select("SHOW INDEX FROM `{$table}`");
+
+            foreach ($indexes as $existingIndex) {
+                if (($existingIndex->Key_name ?? null) === $index) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        return false;
     }
 };

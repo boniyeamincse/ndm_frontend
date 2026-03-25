@@ -219,6 +219,42 @@ class PositionServiceTest extends TestCase
             ->assertJsonValidationErrors(['new_member_id']);
     }
 
+    public function test_assign_fails_when_role_unit_type_does_not_match_unit(): void
+    {
+        $districtRole = Role::create([
+            'title' => 'District Secretary',
+            'unit_type' => 'district',
+            'rank_order' => 2,
+            'is_active' => true,
+            'created_by' => $this->admin->id,
+        ]);
+
+        $this->actingAs($this->admin, 'api')
+            ->postJson('/api/admin/positions', [
+                'member_id' => $this->member->id,
+                'role_id' => $districtRole->id,
+                'unit_id' => $this->unit->id,
+            ])
+            ->assertStatus(422)
+            ->assertJsonPath('success', false)
+            ->assertJsonPath('message', 'The selected role is not eligible for the selected organizational unit type.');
+    }
+
+    public function test_transfer_fails_when_target_member_is_not_active(): void
+    {
+        $position = $this->makePosition($this->member->id);
+        $this->memberB->update(['status' => 'suspended']);
+
+        $this->actingAs($this->admin, 'api')
+            ->postJson("/api/admin/positions/{$position->id}/transfer", [
+                'new_member_id' => $this->memberB->id,
+                'notes' => 'Attempted invalid transfer',
+            ])
+            ->assertStatus(422)
+            ->assertJsonPath('success', false)
+            ->assertJsonPath('message', 'Only active members can hold organizational positions.');
+    }
+
     public function test_index_lists_positions_with_pagination(): void
     {
         $this->makePosition();
