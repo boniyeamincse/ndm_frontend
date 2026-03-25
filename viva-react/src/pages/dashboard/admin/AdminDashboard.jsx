@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../../services/api';
 
 const toNum = (v) => Number(v ?? 0);
@@ -44,33 +45,41 @@ const activityMeta = (action) => {
 
 // ── Stat Card ──────────────────────────────────────────────────────────────
 const StatCard = ({ label, value, bar, barColor, sub, accent }) => (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 flex flex-col gap-2">
-        <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">{label}</p>
+    <motion.div
+        whileHover={{ y: -4, transition: { duration: 0.2 } }}
+        className="bg-white/70 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm p-6 flex flex-col gap-2 transition-shadow hover:shadow-lg"
+    >
+        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{label}</p>
         <p className={`text-4xl font-black ${accent ?? 'text-slate-900'}`}>{toNum(value).toLocaleString()}</p>
         {bar !== undefined && (
-            <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden mt-1">
+            <div className="h-1.5 bg-slate-100/50 rounded-full overflow-hidden mt-1">
                 <div className={`h-full rounded-full ${barColor ?? 'bg-blue-500'}`} style={{ width: `${bar}%` }} />
             </div>
         )}
-        {sub && <p className="text-xs text-slate-400">{sub}</p>}
-    </div>
+        {sub && <p className="text-[10px] font-medium text-slate-400 flex items-center gap-1.5">
+            <span className={`w-1 h-1 rounded-full ${barColor ?? 'bg-blue-500'}`} />
+            {sub}
+        </p>}
+    </motion.div>
 );
 
 // ── Quick Action Card ──────────────────────────────────────────────────────
 const ActionCard = ({ to, label, desc, icon }) => (
-    <Link
-        to={to}
-        className="flex items-center gap-4 bg-white rounded-2xl border border-slate-100 shadow-sm p-5 hover:shadow-md hover:border-primary/30 transition-all group"
-    >
-        <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary text-2xl flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
-            {icon}
-        </div>
-        <div>
-            <p className="font-bold text-slate-900 text-sm">{label}</p>
-            <p className="text-xs text-slate-400 mt-0.5">{desc}</p>
-        </div>
-        <span className="ml-auto text-slate-300 group-hover:text-primary text-lg">›</span>
-    </Link>
+    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+        <Link
+            to={to}
+            className="flex items-center gap-4 bg-white/70 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm p-5 hover:shadow-md hover:border-primary/30 transition-all group"
+        >
+            <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary text-2xl flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                {icon}
+            </div>
+            <div>
+                <p className="font-bold text-slate-900 text-sm">{label}</p>
+                <p className="text-[10px] text-slate-400 mt-0.5">{desc}</p>
+            </div>
+            <span className="ml-auto text-slate-300 group-hover:text-primary text-lg translate-x-0 group-hover:translate-x-1 transition-transform">›</span>
+        </Link>
+    </motion.div>
 );
 
 // ── Main Component ─────────────────────────────────────────────────────────
@@ -125,26 +134,42 @@ const AdminDashboard = () => {
     if (loading) {
         return (
             <div className="flex items-center justify-center h-[60vh]">
-                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+                <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                    className="rounded-full h-10 w-10 border-b-2 border-primary"
+                />
             </div>
         );
     }
 
     if (error) {
-        return <div className="p-8 text-red-600">{error}</div>;
+        return (
+            <div className="p-8 text-center">
+                <p className="text-red-500 font-bold">{error}</p>
+                <button onClick={() => window.location.reload()} className="mt-4 px-4 py-2 bg-slate-900 text-white rounded-lg text-sm">Retry</button>
+            </div>
+        );
     }
 
     return (
-        <div className="p-6 max-w-7xl mx-auto space-y-6">
-
+        <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+            }}
+            className="p-1 lg:p-4 max-w-7xl mx-auto space-y-6"
+        >
             {/* ── Page Title ── */}
-            <div>
-                <h1 className="text-2xl font-black text-slate-900">Dashboard</h1>
-                <p className="text-sm text-slate-500 mt-1">NDM Student Wing · Admin overview</p>
-            </div>
+            <motion.div variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0 } }}>
+                <h1 className="text-3xl font-black text-slate-900 tracking-tight">Dashboard Overview</h1>
+                <p className="text-sm font-medium text-slate-400 mt-1">NDM Student Movement · Admin Insights</p>
+            </motion.div>
 
             {/* ── Quick Actions ── */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <ActionCard
                     to="/dashboard/admin/members/pending"
                     label="Approve Member"
@@ -163,10 +188,10 @@ const AdminDashboard = () => {
                     desc="Add an organizational unit"
                     icon="+"
                 />
-            </div>
+            </motion.div>
 
             {/* ── Overview Stats ── */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
                 <StatCard
                     label="Total Members"
                     value={totalMembers}
@@ -189,12 +214,12 @@ const AdminDashboard = () => {
                     sub={pendingCount > 0 ? 'Needs attention' : 'All clear'}
                 />
                 <StatCard
-                    label="Total Positions"
+                    label="Active Positions"
                     value={totalPositions}
                     bar={toPercent(totalPositions, totalMembers || 1)}
                     barColor="bg-violet-500"
                     accent="text-violet-700"
-                    sub="Active assignments"
+                    sub="Current assignments"
                 />
                 <StatCard
                     label="Total Units"
@@ -204,29 +229,33 @@ const AdminDashboard = () => {
                     accent="text-indigo-700"
                     sub="Central → Campus"
                 />
-            </div>
+            </motion.div>
 
             {/* ── Middle Row ── */}
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="grid grid-cols-1 xl:grid-cols-3 gap-4">
                 {/* Units breakdown */}
-                <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-                    <div className="px-6 py-4 border-b border-slate-100">
+                <div className="bg-white/70 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm overflow-hidden">
+                    <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/30">
                         <h2 className="text-sm font-bold text-slate-900">Units by Tier</h2>
-                        <p className="text-xs text-slate-400 mt-0.5">Central → Campus hierarchy</p>
+                        <p className="text-[10px] font-medium text-slate-400 mt-0.5 uppercase tracking-wider">Organizational Distribution</p>
                     </div>
-                    <div className="p-6 space-y-3">
+                    <div className="p-6 space-y-4">
                         {UNIT_ORDER.map((type) => {
                             const count = toNum(unitsByType[type]);
                             const pct   = toPercent(count, totalUnits || 1);
                             return (
                                 <div key={type}>
-                                    <div className="flex justify-between text-sm mb-1">
-                                        <span className="text-slate-600 font-medium">{UNIT_LABELS[type]}</span>
-                                        <span className="font-bold text-slate-900">{count}</span>
+                                    <div className="flex justify-between text-xs mb-1.5">
+                                        <span className="text-slate-500 font-semibold">{UNIT_LABELS[type]}</span>
+                                        <span className="font-black text-slate-900">{count}</span>
                                     </div>
-                                    <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                                        <div className={`h-full rounded-full ${UNIT_COLORS[type]}`} style={{ width: `${pct}%` }} />
+                                    <div className="h-1.5 bg-slate-100/50 rounded-full overflow-hidden">
+                                        <motion.div
+                                            initial={{ width: 0 }}
+                                            animate={{ width: `${pct}%` }}
+                                            transition={{ duration: 1, delay: 0.5 }}
+                                            className={`h-full rounded-full ${UNIT_COLORS[type]}`}
+                                        />
                                     </div>
                                 </div>
                             );
@@ -235,65 +264,65 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* Pending approvals table */}
-                <div className="xl:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-                    <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+                <div className="xl:col-span-2 bg-white/70 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm overflow-hidden">
+                    <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/30 flex items-center justify-between">
                         <div>
                             <h2 className="text-sm font-bold text-slate-900">Pending Approvals</h2>
-                            <p className="text-xs text-slate-400 mt-0.5">Most recent registration requests</p>
+                            <p className="text-[10px] font-medium text-slate-400 mt-0.5 uppercase tracking-wider">Registration Queue</p>
                         </div>
                         <Link
                             to="/dashboard/admin/members/pending"
-                            className="text-xs px-3 py-1.5 rounded-lg bg-amber-400 text-slate-900 font-bold hover:bg-amber-500 transition-colors"
+                            className="text-xs px-3 py-1.5 rounded-lg bg-amber-400 text-slate-900 font-bold hover:bg-amber-500 transition-colors shadow-sm shadow-amber-500/20"
                         >
                             Open Queue
                         </Link>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
-                            <thead className="bg-slate-50 border-b border-slate-100">
-                                <tr className="text-left text-xs uppercase tracking-wide text-slate-400">
+                            <thead className="bg-slate-50/50 border-b border-slate-100">
+                                <tr className="text-left text-[10px] uppercase tracking-wider text-slate-400 font-black">
                                     <th className="px-6 py-3">Member</th>
-                                    <th className="px-6 py-3">Phone</th>
+                                    <th className="px-6 py-3">Contact</th>
                                     <th className="px-6 py-3">Unit</th>
                                     <th className="px-6 py-3">Applied</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-50">
+                            <tbody className="divide-y divide-slate-50/50">
                                 {pendingMembers.length === 0 && (
                                     <tr>
-                                        <td colSpan={4} className="px-6 py-8 text-slate-400 text-center">
+                                        <td colSpan={4} className="px-6 py-8 text-slate-400 text-center font-medium">
                                             No pending applications — all clear!
                                         </td>
                                     </tr>
                                 )}
                                 {pendingMembers.map((m) => (
-                                    <tr key={m.id} className="hover:bg-slate-50 transition-colors">
-                                        <td className="px-6 py-3">
-                                            <p className="font-semibold text-slate-900">{m.full_name}</p>
-                                            <p className="text-xs text-slate-400">{m.member_id || 'Pending ID'}</p>
+                                    <tr key={m.id} className="hover:bg-slate-50/50 transition-colors">
+                                        <td className="px-6 py-4">
+                                            <p className="font-bold text-slate-900">{m.full_name}</p>
+                                            <p className="text-[10px] font-mono text-slate-400">{m.member_id || 'PENDING'}</p>
                                         </td>
-                                        <td className="px-6 py-3 text-slate-600">{m.mobile || m.phone || '—'}</td>
-                                        <td className="px-6 py-3">
-                                            <span className="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-medium">
-                                                {m.organizational_unit?.name || 'Not assigned'}
-                                            </span>
+                                        <td className="px-6 py-4 text-slate-600 font-medium">{m.mobile || m.phone || '—'}</td>
+                                        <td className="px-6 py-4">
+                                          <span className="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 text-[10px] font-bold ring-1 ring-blue-700/10 uppercase tracking-tighter">
+                                              {m.organizational_unit?.name || 'Unassigned'}
+                                          </span>
                                         </td>
-                                        <td className="px-6 py-3 text-slate-400 text-xs whitespace-nowrap">{formatDate(m.created_at)}</td>
+                                        <td className="px-6 py-4 text-slate-400 text-[10px] font-medium whitespace-nowrap">{formatDate(m.created_at)}</td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div>
+            </motion.div>
 
             {/* ── Bottom Row ── */}
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                 {/* Members by Year */}
-                <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-                    <div className="px-6 py-4 border-b border-slate-100">
-                        <h2 className="text-sm font-bold text-slate-900">Members by Join Year</h2>
+                <div className="bg-white/70 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm overflow-hidden">
+                    <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/30">
+                        <h2 className="text-sm font-bold text-slate-900">Growth Trends</h2>
+                        <p className="text-[10px] font-medium text-slate-400 mt-0.5 uppercase tracking-wider">Members by Join Year</p>
                     </div>
                     <div className="p-6">
                         {(stats?.members_by_year ?? []).length === 0 && (
@@ -302,13 +331,18 @@ const AdminDashboard = () => {
                         {(stats?.members_by_year ?? []).map((item) => {
                             const pct = toPercent(item.count, totalMembers || 1);
                             return (
-                                <div key={item.year} className="mb-3 last:mb-0">
-                                    <div className="flex justify-between text-sm mb-1">
-                                        <span className="text-slate-500">{item.year}</span>
-                                        <span className="font-bold text-slate-900">{toNum(item.count).toLocaleString()}</span>
+                                <div key={item.year} className="mb-4 last:mb-0">
+                                    <div className="flex justify-between text-xs mb-1.5">
+                                        <span className="text-slate-500 font-semibold">{item.year}</span>
+                                        <span className="font-black text-slate-900">{toNum(item.count).toLocaleString()}</span>
                                     </div>
-                                    <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                                        <div className="h-full bg-blue-400 rounded-full" style={{ width: `${pct}%` }} />
+                                    <div className="h-1.5 bg-slate-100/50 rounded-full overflow-hidden">
+                                        <motion.div
+                                            initial={{ width: 0 }}
+                                            animate={{ width: `${pct}%` }}
+                                            transition={{ duration: 1, delay: 0.8 }}
+                                            className="h-full bg-blue-500 rounded-full"
+                                        />
                                     </div>
                                 </div>
                             );
@@ -317,29 +351,30 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* Recent Activity */}
-                <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-                    <div className="px-6 py-4 border-b border-slate-100">
-                        <h2 className="text-sm font-bold text-slate-900">Recent Activity</h2>
-                        <p className="text-xs text-slate-400 mt-0.5">Registrations, promotions &amp; status changes</p>
+                <div className="bg-white/70 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm overflow-hidden">
+                    <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/30">
+                        <h2 className="text-sm font-bold text-slate-900">Recent Pulse</h2>
+                        <p className="text-[10px] font-medium text-slate-400 mt-0.5 uppercase tracking-wider">System-wide events</p>
                     </div>
-                    <div className="p-6 space-y-3">
+                    <div className="p-6 divide-y divide-slate-100/50">
                         {activity.length === 0 && (
-                            <p className="text-sm text-slate-400">No recent activity.</p>
+                            <p className="text-sm text-slate-400">No activity recorded yet.</p>
                         )}
                         {activity.slice(0, 8).map((log) => {
                             const meta = activityMeta(log.action);
                             return (
-                                <div key={log.id} className="flex items-start gap-3 pb-3 border-b border-slate-50 last:border-b-0 last:pb-0">
-                                    <span className={`mt-0.5 px-2 py-0.5 rounded-full text-xs font-bold shrink-0 ${meta.color}`}>
+                                <div key={log.id} className="flex items-start gap-4 py-4 first:pt-0 last:pb-0 group transition-colors">
+                                    <span className={`mt-0.5 px-2.5 py-1 rounded-lg text-[10px] font-black shrink-0 shadow-sm ring-1 ring-black/5 ${meta.color} uppercase tracking-tighter`}>
                                         {meta.label}
                                     </span>
                                     <div className="min-w-0">
-                                        <p className="text-sm text-slate-700 truncate">
-                                            <span className="font-medium">{log.action}</span>
-                                            {log.model_type ? <span className="text-slate-400"> · {log.model_type} #{log.model_id}</span> : null}
+                                        <p className="text-sm font-bold text-slate-800 truncate group-hover:text-primary transition-colors">
+                                            {log.action}
                                         </p>
-                                        <p className="text-xs text-slate-400 mt-0.5">
-                                            {log.performed_by ?? 'System'} · {formatDate(log.performed_at)}
+                                        <p className="text-[10px] font-medium text-slate-400 mt-1 flex items-center gap-2">
+                                            <span className="text-slate-500 font-bold">{log.performed_by ?? 'System-bot'}</span>
+                                            <span>•</span>
+                                            <span>{formatDate(log.performed_at)}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -347,9 +382,8 @@ const AdminDashboard = () => {
                         })}
                     </div>
                 </div>
-            </div>
-
-        </div>
+            </motion.div>
+        </motion.div>
     );
 };
 

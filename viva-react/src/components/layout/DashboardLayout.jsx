@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
 import { NDM_LOGO_URL } from '../../constants/branding';
@@ -219,18 +220,26 @@ const QuickActions = () => {
         <Ic n="plus" s={16} />
         <span className="hidden sm:inline">New</span>
       </button>
-      {open && (
-        <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-1.5 z-50">
-          <p className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-widest text-gray-400">Quick Actions</p>
-          {QUICK_ACTIONS.map(a => (
-            <Link key={a.to} to={a.to} onClick={() => setOpen(false)}
-              className="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-              <span className="text-gray-400"><Ic n={a.icon} s={16} /></span>
-              {a.label}
-            </Link>
-          ))}
-        </div>
-      )}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className="absolute right-0 mt-2 w-56 bg-white/90 backdrop-blur-xl rounded-xl shadow-2xl border border-white/20 py-1.5 z-50 overflow-hidden"
+          >
+            <p className="px-3 pb-1 text-[10px] font-bold uppercase tracking-widest text-slate-400/80">Quick Actions</p>
+            {QUICK_ACTIONS.map(a => (
+              <Link key={a.to} to={a.to} onClick={() => setOpen(false)}
+                className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-900/5 transition-colors">
+                <span className="text-slate-400 group-hover:text-primary"><Ic n={a.icon} s={16} /></span>
+                {a.label}
+              </Link>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -267,70 +276,78 @@ const NotificationBell = ({ count }) => {
           </span>
         )}
       </button>
-      {open && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-slate-50/70">
-            <h3 className="text-sm font-semibold text-gray-900">Notifications</h3>
-            {unreadCount > 0 && (
-              <span className="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-semibold">{unreadCount} new</span>
-            )}
-          </div>
-          <div className="px-2.5 py-2 border-b border-gray-100 flex items-center gap-1">
-            <button
-              onClick={() => setFilter('all')}
-              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${filter === 'all' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
-            >
-              All Notifications
-            </button>
-            <button
-              onClick={() => setFilter('unread')}
-              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${filter === 'unread' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
-            >
-              Unread
-            </button>
-            <button
-              onClick={() => setFilter('system')}
-              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${filter === 'system' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
-            >
-              System Alerts
-            </button>
-          </div>
-          {visibleNotifications.length > 0 ? (
-            <>
-              <div className="max-h-72 overflow-y-auto">
-                {visibleNotifications.map((item) => (
-                  <Link
-                    key={item.id}
-                    to={item.to}
-                    onClick={() => setOpen(false)}
-                    className="flex items-start gap-3 px-4 py-3.5 hover:bg-slate-50 transition-colors border-b border-gray-50"
-                  >
-                    <span className={`w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${item.unread ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-500'}`}>
-                      <Ic n={item.icon} s={17} />
-                    </span>
-                    <div className="min-w-0">
-                      <p className="text-sm font-semibold text-gray-900 leading-tight">{item.title}</p>
-                      <p className="text-xs text-gray-500 mt-1 leading-relaxed">{item.desc}</p>
-                    </div>
-                    {item.unread && <span className="w-2 h-2 rounded-full bg-red-500 mt-1.5 flex-shrink-0" />}
-                  </Link>
-                ))}
-              </div>
-              <div className="px-4 py-2.5 border-t border-gray-50 text-center">
-                <Link to={filter === 'system' ? '/dashboard/admin/settings?section=audit-logs' : '/dashboard/admin/members/pending'} onClick={() => setOpen(false)} className="text-xs text-primary font-semibold hover:underline">
-                  View details →
-                </Link>
-              </div>
-            </>
-          ) : (
-            <div className="px-4 py-10 text-center">
-              <div className="text-4xl mb-2">🎉</div>
-              <p className="text-sm font-semibold text-gray-900">All caught up!</p>
-              <p className="text-xs text-gray-400 mt-1">No pending notifications</p>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className="absolute right-0 mt-2 w-80 bg-white/90 backdrop-blur-xl rounded-xl shadow-2xl border border-white/20 z-50 overflow-hidden"
+          >
+            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-slate-50/50">
+              <h3 className="text-sm font-semibold text-slate-900">Notifications</h3>
+              {unreadCount > 0 && (
+                <span className="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-semibold">{unreadCount} new</span>
+              )}
             </div>
-          )}
-        </div>
-      )}
+            <div className="px-2.5 py-2 border-b border-slate-100 flex items-center gap-1">
+              <button
+                onClick={() => setFilter('all')}
+                className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${filter === 'all' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
+              >
+                All
+              </button>
+              <button
+                onClick={() => setFilter('unread')}
+                className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${filter === 'unread' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
+              >
+                Unread
+              </button>
+              <button
+                onClick={() => setFilter('system')}
+                className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${filter === 'system' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
+              >
+                System Alerts
+              </button>
+            </div>
+            {visibleNotifications.length > 0 ? (
+              <>
+                <div className="max-h-72 overflow-y-auto">
+                  {visibleNotifications.map((item) => (
+                    <Link
+                      key={item.id}
+                      to={item.to}
+                      onClick={() => setOpen(false)}
+                      className="flex items-start gap-3 px-4 py-3.5 hover:bg-slate-50/50 transition-colors border-b border-slate-50/50"
+                    >
+                      <span className={`w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${item.unread ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-500'}`}>
+                        <Ic n={item.icon} s={17} />
+                      </span>
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-slate-900 leading-tight">{item.title}</p>
+                        <p className="text-xs text-slate-500 mt-1 leading-relaxed">{item.desc}</p>
+                      </div>
+                      {item.unread && <span className="w-2 h-2 rounded-full bg-red-500 mt-1.5 flex-shrink-0" />}
+                    </Link>
+                  ))}
+                </div>
+                <div className="px-4 py-2.5 border-t border-slate-50 text-center">
+                  <Link to={filter === 'system' ? '/dashboard/admin/settings?section=audit-logs' : '/dashboard/admin/members/pending'} onClick={() => setOpen(false)} className="text-xs text-primary font-semibold hover:underline">
+                    View full history →
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <div className="px-4 py-10 text-center">
+                <div className="text-4xl mb-2">🎉</div>
+                <p className="text-sm font-semibold text-slate-900">All caught up!</p>
+                <p className="text-xs text-slate-400 mt-1">No pending notifications</p>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -365,32 +382,40 @@ const ProfileMenu = ({ user, onSignOut, isAdmin }) => {
         </div>
         <span className="text-slate-300 hidden sm:block"><Ic n="chevron" s={18} /></span>
       </button>
-      {open && (
-        <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-1 z-50">
-          <div className="px-4 py-3 border-b border-gray-100">
-            <p className="text-sm font-semibold text-gray-900 truncate">{displayName}</p>
-            <p className="text-xs text-gray-500 truncate">{user?.email}</p>
-          </div>
-          <Link to={profilePath} onClick={() => setOpen(false)}
-            className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-            <span className="text-gray-400"><Ic n="profile" s={16} /></span> My Profile
-          </Link>
-          <Link to={settingsPath} onClick={() => setOpen(false)}
-            className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-            <span className="text-gray-400"><Ic n="settings" s={16} /></span> Account Settings
-          </Link>
-          <Link to={passwordPath} onClick={() => setOpen(false)}
-            className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-            <span className="text-gray-400"><Ic n="key" s={16} /></span> Change Password
-          </Link>
-          <div className="border-t border-gray-100 mt-1">
-            <button onClick={() => { setOpen(false); onSignOut(); }}
-              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors">
-              <Ic n="logout" s={16} /> Logout
-            </button>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 8 }}
+            transition={{ duration: 0.2 }}
+            className="absolute right-0 mt-2 w-56 bg-white/90 backdrop-blur-xl rounded-xl shadow-2xl border border-white/20 py-1 z-50 overflow-hidden"
+          >
+            <div className="px-4 py-3 border-b border-slate-100 bg-slate-50/50">
+              <p className="text-sm font-bold text-slate-900 truncate">{displayName}</p>
+              <p className="text-xs text-slate-500 truncate mt-0.5">{user?.email}</p>
+            </div>
+            <Link to={profilePath} onClick={() => setOpen(false)}
+              className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-950/5 transition-colors">
+              <span className="text-slate-400 group-hover:text-amber-500"><Ic n="profile" s={16} /></span> My Profile
+            </Link>
+            <Link to={settingsPath} onClick={() => setOpen(false)}
+              className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-950/5 transition-colors">
+              <span className="text-slate-400 group-hover:text-indigo-500"><Ic n="settings" s={16} /></span> Account Settings
+            </Link>
+            <Link to={passwordPath} onClick={() => setOpen(false)}
+              className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-950/5 transition-colors">
+              <span className="text-slate-400 group-hover:text-rose-500"><Ic n="key" s={16} /></span> Change Password
+            </Link>
+            <div className="border-t border-slate-100 mt-1">
+              <button onClick={() => { setOpen(false); onSignOut(); }}
+                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-red-600 hover:bg-red-50 transition-colors text-left">
+                <Ic n="logout" s={16} /> Logout
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -433,37 +458,45 @@ const SidebarContent = ({ sections, location, currentFull, openMenus, toggleMenu
                     </span>
                   </button>
 
-                  {isOpen && (
-                    <div className={`mt-1 mx-1.5 rounded-xl overflow-hidden ${item.id === 'settings' ? 'bg-gradient-to-b from-slate-800/70 to-slate-900/60 border border-slate-700/70 shadow-inner' : 'bg-slate-800/30'}`}>
-                      {item.children.map((child, idx) => {
-                        if (child.heading) {
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className={`mt-1 mx-1.5 rounded-xl overflow-hidden ${item.id === 'settings' ? 'bg-white/[0.04] border border-white/5 shadow-inner' : 'bg-white/[0.02]'}`}
+                      >
+                        {item.children.map((child, idx) => {
+                          if (child.heading) {
+                            return (
+                              <div key={`${item.id}-heading-${idx}`} className="px-3 pt-3 pb-1.5 first:pt-2.5">
+                                <p className="px-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500/80">
+                                  {child.heading}
+                                </p>
+                              </div>
+                            );
+                          }
+                          const childActive = currentFull === child.to
+                            || (child.to === '/dashboard/admin/members'
+                              && location.pathname === '/dashboard/admin/members'
+                              && !location.search);
                           return (
-                            <div key={`${item.id}-heading-${idx}`} className="px-3 pt-3 pb-1.5 first:pt-2.5">
-                              <p className="px-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">
-                                {child.heading}
-                              </p>
-                            </div>
+                            <Link key={child.to} to={child.to}
+                              className={`mx-2 mb-1 flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs transition-all ${
+                                childActive
+                                  ? 'text-amber-300 font-semibold bg-white/10 ring-1 ring-white/5'
+                                  : 'text-slate-400 hover:text-white hover:bg-white/5'
+                              }`}
+                            >
+                              <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${childActive ? 'bg-amber-400 animate-pulse' : 'bg-slate-600'}`} />
+                              {child.label}
+                            </Link>
                           );
-                        }
-                        const childActive = currentFull === child.to
-                          || (child.to === '/dashboard/admin/members'
-                            && location.pathname === '/dashboard/admin/members'
-                            && !location.search);
-                        return (
-                          <Link key={child.to} to={child.to}
-                            className={`mx-2 mb-1 flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs transition-colors ${
-                              childActive
-                                ? 'text-amber-300 font-semibold bg-slate-700/80 ring-1 ring-amber-400/20'
-                                : 'text-slate-300/90 hover:text-white hover:bg-slate-700/40'
-                            }`}
-                          >
-                            <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${childActive ? 'bg-amber-400' : 'bg-slate-500'}`} />
-                            {child.label}
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  )}
+                        })}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               );
             }
@@ -557,15 +590,18 @@ const DashboardLayout = () => {
       )}
 
       {/* ── Sidebar ──────────────────────────────────────────────── */}
-      <aside className={`
-        fixed top-0 left-0 h-full w-64 text-slate-200 flex flex-col z-40 overflow-hidden
-        transition-transform duration-300 ease-in-out
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-        lg:translate-x-0 lg:static lg:z-auto lg:shrink-0
-      `}>
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,#081122_0%,#0f172a_36%,#172554_100%)]" />
-        <div className="absolute inset-0 opacity-70 bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.16),transparent_26%),radial-gradient(circle_at_80%_18%,rgba(59,130,246,0.14),transparent_22%),radial-gradient(circle_at_bottom,rgba(255,255,255,0.04),transparent_30%)]" />
-        <div className="absolute inset-y-0 right-0 w-px bg-white/10" />
+      <motion.aside
+        initial={{ x: -300 }}
+        animate={{ x: sidebarOpen || window.innerWidth >= 1024 ? 0 : -300 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+        className={`
+          fixed top-0 left-0 h-full w-72 text-slate-200 flex flex-col z-40 overflow-hidden
+          lg:static lg:translate-x-0 lg:z-auto lg:shrink-0
+        `}
+      >
+        <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-2xl" />
+        <div className="absolute inset-0 opacity-60 bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.1),transparent_40%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.1),transparent_40%)]" />
+        <div className="absolute inset-y-0 right-0 w-px bg-white/5" />
 
         {/* Brand */}
         <div className="relative px-4 py-4 border-b border-white/10 flex-shrink-0 bg-white/[0.03] backdrop-blur-sm">
@@ -607,7 +643,7 @@ const DashboardLayout = () => {
             </button>
           </div>
         </div>
-      </aside>
+      </motion.aside>
 
       {/* ── Main content ─────────────────────────────────────────── */}
       <div className="flex-1 min-w-0 flex flex-col min-h-screen">
@@ -636,8 +672,18 @@ const DashboardLayout = () => {
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-4 lg:p-6">
-          <Outlet />
+        <main className="flex-1 overflow-y-auto p-4 lg:p-8 bg-[#f8fafc]/50">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+            >
+              <Outlet />
+            </motion.div>
+          </AnimatePresence>
         </main>
       </div>
     </div>

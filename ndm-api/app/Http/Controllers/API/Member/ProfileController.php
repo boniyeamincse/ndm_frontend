@@ -43,7 +43,7 @@ class ProfileController extends Controller
             'success' => true,
             'data' => new MemberResource($member->load([
                 'organizationalUnit', 
-                'memberRole.role',
+                'memberRole',
                 'positions.role',
                 'positions.unit',
                 'committeeRoles.committee'
@@ -75,7 +75,7 @@ class ProfileController extends Controller
             'message' => 'Profile updated successfully!',
             'data' => new MemberResource($member->fresh([
                 'organizationalUnit',
-                'memberRole.role',
+                'memberRole',
                 'positions.role',
                 'positions.unit',
                 'committeeRoles.committee'

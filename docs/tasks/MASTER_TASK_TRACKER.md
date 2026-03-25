@@ -28,10 +28,10 @@ Status logic for **Overall Status**:
 
 ## Summary
 
-- Total Tasks: 200
+- Total Tasks: 201
 - Completed: 10
 - In Progress: 96
-- Pending: 94
+- Pending: 95
 
 ## Development Phase Kickoff (2026-03-25)
 
@@ -61,7 +61,7 @@ Status logic for **Overall Status**:
 - **Membership Renewal And Re-Verification**: Tasks `180-184`
 - **Training And Cadre Development**: Tasks `185-189`
 - **Integration Hub And Mass Outreach Campaigns**: Tasks `190-194`
-- **Role-based Dashboard Design UI**: Tasks `195-200`
+- **Role-based Dashboard Design UI**: Tasks `195-201`
 
 ## Task 01 — Setup Foundation
 
@@ -123,10 +123,10 @@ Status logic for **Overall Status**:
 | 42 | Finalize member suspension action | Validate suspension effect on login, active positions, tasks, and downstream admin visibility. This task can be implemented using AI-assisted development. | Done | Passed | Uploaded | Completed |
 | 43 | Finalize member expulsion action | Validate expulsion rules, record retention strategy, and recovery/appeal requirements. This task can be implemented using AI-assisted development. | Done | Passed | Uploaded | Completed |
 | 44 | Finalize admin member update flow | Ensure admin edits respect validation, immutable fields, and audit logging. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
-| 45 | Finalize member deletion policy | Decide where hard delete is allowed versus archival or soft-delete patterns for compliance and recovery. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
+| 45 | Finalize member deletion policy | Decide where hard delete is allowed versus archival or soft-delete patterns for compliance and recovery. This task can be implemented using AI-assisted development. | Done | Pending | In Progress | In Progress |
 | 46 | Expose admin document review flow | Build secure access patterns for reviewing member photo, identity, and student documents. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
-| 47 | Add bulk admin operations plan | Define bulk approve, reject, suspend, export, and notify workflows for larger membership volumes. This task can be implemented using AI-assisted development. | Pending | Pending | Pending | Pending |
-| 48 | Add admin reporting backlog | Define reports for pending counts, status changes, approvals by period, and unit-level membership metrics. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
+| 47 | Add bulk admin operations plan | Define bulk approve, reject, suspend, export, and notify workflows for larger membership volumes. This task can be implemented using AI-assisted development. | Done | Pending | Pending | Pending |
+| 48 | Add admin reporting backlog | Define reports for pending counts, status changes, approvals by period, and unit-level membership metrics. This task can be implemented using AI-assisted development. | Done | Pending | In Progress | In Progress |
 ## Task 05 — Roles, Positions, And Units
 
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
@@ -352,12 +352,63 @@ Status logic for **Overall Status**:
 | 194 | Add compliance and communication governance controls | Implement consent checks, unsubscribe enforcement, campaign approval policies, content moderation checks, and communication audit history for all outreach channels. | Pending | Pending | Pending | Pending |
 
 ## Task 22 — Role-based Dashboard Design UI
+<!-- Note: Backend fix for role-based data filtering is now complete, unblocking UI development for role-specific dashboards. -->
 
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 195 | [UI] Refactor DashboardLayout for Glassmorphism | Implement a premium, translucent theme with blur effects, fixed sidebars, and framer-motion staggered entry animations for dashboard widgets. | Pending | Pending | Pending | Pending |
+| 195 | [UI] Refactor DashboardLayout for Glassmorphism | Implement a premium, translucent theme with blur effects, fixed sidebars, and framer-motion staggered entry animations for dashboard widgets. | Done | In Progress | Uploaded | In Progress |
 | 196 | [UI] Unify Sidebar & Permission-Gating | Create a single `RoleSidebar` component that dynamically filters navigation items based on the user's active role and assigned backend permissions. | Pending | Pending | Pending | Pending |
-| 197 | [UI] Build Premium Admin Metric Widgets | Design high-fidelity statistical cards with mini-charts (sparklines) for membership growth, status distribution, and unit-level heatmaps. | Pending | Pending | Pending | Pending |
+| 197 | [UI] Build Premium Admin Metric Widgets | Design high-fidelity statistical cards with mini-charts (sparklines) for membership growth, status distribution, and unit-level heatmaps. | Done | In Progress | Uploaded | In Progress |
 | 198 | [UI] Design Organizer-specific Dashboard | Build a tailored view for Unit Organizers that filters stats, tasks, and member lists to their specific assigned organizational unit. | Pending | Pending | Pending | Pending |
-| 199 | [UI] Enhance Member Dashboard Experience | Build an interactive member "at-a-glance" view with activity feeds, upcoming events, quick-access unit links, and improved ID card presence. | Pending | Pending | Pending | Pending |
+| 199 | [UI] Enhance Member Dashboard Experience | Build an interactive member "at-a-glance" view with activity feeds, upcoming events, quick-access unit links, and improved ID card presence. | Done | In Progress | Uploaded | In Progress |
 | 200 | [UI] Apply Role-specific Theming | Apply role-specific visual cues, theme accents, and branding elements to the dashboard layouts to improve context awareness and user experience. | Pending | Pending | Pending | Pending |
+| 201 | [UI] Build Menu And Sub-menu Navigation System | Design and implement a structured dashboard navigation model with expandable menu groups, sub-menu states, active-route highlighting, mobile collapse behavior, icon consistency, and permission-aware visibility across admin, organizer, and member roles. | Pending | Pending | Pending | Pending |
+
+### UI Execution Breakdown For Better Work Tracking
+
+Use this sequence when implementing dashboard UI so design, permissions, and role-specific pages do not drift.
+
+| Step | Focus Area | Linked Tasks | Expected Output |
+| --- | --- | --- | --- |
+| 1 | Layout foundation | 195 | Shared dashboard shell with header, content grid, responsive sidebar, motion baseline, and theme tokens |
+| 2 | Navigation and access control | 196, 201 | Centralized sidebar config, permission-aware nav rendering, hidden/disabled states, role grouping, nested menu behavior |
+| 3 | Shared widget library | 197, 199 | Reusable stat cards, chart blocks, feed panels, quick-action cards, loading and empty states |
+| 4 | Admin dashboard composition | 197 | Admin-specific metrics page wired to KPI, chart, and audit summary components |
+| 5 | Organizer dashboard composition | 198 | Unit-scoped dashboard with filtered members, tasks, approvals, and alerts |
+| 6 | Member dashboard composition | 199 | Personal dashboard with profile summary, tasks, events, notifications, and ID card entry point |
+| 7 | Theming and polish | 200 | Role accents, badges, icon language, page transitions, and final responsive refinement |
+
+### UI Delivery Checklist
+
+- Define dashboard design tokens in one place: spacing, radius, shadows, blur, surfaces, accent colors, chart colors.
+- Create a single dashboard shell that all roles reuse before building role-specific pages.
+- Move sidebar items into config objects with `label`, `icon`, `route`, `roles`, and permission keys.
+- Add support for nested navigation objects with parent items, sub-menu items, expand/collapse state, and active trail rules.
+- Standardize states for every dashboard card: loading, empty, error, success.
+- Reuse one widget API for stats, trends, lists, alerts, and quick actions.
+- Implement mobile behavior early: sidebar drawer, sticky page header, 1-column fallback layouts.
+- Keep role-specific pages thin by composing shared widgets instead of cloning layouts.
+- Validate backend permission-gating and frontend route-gating together before styling polish.
+- Add placeholders/skeletons for KPI cards, tables, activity feeds, and chart panels.
+- Finish theme accents last so layout and access rules stay stable during implementation.
+
+### Recommended Build Order By File Area
+
+- `layouts/` : dashboard shell, topbar, responsive container
+- `components/navigation/` : role sidebar, nav item groups, mobile nav
+- `components/navigation/menus/` : menu groups, sub-menu lists, collapse triggers, active state helpers
+- `components/dashboard/` : stat cards, chart cards, feed panels, quick actions, section headers
+- `pages/admin/` : admin dashboard assembly
+- `pages/organizer/` : organizer dashboard assembly
+- `pages/member/` : member dashboard assembly
+- `theme/` or `styles/` : role accents, tokens, reusable surface classes
+
+### Definition Of Done For UI Tasks 195-201
+
+- Desktop and mobile layouts both work without overflow or broken spacing.
+- Role-based navigation only shows allowed destinations.
+- Menu and sub-menu states work consistently for expanded, collapsed, mobile, and active-route cases.
+- Admin, organizer, and member dashboards each have distinct but consistent information architecture.
+- Shared widgets are reused across roles where possible.
+- Loading, empty, and error states are present for every async dashboard block.
+- Final UI matches NDSM branding direction and role-based context cues.
