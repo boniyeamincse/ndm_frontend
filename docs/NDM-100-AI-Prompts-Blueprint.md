@@ -6,7 +6,7 @@ This document contains rewritten prompts in a professional format designed for h
 
 ## 1. Project Setup & Architecture
 
-### Prompt 1 — Vite + React + Tailwind Bootstrap
+### Task 01 [x] — Prompt 1 — Vite + React + Tailwind Bootstrap
 **Goal**: Initialize a React project using Vite with Tailwind CSS v3, React Router v6, and Framer Motion.
 **Rules**:
 - Use Vite for build and development.
@@ -19,7 +19,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `vite.config.js`, `tailwind.config.js`, `postcss.config.js`, `index.html`, and `src/main.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 2 — Folder Structure
+### Task 02 [x] — Prompt 2 — Folder Structure
 **Goal**: Design a scalable React project folder structure for "NDM Student Movement".
 **Rules**:
 - Follow a modular architecture (components, pages, hooks, context, etc.).
@@ -32,7 +32,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: A clean directory tree with descriptions.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 3 — React Router Setup
+### Task 03 [x] — Prompt 3 — React Router Setup
 **Goal**: Build a complete React Router v6 setup for an 8-page website.
 **Rules**:
 - Use `createBrowserRouter` for routing.
@@ -46,7 +46,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/router/index.jsx` and the `Layout` wrapper.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 4 — Global Context (Dark Mode + Auth)
+### Task 04 [x] — Prompt 4 — Global Context (Dark Mode + Auth)
 **Goal**: Create an `AppContext` for managing global states.
 **Rules**:
 - Manage `darkMode`, `mobileMenuOpen`, `currentPage`, and `isLoading`.
@@ -60,7 +60,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `AppContext.jsx` and provider implementation in `main.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 5 — Theme Constants File
+### Task 05 [x] — Prompt 5 — Theme Constants File
 **Goal**: Create a central theme constants file at `src/constants/theme.js`.
 **Rules**:
 - Export objects for `COLORS`, `FONTS`, `BREAKPOINTS`, `SPACING`, and `TRANSITIONS`.
@@ -73,7 +73,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/constants/theme.js` with all exported objects.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 6 — Data Layer
+### Task 06 [x] — Prompt 6 — Data Layer
 **Goal**: Create a `src/data/index.js` file for mock data management.
 **Rules**:
 - Export mock arrays for `navLinks`, `stats`, `leaders`, `activities`, and `news`.
@@ -86,7 +86,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/data/index.js` with realistic content.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 7 — Custom Hooks Collection
+### Task 07 [x] — Prompt 7 — Custom Hooks Collection
 **Goal**: Create a collection of custom hooks at `src/hooks/index.js`.
 **Rules**:
 - Implement `useScrollY`, `useInView`, `useCounter`, and `useDebounce`.
@@ -99,7 +99,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/hooks/index.js` with all functional hooks.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 8 — Environment Config
+### Task 08 [ ] — Prompt 8 — Environment Config
 **Goal**: Set up environment variable validation and access patterns.
 **Rules**:
 - Create `.env.local`, `.env.example`, and a validation wrapper.
@@ -112,7 +112,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `.env` files and `src/config/env.js`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 9 — API Service Layer
+### Task 09 [ ] — Prompt 9 — API Service Layer
 **Goal**: Create an API service layer for handling external requests.
 **Rules**:
 - Implement functions for submitting forms and fetching news/gallery data.
@@ -125,7 +125,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/services/api.js` with all service functions.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 10 — Animation Configuration
+### Task 10 [ ] — Prompt 10 — Animation Configuration
 **Goal**: Centralize Framer Motion animations in `src/config/animations.js`.
 **Rules**:
 - Define reusable variants for `fadeUp`, `fadeIn`, `slideIn`, and `stagger`.
@@ -142,7 +142,7 @@ This document contains rewritten prompts in a professional format designed for h
 
 ## 2. Global Styles & Design System
 
-### Prompt 11 — CSS Variables & Reset
+### Task 11 [ ] — Prompt 11 — CSS Variables & Reset
 **Goal**: Create a comprehensive `globals.css` file with brand-specific variables and resets.
 **Rules**:
 - Define CSS custom properties for all brand colors, fonts, and spacing.
@@ -155,7 +155,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/styles/globals.css`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 12 — Typography System
+### Task 12 [ ] — Prompt 12 — Typography System
 **Goal**: Design a complete typography system using Playfair Display and DM Sans.
 **Rules**:
 - Provide Google Fonts import and Tailwind `fontFamily` extensions.
@@ -168,7 +168,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: Ready-to-use CSS and `tailwind.config` snippets.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 13 — Button Component System
+### Task 13 [ ] — Prompt 13 — Button Component System
 **Goal**: Build a multi-variant reusable `Button` component with Framer Motion.
 **Rules**:
 - Support variants like `primary`, `danger`, `outline`, and `gold`.
@@ -181,7 +181,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/Button.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 14 — Card Component Library
+### Task 14 [ ] — Prompt 14 — Card Component Library
 **Goal**: Create a library of reusable card components for news, leaders, and stats.
 **Rules**:
 - Use a base `Card.Base` for shared styling like shadows and radius.
@@ -194,7 +194,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/Card.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 15 — Badge & Tag Components
+### Task 15 [ ] — Prompt 15 — Badge & Tag Components
 **Goal**: Create `Badge` and `Tag` components with Bangladesh-inspired variants.
 **Rules**:
 - Implement variants like `success`, `danger`, `warning`, and `achievement`.
@@ -207,7 +207,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/Badge.jsx` and `Tag.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 16 — Icon System
+### Task 16 [ ] — Prompt 16 — Icon System
 **Goal**: Set up a consistent icon system using `react-icons`.
 **Rules**:
 - Choose specific icon sets for UI and social media (Feather, BoxIcons).
@@ -220,7 +220,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/Icon.jsx` and `src/constants/icons.js`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 17 — Loading States
+### Task 17 [ ] — Prompt 17 — Loading States
 **Goal**: Build a system for page loaders, skeletons, and spinners.
 **Rules**:
 - Implement a full-screen `PageLoader` with the NDM logo.
@@ -233,7 +233,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/Loading.jsx` or separate files.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 18 — Toast Notification System
+### Task 18 [ ] — Prompt 18 — Toast Notification System
 **Goal**: Create a global toast system with slide-in/out animations.
 **Rules**:
 - Implement a `ToastContext` and a `useToast()` custom hook.
@@ -246,7 +246,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/context/ToastContext.jsx` and UI components.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 19 — Modal System
+### Task 19 [ ] — Prompt 19 — Modal System
 **Goal**: Implement a reusable `Modal` system with backdrop blur and animations.
 **Rules**:
 - Support multiple variants: standard, confirmation, and image lightbox.
@@ -259,7 +259,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/Modal.jsx` and `src/hooks/useModal.js`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 20 — Form Component Library
+### Task 20 [ ] — Prompt 20 — Form Component Library
 **Goal**: Build a collection of styled form inputs for user interaction.
 **Rules**:
 - Create components for `Input`, `Select`, `Textarea`, and `Checkbox`.
@@ -276,7 +276,7 @@ This document contains rewritten prompts in a professional format designed for h
 
 ## 3. Navigation & Layout
 
-### Prompt 21 — Sticky Navbar Component
+### Task 21 [ ] — Prompt 21 — Sticky Navbar Component
 **Goal**: Build a highly functional sticky navbar with mobile menu and dark mode toggle.
 **Rules**:
 - Implement a hide-on-scroll behavior with smooth transitions.
@@ -289,7 +289,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/layout/Navbar.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 22 — Mobile Navigation Overlay
+### Task 22 [ ] — Prompt 22 — Mobile Navigation Overlay
 **Goal**: Create a full-featured mobile drawer for site navigation.
 **Rules**:
 - Use Framer Motion for slide-in animations and staggered list items.
@@ -302,7 +302,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/layout/MobileMenu.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 23 — Breadcrumb Component
+### Task 23 [ ] — Prompt 23 — Breadcrumb Component
 **Goal**: Build an auto-generating breadcrumb component from URL structure.
 **Rules**:
 - Map routes to readable labels (with overrides support).
@@ -315,7 +315,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/Breadcrumbs.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 24 — Root Layout Component
+### Task 24 [ ] — Prompt 24 — Root Layout Component
 **Goal**: Create a master `Layout` wrapper for common elements and transitions.
 **Rules**:
 - Wrap all pages with `Navbar` and `Footer` components.
@@ -328,7 +328,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/layout/Layout.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 25 — Dropdown Menu Component
+### Task 25 [ ] — Prompt 25 — Dropdown Menu Component
 **Goal**: Create an accessible dropdown for nested navigation links.
 **Rules**:
 - Support hover on desktop and click interaction on mobile devices.
@@ -341,7 +341,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/Dropdown.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 26 — Footer Component
+### Task 26 [ ] — Prompt 26 — Footer Component
 **Goal**: Build a professional multi-column footer with newsletter integration.
 **Rules**:
 - Include a full-width newsletter signup bar with brand colors.
@@ -354,7 +354,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/layout/Footer.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 27 — Scroll Progress Indicator
+### Task 27 [ ] — Prompt 27 — Scroll Progress Indicator
 **Goal**: Create a visual indicator of reading progress at the top of the viewport.
 **Rules**:
 - Use a `linear-gradient` transition from green to red based on scroll %.
@@ -367,7 +367,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/ScrollProgress.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 28 — Sidebar Component (Mobile Drawer)
+### Task 28 [ ] — Prompt 28 — Sidebar Component (Mobile Drawer)
 **Goal**: Build a reusable drawer for navigation, filters, or side content.
 **Rules**:
 - Support side configuration (`left` or `right`) and custom widths.
@@ -380,7 +380,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/Drawer.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 29 — Pagination Component
+### Task 29 [ ] — Prompt 29 — Pagination Component
 **Goal**: Develop a pagination system for news and gallery listings.
 **Rules**:
 - Include previous/next buttons and numbered pills with ellipses.
@@ -393,7 +393,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/Pagination.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 30 — Scroll-Spy Navigation
+### Task 30 [ ] — Prompt 30 — Scroll-Spy Navigation
 **Goal**: Highlight active navigation sections as the user scrolls.
 **Rules**:
 - Use `IntersectionObserver` to track section visibility under a threshold.
@@ -410,7 +410,7 @@ This document contains rewritten prompts in a professional format designed for h
 
 ## 4. Home Page Sections
 
-### Prompt 31 — Hero Section
+### Task 31 [ ] — Prompt 31 — Hero Section
 **Goal**: Build a stunning full-viewport Hero section with animations and CTAs.
 **Rules**:
 - Use a high-quality background image with a dark gradient overlay.
@@ -423,7 +423,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/home/Hero.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 32 — News Ticker / Announcement Bar
+### Task 32 [ ] — Prompt 32 — News Ticker / Announcement Bar
 **Goal**: Build a CSS-only marquee-style news ticker for breaking announcements.
 **Rules**:
 - Implement an infinite loop scrolling animation using keyframes.
@@ -436,7 +436,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/home/NewsTicker.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 33 — Animated Stats Counter
+### Task 33 [ ] — Prompt 33 — Animated Stats Counter
 **Goal**: Create an animated counter section triggered by intersection visibility.
 **Rules**:
 - Use `requestAnimationFrame` or a library for smooth count-up easing.
@@ -449,7 +449,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/home/StatsCounter.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 34 — Featured Programs Grid
+### Task 34 [ ] — Prompt 34 — Featured Programs Grid
 **Goal**: Create a grid displaying the organization's core programs and activities.
 **Rules**:
 - Use a 3-column layout on desktop that collapses into a single column on mobile.
@@ -462,7 +462,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/home/ProgramsGrid.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 35 — Latest News Preview
+### Task 35 [ ] — Prompt 35 — Latest News Preview
 **Goal**: Build a section previewing the latest news articles with featured layouts.
 **Rules**:
 - Showcase the most recent article in a larger, full-width featured card.
@@ -475,7 +475,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/home/NewsPreview.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 36 — Mission Banner
+### Task 36 [ ] — Prompt 36 — Mission Banner
 **Goal**: Design a high-impact branding banner between major sections.
 **Rules**:
 - Use a deep green background with a subtle geometric pattern overlay.
@@ -488,7 +488,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/home/MissionBanner.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 37 — Testimonials / Voices Section
+### Task 37 [ ] — Prompt 37 — Testimonials / Voices Section
 **Goal**: Build an auto-rotating testimonial carousel with user-focused design.
 **Rules**:
 - Implement auto-rotation (5s) with manual overrides (dots/arrows).
@@ -501,7 +501,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/home/Testimonials.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 38 — CTA Join Section (Homepage)
+### Task 38 [ ] — Prompt 38 — CTA Join Section (Homepage)
 **Goal**: Create a high-conversion call-to-action section with a integrated form.
 **Rules**:
 - Use a split layout: persuasive benefits on the left, quick-signup on the right.
@@ -514,7 +514,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/home/JoinCTA.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 39 — Partners / Supporters Strip
+### Task 39 [ ] — Prompt 39 — Partners / Supporters Strip
 **Goal**: Showcase partner logos in a smooth, continuous scrolling marquee.
 **Rules**:
 - Implement a grayscale-to-color filter transition on logo hover.
@@ -527,7 +527,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/home/PartnerStrip.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 40 — District Map Section
+### Task 40 [ ] — Prompt 40 — District Map Section
 **Goal**: Visualize the organization's reach across Bangladesh's 64 districts.
 **Rules**:
 - Implement a division-based filtering system for district badges.
@@ -540,7 +540,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/home/DistrictMap.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 41 — Video Section
+### Task 41 [ ] — Prompt 41 — Video Section
 **Goal**: Create a section for video content with a custom lightbox player.
 **Rules**:
 - Show a thumbnail with a custom pulsing red "Play" button icon.
@@ -553,7 +553,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/home/VideoSection.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 42 — Event Countdown Timer
+### Task 42 [ ] — Prompt 42 — Event Countdown Timer
 **Goal**: Build a live countdown timer for the next major organization event.
 **Rules**:
 - Calculate time remaining in Days, Hours, Minutes, and Seconds.
@@ -566,7 +566,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/home/EventCountdown.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 43 — Impact Timeline
+### Task 43 [ ] — Prompt 43 — Impact Timeline
 **Goal**: Design a vertical timeline showcasing major organizational milestones.
 **Rules**:
 - Use an alternating left/right layout for milestones on desktop.
@@ -579,7 +579,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/home/ImpactTimeline.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 44 — Social Feed / Highlights Strip
+### Task 44 [ ] — Prompt 44 — Social Feed / Highlights Strip
 **Goal**: Create a visual strip of social media highlights and statistics.
 **Rules**:
 - Implement a 4-card row resembling an Instagram profile feed.
@@ -592,7 +592,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/home/SocialFeed.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 45 — Quick Links Grid
+### Task 45 [ ] — Prompt 45 — Quick Links Grid
 **Goal**: Provide a grid of direct links to essential site pages.
 **Rules**:
 - design a 4x2 grid of cards with prominent icons and short labels.
@@ -609,7 +609,7 @@ This document contains rewritten prompts in a professional format designed for h
 
 ## 5. About, Leadership & Activities
 
-### Prompt 46 — About Page Layout
+### Task 46 [ ] — Prompt 46 — About Page Layout
 **Goal**: Assemble the full "About" page using various sub-components.
 **Rules**:
 - Integrate sections for Hero, Overview, History, and Values.
@@ -622,7 +622,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/pages/About.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 47 — Core Values Section
+### Task 47 [ ] — Prompt 47 — Core Values Section
 **Goal**: Design a 3x2 grid showcasing the 6 core values of the organization.
 **Rules**:
 - Each value card should have a unique icon (emoji or SVG).
@@ -635,7 +635,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/about/CoreValues.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 48 — Organization Structure Chart
+### Task 48 [ ] — Prompt 48 — Organization Structure Chart
 **Goal**: Create a visual hierarchy tree of the organizational levels.
 **Rules**:
 - Use SVG or CSS tree connectors to link different leadership tiers.
@@ -648,7 +648,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/about/OrgChart.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 49 — Leadership Page
+### Task 49 [ ] — Prompt 49 — Leadership Page
 **Goal**: Build a filtered directory of current organizational leaders.
 **Rules**:
 - Implement tabs for filtering by level (National, Divisional, District).
@@ -661,7 +661,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/pages/Leadership.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 50 — Leader Profile Card (Flip Effect)
+### Task 50 [ ] — Prompt 50 — Leader Profile Card (Flip Effect)
 **Goal**: Create a specialized card with a 3D flip animation for bios.
 **Rules**:
 - Design distinct "Front" (Photo & Role) and "Back" (Bio & Socials) faces.
@@ -674,7 +674,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/LeaderFlipCard.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 51 — Activities Page Layout
+### Task 51 [ ] — Prompt 51 — Activities Page Layout
 **Goal**: Build a central hub for all organizational programs and campaigns.
 **Rules**:
 - use a sticky category filter (Education, Environment, etc.) at the top.
@@ -687,7 +687,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/pages/Activities.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 52 — Event Card Component
+### Task 52 [ ] — Prompt 52 — Event Card Component
 **Goal**: Create a specialized card for upcoming and past events.
 **Rules**:
 - display date, time, and location in a clean, icon-supported format.
@@ -700,7 +700,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/EventCard.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 53 — Campaign Detail Page
+### Task 53 [ ] — Prompt 53 — Campaign Detail Page
 **Goal**: build a focused landing page for a specific organizational campaign.
 **Rules**:
 - include a dynamic progress bar for specific goals (e.g., trees planted).
@@ -713,7 +713,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/pages/CampaignDetail.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 54 — History Timeline Component
+### Task 54 [ ] — Prompt 54 — History Timeline Component
 **Goal**: build a detailed, scroll-animated history timeline for the About page.
 **Rules**:
 - use a central vertical line with alternating content blocks.
@@ -726,7 +726,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/about/HistoryTimeline.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 55 — Awards & Recognition Section
+### Task 55 [ ] — Prompt 55 — Awards & Recognition Section
 **Goal**: display institutional achievements in a clean, trophy-themed grid.
 **Rules**:
 - each award card should include the organization, year, and a short description.
@@ -739,7 +739,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/about/AwardsSection.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 56 — Scholarship Program Section
+### Task 56 [ ] — Prompt 56 — Scholarship Program Section
 **Goal**: build a section detailing scholarship opportunities and application steps.
 **Rules**:
 - Use distinct tier cards for different scholarship levels (Full, Merit, Need).
@@ -752,7 +752,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/activities/Scholarships.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 57 — Volunteer Registration System
+### Task 57 [ ] — Prompt 57 — Volunteer Registration System
 **Goal**: build a multi-step registration flow for potential volunteers.
 **Rules**:
 - implement a progressive flow (Personal -> Interest -> Availability).
@@ -765,7 +765,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/forms/VolunteerForm.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 58 — Activities Search & Filter
+### Task 58 [ ] — Prompt 58 — Activities Search & Filter
 **Goal**: build a comprehensive search and filtering utility for activities.
 **Rules**:
 - Implement full-text search and category-based pill filters.
@@ -778,7 +778,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/activities/ActivityFilter.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 59 — Downloadable Resources Page
+### Task 59 [ ] — Prompt 59 — Downloadable Resources Page
 **Goal**: Create a structured list of downloadable documents and media kits.
 **Rules**:
 - group downloads into tabs (Forms, Reports, Media, etc.).
@@ -791,7 +791,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/pages/Downloads.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 60 — Leaders' Blog / Thought Leadership
+### Task 60 [ ] — Prompt 60 — Leaders' Blog / Thought Leadership
 **Goal**: Design an editorial section for articles written by organizational leaders.
 **Rules**:
 - use a "Featured" spotlight for the most important/recent message.
@@ -808,7 +808,7 @@ This document contains rewritten prompts in a professional format designed for h
 
 ## 6. News, Gallery & Join Us
 
-### Prompt 61 — News / Blog Page
+### Task 61 [ ] — Prompt 61 — News / Blog Page
 **Goal**: build the master News listing page with featured and grid layouts.
 **Rules**:
 - showcase the most recent post in a full-width spotlight card.
@@ -821,7 +821,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/pages/News.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 62 — Article Detail Page
+### Task 62 [ ] — Prompt 62 — Article Detail Page
 **Goal**: Create a rich-text article detail view with meta info and sharing.
 **Rules**:
 - include an author info bar with avatar, name, and estimated reading time.
@@ -834,7 +834,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/pages/NewsArticle.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 63 — Gallery Page with Filtering
+### Task 63 [ ] — Prompt 63 — Gallery Page with Filtering
 **Goal**: Build a visual masonry gallery with category-based filtering.
 **Rules**:
 - implement a masonry-style image grid using CSS columns or a library.
@@ -847,7 +847,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/pages/Gallery.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 64 — Lightbox Component
+### Task 64 [ ] — Prompt 64 — Lightbox Component
 **Goal**: build a premium, full-screen image viewer with navigation.
 **Rules**:
 - support keyboard arrows (Left/Right) and ESC-key for interaction.
@@ -860,7 +860,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/Lightbox.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 65 — Join Us Page
+### Task 65 [ ] — Prompt 65 — Join Us Page
 **Goal**: create a high-impact recruitment landing page for the organization.
 **Rules**:
 - detail 6 core benefits of joining (Leadership, Training, Networking, etc.).
@@ -873,7 +873,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/pages/JoinUs.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 66 — Multi-Step Join Form
+### Task 66 [ ] — Prompt 66 — Multi-Step Join Form
 **Goal**: build a comprehensive 4-step membership application form.
 **Rules**:
 - separate the flow: Personal -> Academic -> Location -> Motivation.
@@ -886,7 +886,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/forms/JoinForm.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 67 — FAQ Accordion Component
+### Task 67 [ ] — Prompt 67 — FAQ Accordion Component
 **Goal**: build an accessible FAQ section with smooth height transitions.
 **Rules**:
 - allow only one item to be expanded at a time (standard accordion behavior).
@@ -899,7 +899,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/Accordion.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 68 — Membership Benefits Section
+### Task 68 [ ] — Prompt 68 — Membership Benefits Section
 **Goal**: highlight the unique value propositions of joining the organization.
 **Rules**:
 - use large icons and descriptive headers for each of the 6 benefits.
@@ -912,7 +912,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/join/JoinBenefits.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 69 — Member Dashboard (UI Only)
+### Task 69 [ ] — Prompt 69 — Member Dashboard (UI Only)
 **Goal**: design a dashboard UI for logged-in members to track their activities.
 **Rules**:
 - implement a vertical sidebar for navigation (Dashboard, Profile, Events).
@@ -925,7 +925,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/pages/Dashboard.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 70 — Certificate Generator (UI)
+### Task 70 [ ] — Prompt 70 — Certificate Generator (UI)
 **Goal**: create a professional, printable certificate preview and download UI.
 **Rules**:
 - design the certificate in A4 landscape with brand borders and signatures.
@@ -938,7 +938,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/dashboard/CertificateUI.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 71 — Photo Upload Component
+### Task 71 [ ] — Prompt 71 — Photo Upload Component
 **Goal**: Build a drag-and-drop zone with image preview and basic cropper.
 **Rules**:
 - implement file validation for size (max 2MB) and type (JPEG/PNG).
@@ -951,7 +951,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/ImageUpload.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 72 — Referral System (UI)
+### Task 72 [ ] — Prompt 72 — Referral System (UI)
 **Goal**: Create a gamified "Refer a Friend" section with sharing and stats.
 **Rules**:
 - include a "One-Click Copy" referral link with toast confirmation.
@@ -968,7 +968,7 @@ This document contains rewritten prompts in a professional format designed for h
 
 ## 7. Contact, Footer & Utilities
 
-### Prompt 73 — Contact Page
+### Task 73 [ ] — Prompt 73 — Contact Page
 **Goal**: build a comprehensive contact hub with office info and map.
 **Rules**:
 - feature info cards for physical address, phone, and official email.
@@ -981,7 +981,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/pages/Contact.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 74 — Interactive Map Component
+### Task 74 [ ] — Prompt 74 — Interactive Map Component
 **Goal**: Create a district-based search tool to find local organizational units.
 **Rules**:
 - implement a searchable list or division-based tabs for filtering branches.
@@ -994,7 +994,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/contact/BranchFinder.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 75 — Dark Mode Implementation
+### Task 75 [ ] — Prompt 75 — Dark Mode Implementation
 **Goal**: implement a persistent dark mode system using CSS variables.
 **Rules**:
 - support system-preference detection and local-storage persistence.
@@ -1007,7 +1007,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/context/ThemeContext.jsx` and global CSS updates.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 76 — Search Functionality
+### Task 76 [ ] — Prompt 76 — Search Functionality
 **Goal**: Build a site-wide command palette or search overlay.
 **Rules**:
 - trigger via a keyboard shortcut (Cmd+K) or navbar search icon.
@@ -1020,7 +1020,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/SearchOverlay.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 77 — Cookie Consent Banner
+### Task 77 [ ] — Prompt 77 — Cookie Consent Banner
 **Goal**: create a GDPR-compliant banner for managing tracking preferences.
 **Rules**:
 - display at the bottom of the screen until an action is taken.
@@ -1033,7 +1033,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/CookieConsent.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 78 — Print Styles
+### Task 78 [ ] — Prompt 78 — Print Styles
 **Goal**: define specific CSS rules for high-quality page printing.
 **Rules**:
 - hide navigation, sidebars, and interactive elements (buttons, carousels).
@@ -1046,7 +1046,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/styles/print.css`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 79 — Error Pages
+### Task 79 [ ] — Prompt 79 — Error Pages
 **Goal**: Design user-friendly 404 (Not Found) and 500 (Server Error) pages.
 **Rules**:
 - Include branded illustrations (e.g., lost student) and clear explanations.
@@ -1059,7 +1059,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/pages/ErrorPage.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 80 — Accessibility Enhancements
+### Task 80 [ ] — Prompt 80 — Accessibility Enhancements
 **Goal**: Implement essential web accessibility improvements across the site.
 **Rules**:
 - add a "Skip to Main Content" link visible only on keyboard focus.
@@ -1072,7 +1072,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: A global accessibility stylesheet and audit checklist.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 81 — Progressive Web App Setup
+### Task 81 [ ] — Prompt 81 — Progressive Web App Setup
 **Goal**: Configure the site to be installable and offline-capable.
 **Rules**:
 - create a `manifest.json` with brand icons, theme colors, and display mode.
@@ -1085,7 +1085,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `public/manifest.json` and service worker configuration.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 82 — Social Sharing Component
+### Task 82 [ ] — Prompt 82 — Social Sharing Component
 **Goal**: Build a reusable trigger for sharing content across socials.
 **Rules**:
 - Use the native Web Share API where available, fallback to custom modal.
@@ -1102,7 +1102,7 @@ This document contains rewritten prompts in a professional format designed for h
 
 ## 8. Performance & Accessibility
 
-### Prompt 83 — Image Optimization
+### Task 83 [ ] — Prompt 83 — Image Optimization
 **Goal**: Build a highly performant `OptimizedImage` component for the organization.
 **Rules**:
 - provide native `loading="lazy"` with an `IntersectionObserver` fallback for older browsers.
@@ -1115,7 +1115,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/OptimizedImage.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 84 — Code Splitting & Lazy Loading
+### Task 84 [ ] — Prompt 84 — Code Splitting & Lazy Loading
 **Goal**: optimize page load times through tactical code splitting and lazy imports.
 **Rules**:
 - wrap all major page components in `React.lazy` and `Suspense` fallbacks.
@@ -1128,7 +1128,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: Updated `src/router/index.jsx` and `Layout.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 85 — Performance Optimization Checklist
+### Task 85 [ ] — Prompt 85 — Performance Optimization Checklist
 **Goal**: apply advanced front-end performance optimizations across the codebase.
 **Rules**:
 - preconnect to critical domains like Google Fonts and CDNs.
@@ -1141,7 +1141,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: Annotated code examples and optimization summary.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 86 — Form Validation System
+### Task 86 [ ] — Prompt 86 — Form Validation System
 **Goal**: Build a robust, real-time validation system with Zod and React Hook Form.
 **Rules**:
 - apply strict rules for Bangladesh phone numbers, student IDs, and districts.
@@ -1154,7 +1154,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/utils/validationSchemas.js` and usage guide.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 87 — Internationalization Setup (Bangla/English)
+### Task 87 [ ] — Prompt 87 — Internationalization Setup (Bangla/English)
 **Goal**: configure multi-language support (i18n) for the entire website.
 **Rules**:
 - utilize `i18next` for managing English and Bengali translation files.
@@ -1167,7 +1167,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/i18n.js` and JSON translation templates.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 88 — Analytics Integration
+### Task 88 [ ] — Prompt 88 — Analytics Integration
 **Goal**: Integrate Google Analytics 4 for tracking user engagement and goals.
 **Rules**:
 - track page views automatically on every route change within React Router.
@@ -1180,7 +1180,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/hooks/useAnalytics.js` and global setup.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 89 — Error Boundary Implementation
+### Task 89 [ ] — Prompt 89 — Error Boundary Implementation
 **Goal**: protect the user experience with robust crash-handling and fallbacks.
 **Rules**:
 - wrap the global app and individual high-risk sections in Error Boundaries.
@@ -1193,7 +1193,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/ErrorBoundary.jsx` and hook.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 90 — Testing Setup
+### Task 90 [ ] — Prompt 90 — Testing Setup
 **Goal**: Configure a comprehensive testing environment for the React project.
 **Rules**:
 - install and setup Vitest, React Testing Library, and Mock Service Worker (MSW).
@@ -1210,7 +1210,7 @@ This document contains rewritten prompts in a professional format designed for h
 
 ## 9. SEO & Analytics
 
-### Prompt 91 — SEO Configuration
+### Task 91 [ ] — Prompt 91 — SEO Configuration
 **Goal**: Optimize the website for search engines with dynamic meta data.
 **Rules**:
 - use React Helmet to inject unique Title, Description, and OG tags per page.
@@ -1223,7 +1223,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/hooks/useSEO.js` and usage examples.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 92 — Open Graph Image Generator
+### Task 92 [ ] — Prompt 92 — Open Graph Image Generator
 **Goal**: Create a dynamic generator for branded news sharing images.
 **Rules**:
 - dynamically generate an OG image with the article title and NDM branding.
@@ -1236,7 +1236,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: Image generation script for public asset production.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 93 — Sitemap & robots.txt
+### Task 93 [ ] — Prompt 93 — Sitemap & robots.txt
 **Goal**: provide crawlers with a clear map of the site's structure and rules.
 **Rules**:
 - generate a `sitemap.xml` with proper priority and frequency for all pages.
@@ -1249,7 +1249,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `public/sitemap.xml` and `public/robots.txt` templates.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 94 — Performance Monitoring
+### Task 94 [ ] — Prompt 94 — Performance Monitoring
 **Goal**: implement real-time monitoring of Core Web Vitals (LCP, FID, CLS).
 **Rules**:
 - use the `web-vitals` library to capture metrics for every user session.
@@ -1262,7 +1262,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/utils/performance.js` and implementation guide.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 95 — Structured Data / Schema.org
+### Task 95 [ ] — Prompt 95 — Structured Data / Schema.org
 **Goal**: Inject JSON-LD structured data for rich search engine results.
 **Rules**:
 - implement specific schemas for Organization, Article, and Event pages.
@@ -1279,7 +1279,7 @@ This document contains rewritten prompts in a professional format designed for h
 
 ## 10. Testing & Deployment
 
-### Prompt 96 — Unit Tests (Components)
+### Task 96 [ ] — Prompt 96 — Unit Tests (Components)
 **Goal**: write granular tests for individual UI components and their logic.
 **Rules**:
 - verify rendering, state changes, and event handling for the Navbar.
@@ -1292,7 +1292,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: Comprehensive unit test suite in `__tests__/components`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 97 — Integration Tests
+### Task 97 [ ] — Prompt 97 — Integration Tests
 **Goal**: test critical user journeys and cross-component interactions.
 **Rules**:
 - simulate a full "Join Us" flow from empty form to success message.
@@ -1305,7 +1305,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: Integration test files and MSW handlers.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 98 — Deployment Configuration
+### Task 98 [ ] — Prompt 98 — Deployment Configuration
 **Goal**: Set up automated CI/CD pipelines and production hosting rules.
 **Rules**:
 - provide `vercel.json` or `netlify.toml` with SPA redirect configurations.
@@ -1318,7 +1318,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: Full deployment configuration for Vercel/Netlify.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 99 — Documentation
+### Task 99 [ ] — Prompt 99 — Documentation
 **Goal**: write clear, professional documentation for the entire project lifecycle.
 **Rules**:
 - create a comprehensive `README.md` with setup, stack, and deploy steps.
@@ -1331,7 +1331,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: Markdown documentation suite in the project root.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Prompt 100 — Full Stack Upgrade Path
+### Task 100 [ ] — Prompt 100 — Full Stack Upgrade Path
 **Goal**: provide a roadmap for moving from a static site to a full-stack app.
 **Rules**:
 - detail the migration to a backend like Node.js/Express or Next.js.
@@ -1348,7 +1348,7 @@ This document contains rewritten prompts in a professional format designed for h
 
 ## 🏁 Quick Reference Card
 
-| Category | Prompts | Focus |
+| Category | Tasks | Focus |
 |---|---|---|
 | Setup & Architecture | 1–10 | Vite, Router, Context, Data, Hooks |
 | Design System | 11–20 | CSS, Typography, Buttons, Cards, Forms |
