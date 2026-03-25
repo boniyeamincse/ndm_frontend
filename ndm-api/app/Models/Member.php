@@ -91,4 +91,9 @@ class Member extends Model
     {
         return $this->belongsTo(User::class, 'approved_by');
     }
+
+    public function committeeRoles(): HasMany
+    {
+        return $this->hasMany(CommitteeRole::class);
+    }
 }

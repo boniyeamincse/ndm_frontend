@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             OrganizationalUnitSeeder::class,
             RoleSeeder::class,
+            BlogPostSeeder::class,
         ]);
     }
 }

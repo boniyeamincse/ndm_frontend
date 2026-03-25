@@ -5,17 +5,24 @@ use App\Http\Controllers\API\IdCardController;
 use App\Http\Controllers\API\MemberController;
 use App\Http\Controllers\API\Member\ProfileController;
 use App\Http\Controllers\API\UnitController;
+use App\Http\Controllers\API\NewsController;
 use App\Http\Controllers\API\Admin\AdminDashboardController;
 use App\Http\Controllers\API\Admin\AdminMemberController;
 use App\Http\Controllers\API\Admin\MemberExportController;
 use App\Http\Controllers\API\Admin\OrganizationalUnitController;
 use App\Http\Controllers\API\Admin\TaskController;
 use App\Http\Controllers\API\Admin\RoleController;
+use App\Http\Controllers\API\Admin\CommitteeController;
+use App\Http\Controllers\API\Admin\CommitteeRoleController;
+use App\Http\Controllers\API\Admin\PositionController;
+use App\Http\Controllers\API\Admin\BlogPostController;
 use Illuminate\Support\Facades\Route;
 
 // ── Public ─────────────────────────────────────────────────────────────────
 
 Route::get('units/campus', [UnitController::class, 'index']);
+Route::get('news', [NewsController::class, 'index']);
+Route::get('news/{slug}', [NewsController::class, 'show']);
 
 // Public member profile (by NDM member ID string, e.g. NDM-SW-2026-0001)
 Route::get('members/{member_id}', [MemberController::class, 'publicProfile']);
@@ -44,7 +51,10 @@ Route::middleware(['auth:api', 'active.member', 'audit'])->group(function () {
     // Profile
     Route::get ('profile',       [ProfileController::class, 'show']);
     Route::put ('profile',       [ProfileController::class, 'update']);
+    Route::put ('profile/password', [ProfileController::class, 'changePassword']);
+    Route::get ('profile/activity', [ProfileController::class, 'activity']);
     Route::post('profile/photo', [ProfileController::class, 'uploadPhoto']);
+    Route::delete('profile/photo', [ProfileController::class, 'removePhoto']);
 
     // Digital ID card
     Route::get('id-card',         [IdCardController::class, 'download']);
@@ -98,4 +108,23 @@ Route::prefix('admin')
 
         // Organizational units
         Route::get   ('units',                          [OrganizationalUnitController::class, 'index']);
+
+        // Positions (static /history route must come before the {id} wildcard)
+        Route::get   ('positions/history',    [PositionController::class, 'history']);
+        Route::get   ('positions',            [PositionController::class, 'index']);
+        Route::post  ('positions',            [PositionController::class, 'store']);
+        Route::delete('positions/{id}',       [PositionController::class, 'destroy']);
+
+        // Blog management
+        Route::get   ('blog-posts',       [BlogPostController::class, 'index']);
+        Route::post  ('blog-posts',       [BlogPostController::class, 'store']);
+        Route::get   ('blog-posts/{id}',  [BlogPostController::class, 'show']);
+        Route::put   ('blog-posts/{id}',  [BlogPostController::class, 'update']);
+        Route::delete('blog-posts/{id}',  [BlogPostController::class, 'destroy']);
+
+        // Committee Management
+        Route::apiResource('committees',                      CommitteeController::class);
+        Route::post  ('committees/{id}/members',              [CommitteeRoleController::class, 'store']);
+        Route::put   ('committees/{id}/roles/{role_id}',      [CommitteeRoleController::class, 'update']);
+        Route::delete('committees/{id}/roles/{role_id}',      [CommitteeRoleController::class, 'destroy']);
     });

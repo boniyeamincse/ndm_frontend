@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/ui/Button';
+import { NDM_LOGO_URL } from '../../constants/branding';
 
 const Login = () => {
     const navigate  = useNavigate();
@@ -32,57 +33,85 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-900 py-12 px-4 sm:px-6 lg:px-8">
-            <motion.div 
+        <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-primary-dark via-primary to-primary-dark py-6 sm:py-10 px-3 sm:px-6 lg:px-8 flex items-center justify-center">
+            <div className="pointer-events-none absolute -top-20 -left-16 h-72 w-72 rounded-full bg-gold/20 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 -right-10 h-72 w-72 rounded-full bg-accent/20 blur-3xl" />
+
+            <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="max-w-md w-full space-y-8 p-8 bg-white dark:bg-slate-800 rounded-2xl shadow-xl"
+                className="relative mx-auto grid w-full max-w-5xl overflow-hidden rounded-2xl sm:rounded-3xl border border-white/20 bg-white/10 backdrop-blur-md md:grid-cols-[1.1fr_1fr]"
             >
-                <div>
-                    <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-                            Sign In to NDM
-                    </h2>
-                    <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-                            Access your NDM Student Wing account
-                    </p>
-                </div>
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                    <div className="rounded-md shadow-sm -space-y-px">
-                        <div>
-                            <input
-                                type="email"
-                                required
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-slate-700 placeholder-gray-500 text-gray-900 dark:text-white rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm dark:bg-slate-900"
-                                placeholder="Email address"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </div>
-                        <div>
-                            <input
-                                type="password"
-                                required
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-slate-700 placeholder-gray-500 text-gray-900 dark:text-white rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm dark:bg-slate-900"
-                                placeholder="Password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </div>
-                    </div>
-
-                    {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-
+                <div className="relative hidden md:flex flex-col justify-between p-8 lg:p-10 bg-gradient-to-br from-primary-dark/80 to-primary/60 border-r border-white/10">
                     <div>
-                        <Button
-                            type="submit"
-                            variant="primary"
-                            className="w-full"
-                            isLoading={loading}
-                        >
-                            {loading ? 'Authenticating...' : 'Sign in'}
-                        </Button>
+                        <Link to="/" className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/10 border border-white/20">
+                            <img src={NDM_LOGO_URL} alt="NDM logo" className="h-10 w-auto rounded-md border border-white/20" loading="lazy" />
+                            <span className="text-lg font-display font-bold text-white">Student Movement - NDM</span>
+                        </Link>
                     </div>
-                </form>
+                    <div className="space-y-3">
+                        <h1 className="text-3xl lg:text-4xl font-display font-bold text-white leading-tight">
+                            Leadership. Unity. Democratic Values.
+                        </h1>
+                        <p className="text-white/80 text-sm leading-relaxed max-w-md">
+                            Sign in to manage chapters, members, and activities with the official Student Movement - NDM platform.
+                        </p>
+                    </div>
+                </div>
+
+                <div className="relative p-4 sm:p-8 lg:p-10 md:[perspective:1200px]">
+                    <div className="hidden sm:block absolute inset-8 rounded-3xl bg-accent/20 blur-2xl" />
+                    <div className="hidden sm:block absolute inset-0 translate-x-2 translate-y-2 rounded-3xl border border-white/20 bg-primary-dark/20" />
+                    <div className="hidden sm:block absolute inset-0 translate-x-4 translate-y-4 rounded-3xl border border-white/10 bg-accent/10" />
+
+                    <div className="relative rounded-2xl sm:rounded-3xl border border-white/30 bg-white/95 p-5 sm:p-7 shadow-2xl transform-gpu md:[transform:rotateY(-3deg)_rotateX(2deg)]">
+                        <div className="md:hidden mb-5">
+                            <Link to="/" className="inline-flex max-w-full items-center gap-2.5 px-3 py-2 rounded-2xl bg-primary/10 border border-primary/20">
+                                <img src={NDM_LOGO_URL} alt="NDM logo" className="h-10 w-auto rounded-md border border-black/10" loading="lazy" />
+                                <span className="text-sm sm:text-base leading-tight font-display font-bold text-primary-dark">Student Movement - NDM</span>
+                            </Link>
+                        </div>
+
+                        <h2 className="text-2xl sm:text-3xl font-extrabold text-primary-dark">
+                            Sign In
+                        </h2>
+                        <p className="mt-2 text-sm text-slate-600">
+                            Access your Student Movement - NDM account
+                        </p>
+
+                        <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
+                            <div className="space-y-3">
+                                <input
+                                    type="email"
+                                    required
+                                    className="block w-full rounded-xl border border-primary/25 bg-white px-3.5 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                    placeholder="Email address"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                                <input
+                                    type="password"
+                                    required
+                                    className="block w-full rounded-xl border border-primary/25 bg-white px-3.5 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
+
+                            {error && <p className="text-accent text-sm text-center">{error}</p>}
+
+                            <Button
+                                type="submit"
+                                variant="primary"
+                                className="w-full"
+                                isLoading={loading}
+                            >
+                                {loading ? 'Authenticating...' : 'Sign in'}
+                            </Button>
+                        </form>
+                    </div>
+                </div>
             </motion.div>
         </div>
     );

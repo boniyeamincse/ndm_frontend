@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../ui/Button';
+import { NDM_LOGO_URL } from '../../constants/branding';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,18 +32,19 @@ const Navbar = () => {
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
         scrolled 
           ? 'bg-white/80 backdrop-blur-md shadow-lg py-2' 
-          : 'bg-transparent py-4 text-white'
+          : 'bg-slate-900/55 backdrop-blur-sm py-4 text-white'
       }`}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
         {/* Logo */}
         <Link 
           to="/" 
-          className={`text-2xl font-display font-bold tracking-tight transition-colors ${
+          className={`flex items-center gap-2 text-2xl font-display font-bold tracking-tight transition-colors ${
             scrolled ? 'text-primary' : 'text-white'
           }`}
         >
-          NDM<span className="text-gold italic">STUDENT</span>
+          <img src={NDM_LOGO_URL} alt="NDM logo" className="h-8 w-auto rounded-sm border border-black/10" loading="lazy" />
+          <span>Student Movement - NDM</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -54,7 +56,7 @@ const Navbar = () => {
               className={`text-sm font-body font-medium transition-all hover:text-gold ${
                 location.pathname === link.path 
                   ? 'text-gold' 
-                  : scrolled ? 'text-text-main' : 'text-white'
+                  : scrolled ? 'text-slate-700' : 'text-white'
               }`}
             >
               {link.name}
@@ -103,7 +105,7 @@ const Navbar = () => {
                 </Link>
               ))}
               <Link to="/join" className="w-full">
-                <Button variant="primary" className="w-full">Join Now</Button>
+                <Button variant="primary" className="w-full">Join Movement</Button>
               </Link>
             </div>
           </motion.div>

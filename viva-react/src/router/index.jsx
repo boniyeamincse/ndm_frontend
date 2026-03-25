@@ -11,7 +11,9 @@ const News          = lazy(() => import('../pages/News'));
 const Gallery       = lazy(() => import('../pages/Gallery'));
 const Leadership    = lazy(() => import('../pages/Leadership'));
 const Activities    = lazy(() => import('../pages/Activities'));
+const Campuses      = lazy(() => import('../pages/Campuses'));
 const Contact       = lazy(() => import('../pages/Contact'));
+const Volunteer     = lazy(() => import('../pages/Volunteer'));
 const Register      = lazy(() => import('../pages/Register'));
 const Login         = lazy(() => import('../pages/auth/Login'));
 const NotFound      = lazy(() => import('../pages/NotFound'));
@@ -29,6 +31,10 @@ const PositionManagement = lazy(() => import('../pages/dashboard/admin/PositionM
 const PositionHistory    = lazy(() => import('../pages/dashboard/admin/PositionHistory'));
 const AdminSettings      = lazy(() => import('../pages/dashboard/admin/AdminSettings'));
 const MemberReports      = lazy(() => import('../pages/dashboard/admin/MemberReports'));
+const CommitteeManagement= lazy(() => import('../pages/dashboard/admin/CommitteeManagement'));
+const MemberSearch       = lazy(() => import('../pages/dashboard/admin/MemberSearch'));
+const BlogManagement     = lazy(() => import('../pages/dashboard/admin/BlogManagement'));
+const CommitteeDetail    = lazy(() => import('../pages/dashboard/admin/CommitteeDetail'));
 
 // ── Member pages ──────────────────────────────────────────────────────────────
 const MemberDashboard   = lazy(() => import('../pages/dashboard/member/MemberDashboard'));
@@ -58,7 +64,9 @@ export const router = createBrowserRouter([
       { path: 'join',               element: <Navigate to="/register" replace /> },
       { path: 'leadership',         element: <Leadership /> },
       { path: 'activities',         element: <Activities /> },
+      { path: 'campuses',           element: <Campuses /> },
       { path: 'contact',            element: <Contact /> },
+      { path: 'volunteer',          element: <Volunteer /> },
       { path: 'register',           element: <Register /> },
       { path: 'login',              element: <Login /> },
       { path: 'directory',          element: <Directory /> },
@@ -92,9 +100,14 @@ export const router = createBrowserRouter([
           { index: true,                element: <AdminDashboard /> },
           { path: 'members',            element: <AllMembers /> },
           { path: 'members/pending',    element: <PendingApprovals /> },
+          { path: 'members/search',     element: <MemberSearch /> },
           { path: 'members/:id',        element: <MemberDetail /> },
           { path: 'roles',              element: <RoleManagement /> },
           { path: 'units',              element: <UnitManagement /> },
+          { path: 'committees',         element: <CommitteeManagement /> },
+          { path: 'blog',               element: <BlogManagement /> },
+          { path: 'profile',            element: <MemberProfilePage /> },
+          { path: 'settings/committees/:id', element: <CommitteeDetail /> },
           { path: 'positions',          element: <PositionManagement /> },
           { path: 'positions/history',  element: <PositionHistory /> },
           { path: 'settings',           element: <AdminSettings /> },

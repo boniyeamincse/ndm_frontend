@@ -56,12 +56,21 @@ cd ndm-api
 composer install
 cp .env.example .env
 php artisan key:generate
-php artisan migrate
+php artisan migrate --seed
 npm install
 php artisan serve
 ```
 
 API usually runs on `http://127.0.0.1:8000`.
+
+## Default Credentials (Local Dev)
+
+After running `php artisan migrate --seed`, you can sign in with:
+
+- **Admin Email:** `admin@ndm.org.bd`
+- **Admin Password:** `password`
+
+> Change this password immediately in any shared or non-local environment.
 
 ## Useful Commands
 
@@ -87,6 +96,14 @@ composer run dev
 - Product/UI prompt blueprint: `docs/NDM-100-AI-Prompts-Blueprint.md`
 - Backend implementation tasks: `docs/api/NDM_100_Development_Tasks.md`
 - Backend architecture/API blueprint: `docs/api/NDM_Laravel_API_Blueprint.md`
+- Blog module progress tracking: `docs/api/NDM_Blog_Module_Tracking.md`
+
+### Detailed Docs (Quick Links)
+
+- [NDM Complete Blueprint](docs/NDM_Complete_Blueprint.md)
+- [NDM 100 Development Tasks](docs/api/NDM_100_Development_Tasks.md)
+- [NDM Laravel API Blueprint](docs/api/NDM_Laravel_API_Blueprint.md)
+- [NDM Blog Module Tracking](docs/api/NDM_Blog_Module_Tracking.md)
 
 ## Notes
 

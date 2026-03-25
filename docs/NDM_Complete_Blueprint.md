@@ -169,24 +169,24 @@ ndm-api/
 │   │   │       ├── MemberController.php             [DONE ✅]
 │   │   │       │     publicProfile(), search()
 │   │   │       │
-│   │   │       ├── ProfileController.php            [PLANNED - Task 21]
-│   │   │       │     me(), update(), uploadPhoto()
+│   │   │       ├── Member/ProfileController.php     [DONE ✅]
+│   │   │       │     show(), update(), uploadPhoto()
 │   │   │       │
 │   │   │       ├── Admin/
-│   │   │       │   ├── AdminMemberController.php    [PLANNED - Task 28]
+│   │   │       │   ├── AdminMemberController.php    [DONE ✅]
 │   │   │       │   │     index(), pending(), show()
 │   │   │       │   │     approve(), reject()
 │   │   │       │   │     suspend(), expel()
 │   │   │       │   │     update(), destroy()
 │   │   │       │   │
-│   │   │       │   ├── RoleController.php           [PLANNED - Task 38]
+│   │   │       │   ├── RoleController.php           [DONE ✅]
 │   │   │       │   │     index(), store(), update(), destroy()
 │   │   │       │   │
 │   │   │       │   ├── PositionController.php       [PLANNED - Task 48]
 │   │   │       │   │     promote(), relieve(), transfer()
 │   │   │       │   │     index(), history(), memberHistory()
 │   │   │       │   │
-│   │   │       │   └── OrganizationalUnitController.php [PLANNED - Task 58]
+│   │   │       │   └── OrganizationalUnitController.php [IN PROGRESS ✅]
 │   │   │       │         index(), byType(), store()
 │   │   │       │         update(), destroy()
 │   │   │       │
@@ -263,7 +263,7 @@ ndm-api/
 │       └── UserFactory.php                          [DONE ✅]
 │
 ├── routes/
-│   ├── api.php                                      [DONE ✅ - auth + member routes]
+│   ├── api.php                                      [DONE ✅ - auth + member + admin routes]
 │   ├── console.php
 │   └── web.php
 │
@@ -504,19 +504,19 @@ viva-react/
         │
         └── dashboard/
             ├── member/
-            │   ├── MemberDashboard.jsx      [PLANNED] - Member home
-            │   ├── MemberProfilePage.jsx    [PLANNED] - View/edit own profile
-            │   ├── MemberPositions.jsx      [PLANNED] - My positions history
-            │   └── MemberSettings.jsx       [PLANNED] - Password change
+            │   ├── MemberDashboard.jsx      [DONE ✅] - Member home
+            │   ├── MemberProfilePage.jsx    [DONE ✅] - View/edit own profile + political area
+            │   ├── MemberPositions.jsx      [DONE ✅] - My positions history
+            │   └── MemberSettings.jsx       [DONE ✅] - Password change
             │
             └── admin/
-                ├── AdminDashboard.jsx       [PLANNED] - Admin home + KPIs
-                ├── PendingApprovals.jsx     [PLANNED] - Approval queue
-                ├── AllMembers.jsx           [PLANNED] - Full member table
-                ├── MemberDetail.jsx         [PLANNED] - View/edit one member
-                ├── RoleManagement.jsx       [PLANNED] - Create/edit roles
+                ├── AdminDashboard.jsx       [DONE ✅] - Admin home + KPIs
+                ├── PendingApprovals.jsx     [DONE ✅] - Approval queue
+                ├── AllMembers.jsx           [DONE ✅] - Full member table + add member
+                ├── MemberDetail.jsx         [DONE ✅] - View/edit one member
+                ├── RoleManagement.jsx       [DONE ✅] - Create/edit roles
                 ├── PositionManagement.jsx   [PLANNED] - Promote/relieve/transfer
-                ├── UnitManagement.jsx       [PLANNED] - Org unit tree editor
+                ├── UnitManagement.jsx       [DONE ✅] - Org unit listing + filters
                 └── PositionHistory.jsx      [PLANNED] - Audit log
 ```
 
@@ -932,10 +932,10 @@ Uses Tailwind 4-unit spacing (4px base). Common use: `p-6` (24px), `gap-8` (32px
 |---|-------------------------------|--------|
 | 19| MemberPublicResource          | ✅ Done |
 | 20| MemberResource (Private)      | ⏳ Next |
-| 21| ProfileController::me()       | ⏳ Todo |
-| 22| ProfileController::update()   | ⏳ Todo |
+| 21| ProfileController::show()     | ✅ Done |
+| 22| ProfileController::update()   | ✅ Done |
 | 23| PhotoService                  | ⏳ Todo |
-| 24| Photo Upload Endpoint         | ⏳ Todo |
+| 24| Photo Upload Endpoint         | ✅ Done |
 | 25| MemberController::publicProfile| ✅ Done |
 | 26| Member Search                 | ⏳ Todo |
 | 27| Member Feature Tests          | ⏳ Todo |
@@ -943,24 +943,24 @@ Uses Tailwind 4-unit spacing (4px base). Common use: `p-6` (24px), `gap-8` (32px
 ### Phase 4 — Admin Member Management
 | # | Task                          | Status |
 |---|-------------------------------|--------|
-| 28| AdminMemberController::index()| ⏳ Todo |
-| 29| pending()                     | ⏳ Todo |
-| 30| approve()                     | ⏳ Todo |
-| 31| reject()                      | ⏳ Todo |
-| 32| suspend()                     | ⏳ Todo |
-| 33| expel()                       | ⏳ Todo |
-| 34| deactivateAllPositions()      | ⏳ Todo |
-| 35| AdminMember update()          | ⏳ Todo |
-| 36| AdminMember destroy()         | ⏳ Todo |
+| 28| AdminMemberController::index()| ✅ Done |
+| 29| pending()                     | ✅ Done |
+| 30| approve()                     | ✅ Done |
+| 31| reject()                      | ✅ Done |
+| 32| suspend()                     | ✅ Done |
+| 33| expel()                       | ✅ Done |
+| 34| deactivateAllPositions()      | ✅ Done |
+| 35| AdminMember update()          | ✅ Done |
+| 36| AdminMember destroy()         | ✅ Done |
 | 37| Admin Member Tests            | ⏳ Todo |
 
 ### Phase 5 — Role Management
 | # | Task                          | Status |
 |---|-------------------------------|--------|
-| 38| RoleController::index()       | ⏳ Todo |
-| 39| RoleController::store()       | ⏳ Todo |
-| 40| RoleController::update()      | ⏳ Todo |
-| 41| RoleController::destroy()     | ⏳ Todo |
+| 38| RoleController::index()       | ✅ Done |
+| 39| RoleController::store()       | ✅ Done |
+| 40| RoleController::update()      | ✅ Done |
+| 41| RoleController::destroy()     | ✅ Done |
 | 42| Role/Unit Type Validation     | ⏳ Todo |
 | 43| RoleResource                  | ⏳ Todo |
 | 44| Seed All Roles (35+)          | ⏳ Todo |
@@ -1019,8 +1019,8 @@ Uses Tailwind 4-unit spacing (4px base). Common use: `p-6` (24px), `gap-8` (32px
 | Join Us Page      | ✅ Done   | Full content                           |
 | Login Page        | ✅ Done   | Form connected to API                  |
 | Register Page     | ⏳ Todo   | Multi-step form needed                 |
-| Member Dashboard  | ⏳ Todo   | Auth context + protected routes needed |
-| Admin Dashboard   | ⏳ Todo   | Full admin UI needed                   |
+| Member Dashboard  | ✅ Done   | Profile card, tasks, ID card download  |
+| Admin Dashboard   | ✅ Done   | KPI cards + recent activity            |
 | AuthContext       | ⏳ Todo   | JWT storage + auto-attach              |
 | API Services      | ⏳ Todo   | authService, memberService, adminService|
 
@@ -1030,16 +1030,16 @@ Uses Tailwind 4-unit spacing (4px base). Common use: `p-6` (24px), `gap-8` (32px
 
 ### Immediate Next (Backend)
 1. **Task 20** — `MemberResource.php` (private, all fields)
-2. **Task 21** — `ProfileController::me()` → `GET /api/members/me`
-3. **Task 22** — `ProfileController::update()` + `UpdateProfileRequest`
-4. **Task 23** — `PhotoService` (upload/validate/delete)
-5. **Task 24** — `POST /api/members/me/photo` endpoint
-6. **Task 26** — Member search endpoint
+2. **Task 23** — `PhotoService` (upload/validate/delete)
+3. **Task 26** — Member search endpoint
+4. **Task 37** — Admin member feature tests
+5. **Task 45** — Role feature tests
+6. **Task 63** — Unit feature tests
 
 ### Immediate Next (Frontend)
 1. **AuthContext.jsx** — JWT token management, user state, login/logout actions
 2. **ProtectedRoute.jsx** — Guard for member and admin routes
 3. **Register.jsx** — Multi-step registration form → `POST /api/auth/register`
-4. **MemberDashboard.jsx** — Member home (profile card + positions)
-5. **AdminDashboard.jsx** — Admin home (KPI cards + activity feed)
-6. **PendingApprovals.jsx** — Approval queue table
+4. **PositionManagement.jsx** — Promote/relieve/transfer implementation
+5. **PositionHistory.jsx** — Position audit timeline
+6. **Register.jsx** — Multi-step registration UX completion

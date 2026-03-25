@@ -93,6 +93,7 @@ const Sidebar = () => {
       label: 'Organization', 
       icon: <FiLayers />, 
       submenu: [
+        { label: 'Political Committees', path: '/dashboard/admin/committees' },
         { label: 'Campus Units', path: '/dashboard/admin/units' },
         { label: 'Position Management', path: '/dashboard/admin/positions' },
         { label: 'Position History', path: '/dashboard/admin/positions/history' }

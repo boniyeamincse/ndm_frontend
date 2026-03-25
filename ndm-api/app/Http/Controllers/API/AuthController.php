@@ -126,9 +126,22 @@ class AuthController extends Controller
      */
     public function me(): JsonResponse
     {
+        $user = auth()->user()?->load([
+            'member.organizationalUnit',
+            'member.positions.role',
+            'member.positions.organizationalUnit',
+        ]);
+
         return response()->json([
             'success' => true,
-            'data' => auth()->user(),
+            'data' => $user ? [
+                'id' => $user->id,
+                'email' => $user->email,
+                'user_type' => $user->user_type,
+                'is_active' => $user->is_active,
+                'name' => $user->member?->full_name ?? $user->email,
+                'member' => $user->member,
+            ] : null,
         ]);
     }
 

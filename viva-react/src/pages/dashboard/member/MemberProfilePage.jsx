@@ -91,6 +91,20 @@ const MemberProfilePage = () => {
         <p className="text-sm text-gray-500 mt-1">Update your own profile information. Sensitive fields remain locked.</p>
       </div>
 
+      {form.committee_roles && form.committee_roles.filter(r => r.status === 'active').length > 0 && (
+        <div className="flex flex-wrap gap-3 p-4 bg-white border border-gray-100 shadow-sm rounded-2xl">
+          <div className="w-full text-xs font-bold tracking-widest text-gray-400 uppercase mb-1">Active Political Roles</div>
+          {form.committee_roles.filter(r => r.status === 'active').map(role => (
+            <div key={role.id} className="inline-flex items-center gap-2 bg-gradient-to-r from-gold/20 to-gold/10 border border-gold/30 px-4 py-2 rounded-xl">
+               <span className="text-yellow-800 font-black text-sm">{role.designation}</span>
+               <span className="text-gray-600 text-xs font-semibold px-2 border-l border-gold/30">
+                 {role.committee?.name}
+               </span>
+            </div>
+          ))}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="grid lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
           <h2 className="text-base font-semibold text-gray-800">Personal Information</h2>
