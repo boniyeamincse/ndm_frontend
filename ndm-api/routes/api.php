@@ -120,7 +120,9 @@ Route::prefix('admin')
         Route::get   ('positions/history',    [PositionController::class, 'history']);
         Route::get   ('positions',            [PositionController::class, 'index']);
         Route::post  ('positions',            [PositionController::class, 'store']);
+        Route::post  ('positions/{id}/transfer', [PositionController::class, 'transfer']);
         Route::delete('positions/{id}',       [PositionController::class, 'destroy']);
+
 
         // Blog management
         Route::get   ('blog-posts',       [BlogPostController::class, 'index']);
