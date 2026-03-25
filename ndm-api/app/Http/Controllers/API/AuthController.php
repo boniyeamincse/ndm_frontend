@@ -4,85 +4,35 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
-use App\Models\Member;
-use App\Models\User;
-use App\Services\DocumentUploadService;
-use App\Services\MemberIdService;
+use App\Services\MemberService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
     public function __construct(
-        private readonly MemberIdService $memberIdService,
-        private readonly DocumentUploadService $documentUploadService
+        private readonly MemberService $memberService,
     ) {
     }
 
     /**
      * Register a new member account.
+     *
+     * All admission logic (User creation, ID generation, file uploads, audit
+     * logging, notification) is delegated to MemberService::admit().
      */
     public function register(RegisterRequest $request): JsonResponse
     {
-        $user = User::create([
-            'email' => $request->string('email')->toString(),
-            'password' => Hash::make($request->string('password')->toString()),
-            'user_type' => 'member',
-            'is_active' => true,
-        ]);
-
-        $memberId = $this->memberIdService->generate();
-
-        // Handle File Uploads
-        $photoPath = $request->file('photo') 
-            ? $this->documentUploadService->upload($request->file('photo'), 'photos', 'profile') 
-            : null;
-            
-        $nidPath = $request->file('nid_doc') 
-            ? $this->documentUploadService->upload($request->file('nid_doc'), 'documents', 'nid') 
-            : null;
-            
-        $studentIdPath = $request->file('student_id_doc') 
-            ? $this->documentUploadService->upload($request->file('student_id_doc'), 'documents', 'sid') 
-            : null;
-
-        Member::create([
-            'user_id' => $user->id,
-            'member_id' => $memberId,
-            'full_name' => $request->string('full_name')->toString(),
-            'father_name' => $request->string('father_name')->toString(),
-            'mother_name' => $request->string('mother_name')->toString(),
-            'date_of_birth' => $request->input('date_of_birth'),
-            'gender' => $request->input('gender'),
-            'nid_or_bc' => $request->input('nid_or_bc'), // Will be encrypted via Model cast
-            'blood_group' => $request->input('blood_group'),
-            'phone' => $request->input('phone'),
-            'present_address' => $request->input('present_address'),
-            'permanent_address' => $request->input('permanent_address'),
-            'emergency_contact_name' => $request->input('emergency_contact_name'),
-            'emergency_contact_phone' => $request->input('emergency_contact_phone'),
-            'institution' => $request->input('institution'),
-            'department' => $request->input('department'),
-            'session' => $request->input('session'),
-            'skills' => $request->input('skills'),
-            'photo_path' => $photoPath,
-            'nid_doc_path' => $nidPath,
-            'student_id_doc_path' => $studentIdPath,
-            'join_year' => now()->year,
-            'status' => 'pending',
-            'organizational_unit_id' => $request->input('organizational_unit_id'),
-            'mobile' => $request->input('mobile'),
-        ]);
+        $member = $this->memberService->admit($request);
 
         return response()->json([
             'success' => true,
             'message' => 'Registration successful. Awaiting admin approval.',
             'data' => [
-                'member_id' => $memberId,
-                'status' => 'pending',
+                'member_id' => $member->member_id,
+                'status'    => $member->status->value,
             ],
         ], 201);
     }

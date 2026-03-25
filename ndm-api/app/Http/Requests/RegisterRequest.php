@@ -57,7 +57,12 @@ class RegisterRequest extends FormRequest
             'department'  => ['nullable', 'string', 'max:191'],
             'session'     => ['nullable', 'string', 'max:20'],
             'skills'      => ['nullable', 'string', 'max:1000'],
-
+            // ── Political / geographic area ───────────────────────────────
+            'division' => ['nullable', 'string', 'max:100'],
+            'district' => ['nullable', 'string', 'max:100'],
+            'upazila'  => ['nullable', 'string', 'max:100'],
+            'union'    => ['nullable', 'string', 'max:100'],
+            'ward'     => ['nullable', 'string', 'max:50'],
             // ── Organizational unit ───────────────────────────────────
             'organizational_unit_id' => ['nullable', 'integer', 'exists:organizational_units,id'],
 
