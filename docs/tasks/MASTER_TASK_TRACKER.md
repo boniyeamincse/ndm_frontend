@@ -2,6 +2,25 @@
 
 This is the single consolidated task file for all project phases.
 
+## Project Scope
+
+**Project Name:** Nationalist Democratic Student Movement (NDSM) Student Wing Party Management System
+
+**Purpose:** A secure digital platform to organize, track, and manage members, activities, roles, units, tasks, documents, and communication for the student affiliate of NDM.
+
+**Organization Identity:**
+- Full Name: Nationalist Democratic Student Movement - NDSM
+- Parent Organization: NDM
+- Motto: `শিক্ষা শৃঙ্খলা প্রযুক্তি সমৃদ্ধি`
+- Core Principle: `ছাত্র আন্দোলন এর মূলনীতি`
+
+**Business Goals:**
+- Replace paper-based membership and approval workflows
+- Provide secure member records and role history tracking
+- Manage organizational units, positions, committees, and assignments
+- Support student activities, communication, and public outreach
+- Improve operational reporting, accountability, and auditability
+
 Status logic for **Overall Status**:
 - **Completed** = Dev `Done` + Test `Passed` + Upload `Uploaded`
 - **In Progress** = any status contains `In Progress`
@@ -9,10 +28,31 @@ Status logic for **Overall Status**:
 
 ## Summary
 
-- Total Tasks: 144
+- Total Tasks: 194
 - Completed: 10
 - In Progress: 96
-- Pending: 38
+- Pending: 88
+
+## Project-Wise Module Map
+
+- **Foundation And Delivery Setup**: Tasks `1-12`
+- **Core Database And Backend Domain**: Tasks `13-24`
+- **Authentication, Admission, And Member Lifecycle**: Tasks `25-48`
+- **Roles, Governance, Units, And Positions**: Tasks `49-60`
+- **Tasks, Audit, ID Cards, And Operational Control**: Tasks `61-72`
+- **Public Website, Public Profiles, And Outreach Pages**: Tasks `73-84`
+- **Member Dashboard And Self-Service Experience**: Tasks `85-96`
+- **Admin Dashboard And Management Experience**: Tasks `97-108`
+- **Quality, Security, Testing, Deployment, And Operations**: Tasks `109-144`
+- **Communication, Activities, And NDSM Identity**: Tasks `145-156`
+- **Admin Panel Governance And System Control**: Tasks `157-160`
+- **Complaint And Feedback System**: Tasks `161-164`
+- **Election And Voting System**: Tasks `165-169`
+- **Event And Campaign Management**: Tasks `170-174`
+- **Fundraising And Donation Tracking**: Tasks `175-179`
+- **Membership Renewal And Re-Verification**: Tasks `180-184`
+- **Training And Cadre Development**: Tasks `185-189`
+- **Integration Hub And Mass Outreach Campaigns**: Tasks `190-194`
 
 ## Task 01 — Setup Foundation
 
@@ -206,3 +246,98 @@ Status logic for **Overall Status**:
 | 142 | Produce frontend handoff guide | Document route map, service contracts, component ownership, and environment setup for frontend contributors. This task can be implemented using AI-assisted development. | Done | Pending | Uploaded | Pending |
 | 143 | Produce operations runbook | Write procedures for incident response, deployment checks, storage linking, seeding, and smoke tests. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
 | 144 | Plan go-live checklist | Create final readiness gates covering dev complete, test complete, security sign-off, content sign-off, and deployment approval. | Done | Pending | Uploaded | Pending |
+
+## Task 13 — Communication, Activities, And NDSM Identity
+
+| ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| 145 | Define internal communication module | Define how circulars, internal notices, targeted announcements, and member communication will work across central, district, campus, and committee levels. This task should align with the NDSM operating model and approval chain. | Pending | Pending | Pending | Pending |
+| 146 | Build announcement and broadcast APIs | Add backend APIs for creating, scheduling, publishing, and withdrawing announcements for selected units, roles, or all members. Include audit logging and publish-state rules. | Pending | Pending | Pending | Pending |
+| 147 | Build communication inbox UI | Create frontend member/admin inbox views for notices, organization messages, announcements, and unread/read state handling. | Pending | Pending | Pending | Pending |
+| 148 | Add notification delivery orchestration | Design and implement email, SMS, and in-app notification workflows for approvals, task assignments, events, notices, and emergency communications. | Pending | Pending | Pending | Pending |
+| 149 | Define activities and programs domain model | Add project-level support for party student activities, campaigns, seminars, workshops, rallies, meetings, and campus programs with lifecycle states and ownership rules. | Pending | Pending | Pending | Pending |
+| 150 | Build activity and event management module | Create backend and admin frontend workflows for creating, editing, approving, publishing, and archiving student movement activities and events. | Pending | Pending | Pending | Pending |
+| 151 | Add event participation and attendance tracking | Track registrations, participation lists, attendance confirmation, attendance proof, and unit-wise reporting for events and organizational programs. | Pending | Pending | Pending | Pending |
+| 152 | Add meeting minutes and resolutions archive | Add secure storage and retrieval for meeting minutes, decisions, resolutions, circulars, and follow-up tasks at organization and committee level. | Pending | Pending | Pending | Pending |
+| 153 | Add multilingual content strategy | Define and implement Bangla-first and English-support content handling for public pages, labels, notices, official statements, and dashboards where required. | Pending | Pending | Pending | Pending |
+| 154 | Apply NDSM branding and motto consistently | Ensure the system uses the correct name `Nationalist Democratic Student Movement - NDSM`, NDM student wing identity, logo usage, color rules, and motto `শিক্ষা শৃঙ্খলা প্রযুক্তি সমৃদ্ধি` across public and private interfaces. | Pending | Pending | Pending | Pending |
+| 155 | Add communication privacy and consent controls | Define who can contact whom, what communication preferences members can manage, and how to protect private contact information and sensitive communication records. | Pending | Pending | Pending | Pending |
+| 156 | Add communication and activity analytics | Build dashboards and reporting for announcement reach, notification delivery, engagement, event participation, attendance, and unit-level activity performance. | Pending | Pending | Pending | Pending |
+
+## Task 14 — Admin Panel Governance And System Control
+
+| ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| 157 | Build full admin control center | Design and implement a high-level admin control panel for centralized system supervision, including dashboard-level access to members, units, tasks, content, communication, audit, settings, and operational tools. | Pending | Pending | Pending | Pending |
+| 158 | Build user permission management module | Create a complete permission-management workflow for admins to assign, update, revoke, and review user permissions and role-based access across all enabled modules. Include audit logging and privilege-escalation safeguards. | Pending | Pending | Pending | Pending |
+| 159 | Add module enable and disable controls | Build a module-control system so authorized admins can enable or disable product modules such as news, activities, directory, committees, tasks, blog, notifications, and ID cards without changing code manually. Include safe defaults and environment-aware controls. | Pending | Pending | Pending | Pending |
+| 160 | Add system-level admin settings and safeguards | Create system settings for feature flags, maintenance controls, branding settings, communication options, storage controls, and security restrictions. Ensure only the highest authorized admin roles can access destructive or global settings. | Pending | Pending | Pending | Pending |
+
+## Task 15 — Complaint And Feedback System
+
+| ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| 161 | Build member complaints and feedback module | Create a structured complaint and feedback system where members can submit complaints, suggestions, and service issues against modules, workflows, or organizational handling. Support categories, priority, attachments, and visibility rules. | Pending | Pending | Pending | Pending |
+| 162 | Add anonymous reporting workflow | Build a secure anonymous reporting option for sensitive issues such as misconduct, abuse, harassment, corruption, or policy violations. Ensure identity protection, abuse controls, and restricted admin access to sensitive reports. | Pending | Pending | Pending | Pending |
+| 163 | Add issue tracking lifecycle and SLA workflow | Define and implement complaint states such as submitted, triaged, assigned, investigating, resolved, rejected, and closed. Include assignee tracking, deadlines, internal notes, escalation rules, and audit history. | Pending | Pending | Pending | Pending |
+| 164 | Build admin resolution panel | Create an admin resolution dashboard for complaint review, filtering, assignment, evidence review, response drafting, resolution updates, and final closure with member-visible status updates where allowed. | Pending | Pending | Pending | Pending |
+
+## Task 16 — Election And Voting System
+
+| ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| 165 | Build internal election framework | Design and implement internal election workflows for committee selection across units and organizational levels, including election schedule, election type, and eligible voter/candidate scope rules. | Pending | Pending | Pending | Pending |
+| 166 | Add candidate nomination workflow | Build candidate nomination, proposer/seconder rules, nomination verification, approval/rejection pipeline, and candidate profile publication controls for internal elections. | Pending | Pending | Pending | Pending |
+| 167 | Build secure digital voting engine | Implement secure digital voting with one-member-one-vote enforcement, ballot secrecy, anti-duplicate protections, session integrity, and audit-safe vote event logs. | Pending | Pending | Pending | Pending |
+| 168 | Add automated result generation | Build automated vote counting, tie handling policies, winner declaration logic, result publication controls, and downloadable result reports for authorized roles. | Pending | Pending | Pending | Pending |
+| 169 | Add election and voting analytics | Create analytics for turnout, unit-wise participation, candidate performance, invalid vote patterns, and election-cycle comparisons for leadership decision support. | Pending | Pending | Pending | Pending |
+
+## Task 17 — Event And Campaign Management
+
+| ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| 170 | Build event creation and publishing module | Implement event creation and publishing workflows for seminars, rallies, meetings, and campus programs with scheduling, unit targeting, approval, and visibility controls. | Pending | Pending | Pending | Pending |
+| 171 | Add RSVP and attendance tracking | Build RSVP workflows, attendance check-in/check-out, attendance validation, and unit-wise participation reports for events and organizational programs. | Pending | Pending | Pending | Pending |
+| 172 | Build campaign planning workflows | Create campaign planning tools for digital and field campaigns including objectives, timeline, resource planning, messaging tracks, and execution checkpoints. | Pending | Pending | Pending | Pending |
+| 173 | Add campaign task assignment to members | Integrate campaign operations with member task assignment, ownership tracking, deadlines, completion verification, and escalation for overdue work. | Pending | Pending | Pending | Pending |
+| 174 | Add event report and media upload workflows | Build post-event reporting with summary, outcomes, attendance insights, budget/effort notes, and media upload management (photos/videos/documents) with moderation controls. | Pending | Pending | Pending | Pending |
+
+## Task 18 — Fundraising And Donation Tracking
+
+| ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| 175 | Build fundraising campaign goals module | Implement fundraising campaign setup with target amount, timeline, unit ownership, campaign status, and progress indicators for organizational fundraising drives. | Pending | Pending | Pending | Pending |
+| 176 | Build donor records and contribution ledger | Create donor profile and donation ledger workflows with donation source, amount, date, payment channel, receipt reference, and donor consent metadata. | Pending | Pending | Pending | Pending |
+| 177 | Add donation verification and approval flow | Add admin workflows to verify submitted donations, reconcile payment references, flag suspicious entries, and approve or reject donation records with audit trail. | Pending | Pending | Pending | Pending |
+| 178 | Build fundraising dashboards and reports | Provide campaign-wise and unit-wise fundraising analytics with goal achievement, donor trends, repeat donor rates, and exportable report summaries. | Pending | Pending | Pending | Pending |
+| 179 | Add compliance-ready donation reporting | Build compliance reporting for financial transparency including period statements, category summaries, and immutable audit logs for all donation edits and approvals. | Pending | Pending | Pending | Pending |
+
+## Task 19 — Membership Renewal And Re-Verification
+
+| ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| 180 | Build yearly renewal workflow | Implement annual membership renewal process with renewal window, eligibility checks, renewal fee/criteria support, and renewal confirmation states. | Pending | Pending | Pending | Pending |
+| 181 | Add status auto-expiry rules | Add automated membership status expiry logic for members who do not renew within defined deadlines, including grace period and policy-configurable triggers. | Pending | Pending | Pending | Pending |
+| 182 | Build re-verification process | Create re-verification workflows for member profile updates, document re-check, unit assignment confirmation, and admin approval for continued active status. | Pending | Pending | Pending | Pending |
+| 183 | Add renewal reminder automation | Implement reminder workflows using in-app, SMS, WhatsApp, and email channels for pre-expiry notices, grace-period notices, and final expiry alerts. | Pending | Pending | Pending | Pending |
+| 184 | Build renewal compliance and retention reports | Add reports for renewal rate, expired-member count, re-verification completion, and unit-wise retention performance with period comparisons. | Pending | Pending | Pending | Pending |
+
+## Task 20 — Training And Cadre Development
+
+| ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| 185 | Build training course module | Implement training module management for course creation, curriculum structure, unit targeting, trainer assignment, and training schedule planning. | Pending | Pending | Pending | Pending |
+| 186 | Add enrollment and completion tracking | Build trainee enrollment and completion workflows with attendance, assessment, progress milestones, and completion state tracking per member. | Pending | Pending | Pending | Pending |
+| 187 | Add certification generation workflow | Create certificate issuance workflows for completed training, including digital certificate templates, verification IDs, and certificate download endpoints. | Pending | Pending | Pending | Pending |
+| 188 | Build leadership pipeline tracker | Add cadre and leadership pipeline tracking with competency levels, promotion readiness, mentorship paths, and role eligibility recommendations. | Pending | Pending | Pending | Pending |
+| 189 | Add training analytics and outcome reporting | Provide analytics for course completion rates, unit-wise skill development, trainer performance, and leadership-development outcomes. | Pending | Pending | Pending | Pending |
+
+## Task 21 — Integration Hub And Mass Outreach Campaigns
+
+| ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| 190 | Build SMS, WhatsApp, and email connector hub | Implement integration adapters for SMS, WhatsApp, and email providers with credential management, connector health checks, and fallback routing. | Pending | Pending | Pending | Pending |
+| 191 | Add delivery logs and retry queues | Build centralized delivery logs for all outbound communications with failure reason tracking, retry policies, dead-letter queue handling, and resend tools for admins. | Pending | Pending | Pending | Pending |
+| 192 | Build audience segmentation and targeting engine | Create targeting rules for all-members, role-based, unit-based, status-based, and custom-segment outreach campaigns with preview and count estimation. | Pending | Pending | Pending | Pending |
+| 193 | Build email campaign to all members workflow | Implement bulk email campaign workflows with template management, send scheduling, send throttling, unsubscribe handling, and delivery/open/click analytics for all-member campaigns. | Pending | Pending | Pending | Pending |
+| 194 | Add compliance and communication governance controls | Implement consent checks, unsubscribe enforcement, campaign approval policies, content moderation checks, and communication audit history for all outreach channels. | Pending | Pending | Pending | Pending |

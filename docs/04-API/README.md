@@ -26,6 +26,7 @@ Learn how to **build, test, and document** REST APIs for the NDM system.
 | **README.md** | This file - API overview | Everyone | 5 min |
 | **API_ROUTES_COMPLETE.md** | All 35+ endpoints documented | Backend, Frontend | 60 min |
 | **CONTROLLERS_SERVICE_GUIDE.md** | Controller & service patterns | Backend | 45 min |
+| **RBAC_ACCESS_MATRIX_NDSM.md** | Final production roles, permissions, and scope rules | Backend, Architect | 30 min |
 | **REQUEST_VALIDATION.md** | Input validation & rules | Backend | 25 min |
 | **ERROR_HANDLING_RESPONSES.md** | Error codes & response formats | Everyone | 20 min |
 
@@ -279,6 +280,7 @@ GET /members?sort=name,-created_at  (ascending name, descending date)
 
 - See all endpoints → **API_ROUTES_COMPLETE.md**
 - Build a new endpoint → **CONTROLLERS_SERVICE_GUIDE.md**
+- Implement role/permission policy → **RBAC_ACCESS_MATRIX_NDSM.md**
 - Validate inputs → **REQUEST_VALIDATION.md**
 - Handle errors → **ERROR_HANDLING_RESPONSES.md**
 - Add caching → **../05-TESTING-SCALABILITY/**

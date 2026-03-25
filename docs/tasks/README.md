@@ -2,6 +2,12 @@
 
 This folder now uses a **single consolidated task file** for detailed execution tracking.
 
+Project scope:
+- Project: **Nationalist Democratic Student Movement (NDSM) Student Wing Party Management System**
+- Purpose: A secure web platform to organize, track, and manage members, activities, communication, committees, units, roles, tasks, and public-facing information for the student wing of NDM.
+- Motto: `শিক্ষা শৃঙ্খলা প্রযুক্তি সমৃদ্ধি`
+- Principle: `ছাত্র আন্দোলন এর মূলনীতি`
+
 Coverage scope:
 - Backend API and business logic
 - Database and seed data
@@ -16,6 +22,25 @@ Status values:
 
 Primary tracker:
 - [MASTER_TASK_TRACKER.md](MASTER_TASK_TRACKER.md)
+
+Project-wise module coverage in the master tracker:
+- Foundation and delivery setup
+- Core database and backend domain
+- Authentication, admission, and member lifecycle
+- Roles, governance, units, and positions
+- Tasks, audit, ID cards, and operational control
+- Public website and outreach pages
+- Member dashboard and self-service experience
+- Admin dashboard and management experience
+- Quality, security, testing, deployment, and operations
+- Communication, activities, and NDSM identity
+- Complaint and feedback system
+- Election and voting system
+- Event and campaign management
+- Fundraising and donation tracking
+- Membership renewal and re-verification
+- Training and cadre development
+- Integration hub and mass outreach campaigns
 
 Overall status rule in master tracker:
 - `Completed` = Dev `Done` + Test `Passed` + Upload `Uploaded`
