@@ -142,7 +142,7 @@ This document contains rewritten prompts in a professional format designed for h
 
 ## 2. Global Styles & Design System
 
-### Task 11 [ ] — Prompt 11 — CSS Variables & Reset
+### Task 11 [x] — Prompt 11 — CSS Variables & Reset
 **Goal**: Create a comprehensive `globals.css` file with brand-specific variables and resets.
 **Rules**:
 - Define CSS custom properties for all brand colors, fonts, and spacing.
@@ -155,7 +155,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/styles/globals.css`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Task 12 [ ] — Prompt 12 — Typography System
+### Task 12 [x] — Prompt 12 — Typography System
 **Goal**: Design a complete typography system using Playfair Display and DM Sans.
 **Rules**:
 - Provide Google Fonts import and Tailwind `fontFamily` extensions.
@@ -168,7 +168,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: Ready-to-use CSS and `tailwind.config` snippets.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Task 13 [ ] — Prompt 13 — Button Component System
+### Task 13 [x] — Prompt 13 — Button Component System
 **Goal**: Build a multi-variant reusable `Button` component with Framer Motion.
 **Rules**:
 - Support variants like `primary`, `danger`, `outline`, and `gold`.
@@ -276,7 +276,7 @@ This document contains rewritten prompts in a professional format designed for h
 
 ## 3. Navigation & Layout
 
-### Task 21 [ ] — Prompt 21 — Sticky Navbar Component
+### Task 21 [x] — Prompt 21 — Main Navbar Component
 **Goal**: Build a highly functional sticky navbar with mobile menu and dark mode toggle.
 **Rules**:
 - Implement a hide-on-scroll behavior with smooth transitions.
@@ -302,14 +302,13 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/layout/MobileMenu.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Task 23 [ ] — Prompt 23 — Breadcrumb Component
-**Goal**: Build an auto-generating breadcrumb component from URL structure.
+### Task 23 [x] — Prompt 23 — Professional Footer
+**Goal**: Design a high-impact branding banner between major sections.
 **Rules**:
-- Map routes to readable labels (with overrides support).
-- Truncate long paths on mobile for responsiveness.
-- Inject JSON-LD `BreadcrumbList` schema for SEO.
+- Use a deep green background with a subtle geometric pattern overlay.
+- feature a large, centered quote using Playfair Display typography.
+- Include Vision and Mission statements in secondary columns.
 **Example**:
-- Input: `/about/leadership` -> Output: Home > About > Leadership.
 - Input: "Home icon" -> Output: 🏠 link to root.
 - Input: "Active page" -> Output: Bold, non-clickable current item.
 **Deliver**: `src/components/ui/Breadcrumbs.jsx`.
@@ -410,7 +409,7 @@ This document contains rewritten prompts in a professional format designed for h
 
 ## 4. Home Page Sections
 
-### Task 31 [ ] — Prompt 31 — Hero Section
+### Task 31 [x] — Prompt 31 — Hero Section
 **Goal**: Build a stunning full-viewport Hero section with animations and CTAs.
 **Rules**:
 - Use a high-quality background image with a dark gradient overlay.

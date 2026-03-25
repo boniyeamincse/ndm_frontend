@@ -9,8 +9,8 @@ const Layout = () => {
     <div className="flex flex-col min-h-screen">
       <ScrollToTop />
       <Navbar />
-      <main className="flex-grow">
-        <Suspense fallback={<div className="flex items-center justify-center min-h-[60vh] text-primary">Loading...</div>}>
+      <main className="flex-grow pt-20">
+        <Suspense fallback={<div className="flex items-center justify-center min-h-[60vh] text-primary font-display text-xl animate-pulse">Loading NDM...</div>}>
           <Outlet />
         </Suspense>
       </main>

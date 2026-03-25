@@ -17,3 +17,13 @@ pnpm-debug.log*
 viva-react/node_modules
 viva-react/dist
 viva-react/.env
+
+# Backend (Laravel)
+ndm-api/.env
+ndm-api/vendor
+ndm-api/storage/*.key
+ndm-api/public/storage
+ndm-api/public/hot
+ndm-api/public/build
+ndm-api/database/*.sqlite
+ndm-api/database/*.sqlite-journal

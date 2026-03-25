@@ -14,6 +14,12 @@ We are currently in the **Infrastructure & Design System** phase. The foundation
 - **Task 06**: Localized Mock Data (64 Districts, Leaders, News, Activities)
 - **Task 07**: Professional Custom Hooks Library (useScroll, useInView, etc.)
 - **Task 08**: Environment Variable Validation and Configuration
+- **Task 11**: Global CSS Variables & Modern Reset
+- **Task 12**: Brand Typography System (Playfair Display & DM Sans)
+- **Task 13**: High-Performance Reusable Button System
+- **Task 21**: Glassmorphic Navbar with Responsive Mobile Menu
+- **Task 23**: Professional Multi-Column Footer System
+- **Task 31**: Modern, Animated Home Hero Section
 
 ## 🛠️ Technology Stack
 - **Framework**: [React 19](https://react.dev/)
@@ -22,8 +28,10 @@ We are currently in the **Infrastructure & Design System** phase. The foundation
 - **Animation**: [Framer Motion](https://www.framer.com/motion/)
 - **Routing**: [React Router v6/7](https://reactrouter.com/)
 
-## 📂 Project Organization
-See `docs/NDM-100-AI-Prompts-Blueprint.md` for the full 100-prompt development roadmap and current task progress.
+## 📁 Project Organization
+- **`/viva-react`**: Frontend (React + Vite)
+- **`/ndm-api`**: Backend (Laravel 11 API)
+- **`/docs`**: API Blueprint and Roadmap
 
 ## 🏃 How to Run Locally
 1. Navigate to the project directory: `cd viva-react`

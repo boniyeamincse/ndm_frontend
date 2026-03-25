@@ -1,39 +1,93 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+  
+  const footerLinks = {
+    About: [
+      { name: 'Our Mission', path: '/about' },
+      { name: 'Leadership', path: '/leadership' },
+      { name: 'History', path: '/history' },
+      { name: 'Awards', path: '/awards' },
+    ],
+    Movement: [
+      { name: 'Join Us', path: '/join' },
+      { name: 'Activities', path: '/activities' },
+      { name: 'Campuses', path: '/campuses' },
+      { name: 'Volunteer', path: '/volunteer' },
+    ],
+    Resources: [
+      { name: 'News & Blog', path: '/news' },
+      { name: 'Downloads', path: '/downloads' },
+      { name: 'Media Kit', path: '/media' },
+      { name: 'FAQ', path: '/faq' },
+    ],
+  };
+
+  const socials = [
+    { icon: 'fb', url: '#', label: 'Facebook' },
+    { icon: 'tw', url: '#', label: 'Twitter' },
+    { icon: 'yt', url: '#', label: 'YouTube' },
+    { icon: 'li', url: '#', label: 'LinkedIn' },
+  ];
+
   return (
-    <footer className="bg-gray-900 text-gray-400 py-12">
-      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div>
-          <h3 className="text-white text-lg font-bold mb-4">NDM Student Movement</h3>
-          <p className="text-sm">Empowering the youth for a better, democratic Bangladesh. Join our movement today.</p>
+    <footer className="bg-primary-dark text-white pt-16 pb-8">
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
+          
+          {/* Brand Info */}
+          <div className="lg:col-span-2 space-y-6">
+            <Link to="/" className="text-3xl font-display font-bold text-gold">
+              NDM<span className="text-white">STUDENT</span>
+            </Link>
+            <p className="text-gray-300 max-w-sm leading-relaxed">
+              Empowering the next generation of leaders through democratic values, integrity, and proactive student movement. Shaping the future of Bangladesh, one student at a time.
+            </p>
+            <div className="flex space-x-4">
+              {socials.map((soc) => (
+                <a 
+                  key={soc.label} 
+                  href={soc.url} 
+                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold hover:text-primary-dark transition-all"
+                  aria-label={soc.label}
+                >
+                  <span className="text-lg font-bold">{soc.icon}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Links Columns */}
+          {Object.entries(footerLinks).map(([category, links]) => (
+            <div key={category}>
+              <h4 className="text-lg font-bold mb-6 text-gold">{category}</h4>
+              <ul className="space-y-4">
+                {links.map((link) => (
+                  <li key={link.name}>
+                    <Link 
+                      to={link.path} 
+                      className="text-gray-300 hover:text-white hover:translate-x-1 inline-block transition-all"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-        <div>
-          <h4 className="text-white font-semibold mb-4">Quick Links</h4>
-          <ul className="space-y-2 text-sm">
-            <li><a href="/about" className="hover:text-gold">Our Story</a></li>
-            <li><a href="/activities" className="hover:text-gold">What We Do</a></li>
-            <li><a href="/leadership" className="hover:text-gold">Leadership</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 className="text-white font-semibold mb-4">Community</h4>
-          <ul className="space-y-2 text-sm">
-            <li><a href="/news" className="hover:text-gold">Latest News</a></li>
-            <li><a href="/gallery" className="hover:text-gold">Gallery</a></li>
-            <li><a href="/join" className="hover:text-gold">Join Us</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 className="text-white font-semibold mb-4">Connect</h4>
-          <p className="text-sm">Email: info@ndmstudent.org</p>
-          <div className="flex space-x-4 mt-4">
-            {/* Social Icons Placeholder */}
+
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-sm text-gray-400">
+          <p>© {currentYear} NDM Student Movement. All rights reserved.</p>
+          <div className="flex space-x-6">
+            <Link to="/privacy" className="hover:text-white">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-white">Terms of Service</Link>
+            <Link to="/sitemap" className="hover:text-white">Sitemap</Link>
           </div>
         </div>
-      </div>
-      <div className="container mx-auto px-4 mt-8 pt-8 border-t border-gray-800 text-center text-xs">
-        <p>&copy; {new Date().getFullYear()} NDM Student Movement. All rights reserved.</p>
       </div>
     </footer>
   );

@@ -6,17 +6,23 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        display: ['"Playfair Display"', 'serif'],
+        body: ['"DM Sans"', 'sans-serif'],
+      },
       colors: {
         primary: {
-          DEFAULT: '#006A4E',
+          DEFAULT: '#006A4E', // NDM Green
           dark: '#004d38',
           light: '#00835f',
         },
         accent: {
-          DEFAULT: '#DC143C',
+          DEFAULT: '#DC143C', // Crimson Red
           dark: '#b01030',
         },
-        gold: '#F0C040',
+        gold: {
+          DEFAULT: '#F0C040', // Golden Yellow
+        },
       },
     },
   },
