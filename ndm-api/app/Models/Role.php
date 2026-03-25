@@ -12,7 +12,11 @@ class Role extends Model
 {
     protected $fillable = ['title', 'unit_type', 'rank_order', 'description', 'is_active', 'created_by'];
 
-    protected $casts = ['unit_type' => UnitType::class];
+    protected $casts = [
+        'unit_type' => UnitType::class,
+        'is_active' => 'boolean',
+    ];
+
 
     public function createdBy(): BelongsTo
     {

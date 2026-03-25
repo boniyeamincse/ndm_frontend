@@ -108,8 +108,10 @@ Route::prefix('admin')
         Route::get   ('roles/{id}',                     [RoleController::class, 'show']);
         Route::put   ('roles/{id}',                     [RoleController::class, 'update']);
         Route::delete('roles/{id}',                     [RoleController::class, 'destroy']);
+        Route::patch ('roles/{id}/toggle',              [RoleController::class, 'toggle']);
         Route::post  ('roles/{id}/permissions',         [RoleController::class, 'syncPermissions']);
         Route::get   ('permissions',                    [RoleController::class, 'permissions']);
+
 
         // Organizational units
         Route::get   ('units',                          [OrganizationalUnitController::class, 'index']);
