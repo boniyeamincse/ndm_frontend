@@ -157,7 +157,7 @@ Status logic for **Overall Status**:
 | 68 | Complete security-header strategy | Review response headers, frame policy, referrer policy, and fingerprint reduction for production. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
 | 69 | Finalize ID card data contract | Confirm card fields, branding, QR contents, and verification link behavior. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
 | 70 | Finalize ID card PDF generation | Validate PDF layout, image handling, QR rendering, and filename conventions for browser and download use cases. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
-| 71 | Add ID verification endpoint design | Define the public/private verification workflow behind QR scans on printed or digital cards. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
+| 71 | Add ID verification endpoint design | Define the public/private verification workflow behind QR scans on printed or digital cards. This task can be implemented using AI-assisted development. | Done | Passed | Uploaded | In Progress |
 | 72 | Add async processing backlog | Identify where queues should be used for card generation, notifications, exports, and heavy audit/reporting jobs. This task can be implemented using AI-assisted development. | Done | Pending | In Progress | In Progress |
 ## Task 07 — Frontend Public Pages
 
@@ -174,7 +174,7 @@ Status logic for **Overall Status**:
 | 81 | Complete Contact page | Add validated contact form, office details, map embed policy, and fallback communication channels. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
 | 82 | Complete public directory page | Implement search, filters, pagination, and public-safe member card display logic. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
 | 83 | Complete public member profile page | Render approved public profile data, positions, unit details, and privacy-safe fields. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
-| 84 | Finalize public content asset plan | Organize logos, imagery, placeholders, and media optimization for pages currently relying on sparse assets. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
+| 84 | Finalize public content asset plan | Organize logos, imagery, placeholders, and media optimization for pages currently relying on sparse assets. This task can be implemented using AI-assisted development. | Done | Pending | In Progress | In Progress |
 ## Task 08 — Frontend Auth And Member Dashboard
 
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
@@ -218,7 +218,7 @@ Status logic for **Overall Status**:
 | 113 | Add admin member operation tests | Cover approve, reject, suspend, expel, update, delete, and document-review endpoints. This task can be implemented using AI-assisted development. | In Progress | In Progress | In Progress | In Progress |
 | 114 | Add RBAC feature tests | Verify role CRUD, permission sync, admin middleware, and privilege-escalation prevention. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
 | 115 | Add task management feature tests | Cover task CRUD, assignment creation, member progress updates, and status transitions. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
-| 116 | Add ID card feature tests | Verify access rules, PDF response headers, and generation failures for active/inactive members. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
+| 116 | Add ID card feature tests | Verify access rules, PDF response headers, and generation failures for active/inactive members. This task can be implemented using AI-assisted development. | Done | Passed | In Progress | In Progress |
 | 117 | Add middleware tests | Validate `AdminMiddleware`, `ActiveMemberMiddleware`, `AuditMiddleware`, and `SecurityHeadersMiddleware`. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
 | 118 | Add service unit tests | Unit-test member ID generation, upload service behavior, audit logging, and ID card composition logic. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
 | 119 | Add seeder and migration smoke tests | Verify schema can migrate and seed cleanly in CI and test environments. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
