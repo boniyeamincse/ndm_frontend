@@ -85,6 +85,8 @@ Route::prefix('admin')
         Route::post  ('members',              [AdminMemberController::class, 'store']);
         Route::get   ('members/pending',      [AdminMemberController::class, 'pending']);
         // Static/named routes MUST come before {id} wildcard
+        Route::post  ('members/bulk-action',    [AdminMemberController::class, 'bulkAction']);
+        Route::get   ('members/reports/summary',[AdminMemberController::class, 'reports']);
         Route::get   ('members/export/pdf',     [MemberExportController::class, 'pdf']);
         Route::get   ('members/export/csv',     [MemberExportController::class, 'csv']);
         Route::post  ('members/promote-role',   [AdminMemberController::class, 'promoteRole']);

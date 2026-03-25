@@ -16,6 +16,7 @@ use App\Services\DocumentUploadService;
 use App\Services\MemberIdService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -178,26 +179,11 @@ class AdminMemberController extends Controller
     {
         $member = Member::findOrFail($id);
 
-        if ($member->status->value !== 'pending') {
+        if (! $this->canApprove($member)) {
             return response()->json(['success' => false, 'message' => 'Member is not in pending state.'], 422);
         }
 
-        $old = $member->only(['status', 'approved_by', 'approved_at']);
-        $member->update([
-            'status'      => 'active',
-            'approved_by' => auth()->id(),
-            'approved_at' => now(),
-        ]);
-
-        // Assign default role: general_member
-        MemberRole::updateOrCreate(
-            ['member_id' => $member->id],
-            ['role' => 'general_member', 'assigned_by' => auth()->id(), 'assigned_at' => now()]
-        );
-
-        $this->auditLog->log('member.approved', $member, $old, $member->only(['status', 'approved_by', 'approved_at']));
-
-        $member->user?->notify(new MemberApprovedNotification($member));
+        $this->approveMember($member);
 
         return response()->json([
             'success' => true,
@@ -214,17 +200,11 @@ class AdminMemberController extends Controller
 
         $member = Member::findOrFail($id);
 
-        if (! in_array($member->status->value, ['pending', 'active'], true)) {
+        if (! $this->canReject($member)) {
             return response()->json(['success' => false, 'message' => 'Cannot reject this member.'], 422);
         }
 
-        $this->auditLog->log('member.rejected', $member, $member->only(['status']), [], $request->input('reason'));
-
-        // Notify the registrant before deleting the user record
-        $member->user?->notify(new MemberRejectedNotification($member, $request->input('reason')));
-
-        // Cascade-deletes member record via DB constraint
-        User::destroy($member->user_id);
+        $this->rejectMember($member, $request->input('reason'));
 
         return response()->json(['success' => true, 'message' => 'Member registration rejected and removed.']);
     }
@@ -237,17 +217,11 @@ class AdminMemberController extends Controller
 
         $member = Member::findOrFail($id);
 
-        if ($member->status->value !== 'active') {
+        if (! $this->canSuspend($member)) {
             return response()->json(['success' => false, 'message' => 'Only active members can be suspended.'], 422);
         }
 
-        $old = $member->only(['status']);
-        $member->update(['status' => 'suspended']);
-        $member->deactivateAllPositions('Suspended by admin.');
-
-        $this->auditLog->log('member.suspended', $member, $old, $member->only(['status']), $request->input('reason'));
-
-        $member->user?->notify(new MemberSuspendedNotification($member, $request->input('reason')));
+        $this->suspendMember($member, $request->input('reason'));
 
         return response()->json(['success' => true, 'message' => "Member {$member->member_id} suspended."]);
     }
@@ -259,13 +233,12 @@ class AdminMemberController extends Controller
         $request->validate(['reason' => ['nullable', 'string', 'max:500']]);
 
         $member = Member::findOrFail($id);
-        $old    = $member->only(['status']);
-        $member->update(['status' => 'expelled']);
-        $member->deactivateAllPositions('Expelled by admin.');
 
-        $this->auditLog->log('member.expelled', $member, $old, $member->only(['status']), $request->input('reason'));
+        if (! $this->canExpel($member)) {
+            return response()->json(['success' => false, 'message' => 'Only pending, active, or suspended members can be expelled.'], 422);
+        }
 
-        $member->user?->notify(new MemberExpelledNotification($member, $request->input('reason')));
+        $this->expelMember($member, $request->input('reason'));
 
         return response()->json(['success' => true, 'message' => "Member {$member->member_id} expelled."]);
     }
@@ -293,20 +266,199 @@ class AdminMemberController extends Controller
 
     // ── Destroy ───────────────────────────────────────────────────────
 
-    public function destroy(int $id): JsonResponse
+    public function destroy(int $id, Request $request): JsonResponse
     {
+        $request->validate([
+            'reason' => ['required', 'string', 'max:500'],
+        ]);
+
         $member = Member::findOrFail($id);
 
-        // Delete uploaded documents
-        $this->docService->delete($member->photo_path);
-        $this->docService->delete($member->nid_doc_path, 'local');
-        $this->docService->delete($member->student_id_doc_path, 'local');
+        if (! $this->canHardDelete($member)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Hard delete is only allowed for pending or expelled members. Use suspend or expel first for recoverability.',
+            ], 422);
+        }
 
-        $this->auditLog->log('member.deleted', $member, $member->toArray());
+        $this->hardDeleteMember($member, $request->input('reason'));
 
-        User::destroy($member->user_id);
+        return response()->json(['success' => true, 'message' => 'Member permanently removed according to deletion policy.']);
+    }
 
-        return response()->json(['success' => true, 'message' => 'Member permanently removed.']);
+    public function bulkAction(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'action'   => ['required', 'in:approve,reject,suspend,expel,delete'],
+            'ids'      => ['required', 'array', 'min:1', 'max:200'],
+            'ids.*'    => ['integer', 'distinct', 'exists:members,id'],
+            'reason'   => ['nullable', 'string', 'max:500'],
+        ]);
+
+        if ($validated['action'] === 'delete' && blank($validated['reason'] ?? null)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'A reason is required for bulk delete operations.',
+            ], 422);
+        }
+
+        $members = Member::with('user')->whereIn('id', $validated['ids'])->get()->keyBy('id');
+        $processed = [];
+        $skipped = [];
+
+        foreach ($validated['ids'] as $memberId) {
+            $member = $members->get($memberId);
+
+            if (! $member) {
+                $skipped[] = ['id' => $memberId, 'reason' => 'Member not found.'];
+                continue;
+            }
+
+            switch ($validated['action']) {
+                case 'approve':
+                    if (! $this->canApprove($member)) {
+                        $skipped[] = ['id' => $memberId, 'reason' => 'Only pending members can be approved.'];
+                        continue 2;
+                    }
+                    $this->approveMember($member);
+                    break;
+
+                case 'reject':
+                    if (! $this->canReject($member)) {
+                        $skipped[] = ['id' => $memberId, 'reason' => 'Only pending or active members can be rejected.'];
+                        continue 2;
+                    }
+                    $this->rejectMember($member, $validated['reason'] ?? null);
+                    break;
+
+                case 'suspend':
+                    if (! $this->canSuspend($member)) {
+                        $skipped[] = ['id' => $memberId, 'reason' => 'Only active members can be suspended.'];
+                        continue 2;
+                    }
+                    $this->suspendMember($member, $validated['reason'] ?? null);
+                    break;
+
+                case 'expel':
+                    if (! $this->canExpel($member)) {
+                        $skipped[] = ['id' => $memberId, 'reason' => 'Only pending, active, or suspended members can be expelled.'];
+                        continue 2;
+                    }
+                    $this->expelMember($member, $validated['reason'] ?? null);
+                    break;
+
+                case 'delete':
+                    if (! $this->canHardDelete($member)) {
+                        $skipped[] = ['id' => $memberId, 'reason' => 'Hard delete is only allowed for pending or expelled members.'];
+                        continue 2;
+                    }
+                    $this->hardDeleteMember($member, $validated['reason']);
+                    break;
+            }
+
+            $processed[] = [
+                'id' => $memberId,
+                'member_id' => $member->member_id,
+                'action' => $validated['action'],
+            ];
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Bulk member action processed.',
+            'data' => [
+                'action' => $validated['action'],
+                'processed_count' => count($processed),
+                'skipped_count' => count($skipped),
+                'processed' => $processed,
+                'skipped' => $skipped,
+            ],
+        ]);
+    }
+
+    public function reports(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'from' => ['nullable', 'date'],
+            'to' => ['nullable', 'date', 'after_or_equal:from'],
+            'unit_id' => ['nullable', 'integer', 'exists:organizational_units,id'],
+        ]);
+
+        $memberQuery = Member::query()
+            ->when($validated['unit_id'] ?? null, fn ($query, $unitId) => $query->where('organizational_unit_id', $unitId));
+
+        $summary = [
+            'total' => (clone $memberQuery)->count(),
+            'active' => (clone $memberQuery)->where('status', 'active')->count(),
+            'pending' => (clone $memberQuery)->where('status', 'pending')->count(),
+            'suspended' => (clone $memberQuery)->where('status', 'suspended')->count(),
+            'expelled' => (clone $memberQuery)->where('status', 'expelled')->count(),
+        ];
+
+        $approvalsByPeriod = Member::query()
+            ->selectRaw('DATE(approved_at) as period, COUNT(*) as count')
+            ->whereNotNull('approved_at')
+            ->when($validated['unit_id'] ?? null, fn ($query, $unitId) => $query->where('organizational_unit_id', $unitId))
+            ->when($validated['from'] ?? null, fn ($query, $from) => $query->whereDate('approved_at', '>=', $from))
+            ->when($validated['to'] ?? null, fn ($query, $to) => $query->whereDate('approved_at', '<=', $to))
+            ->groupBy(DB::raw('DATE(approved_at)'))
+            ->orderBy('period')
+            ->get()
+            ->map(fn ($row) => ['period' => $row->period, 'count' => (int) $row->count])
+            ->values();
+
+        $statusChanges = DB::table('audit_logs')
+            ->selectRaw('action, COUNT(*) as count')
+            ->whereIn('action', ['member.approved', 'member.rejected', 'member.suspended', 'member.expelled', 'member.deleted'])
+            ->when($validated['from'] ?? null, fn ($query, $from) => $query->whereDate('performed_at', '>=', $from))
+            ->when($validated['to'] ?? null, fn ($query, $to) => $query->whereDate('performed_at', '<=', $to))
+            ->groupBy('action')
+            ->orderBy('action')
+            ->get()
+            ->map(fn ($row) => ['action' => $row->action, 'count' => (int) $row->count])
+            ->values();
+
+        $pendingByUnit = DB::table('members')
+            ->leftJoin('organizational_units', 'members.organizational_unit_id', '=', 'organizational_units.id')
+            ->selectRaw('organizational_units.id as unit_id, COALESCE(organizational_units.name, ?) as unit_name, COUNT(members.id) as count', ['Unassigned'])
+            ->where('members.status', 'pending')
+            ->when($validated['unit_id'] ?? null, fn ($query, $unitId) => $query->where('members.organizational_unit_id', $unitId))
+            ->groupBy('organizational_units.id', 'organizational_units.name')
+            ->orderByDesc('count')
+            ->get()
+            ->map(fn ($row) => [
+                'unit_id' => $row->unit_id,
+                'unit_name' => $row->unit_name,
+                'count' => (int) $row->count,
+            ])
+            ->values();
+
+        $membersByUnit = DB::table('members')
+            ->leftJoin('organizational_units', 'members.organizational_unit_id', '=', 'organizational_units.id')
+            ->selectRaw('organizational_units.id as unit_id, COALESCE(organizational_units.name, ?) as unit_name, members.status, COUNT(members.id) as count', ['Unassigned'])
+            ->when($validated['unit_id'] ?? null, fn ($query, $unitId) => $query->where('members.organizational_unit_id', $unitId))
+            ->groupBy('organizational_units.id', 'organizational_units.name', 'members.status')
+            ->orderBy('unit_name')
+            ->orderBy('members.status')
+            ->get()
+            ->map(fn ($row) => [
+                'unit_id' => $row->unit_id,
+                'unit_name' => $row->unit_name,
+                'status' => $row->status,
+                'count' => (int) $row->count,
+            ])
+            ->values();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'summary' => $summary,
+                'approvals_by_period' => $approvalsByPeriod,
+                'status_changes' => $statusChanges,
+                'pending_by_unit' => $pendingByUnit,
+                'members_by_unit' => $membersByUnit,
+            ],
+        ]);
     }
 
     // ── Promote Role ──────────────────────────────────────────────────
@@ -357,5 +509,87 @@ class AdminMemberController extends Controller
                 'student_id_url' => $this->docService->url($member->student_id_doc_path, 'local'),
             ],
         ]);
+    }
+
+    private function canApprove(Member $member): bool
+    {
+        return $member->status->value === 'pending';
+    }
+
+    private function canReject(Member $member): bool
+    {
+        return in_array($member->status->value, ['pending', 'active'], true);
+    }
+
+    private function canSuspend(Member $member): bool
+    {
+        return $member->status->value === 'active';
+    }
+
+    private function canExpel(Member $member): bool
+    {
+        return in_array($member->status->value, ['pending', 'active', 'suspended'], true);
+    }
+
+    private function canHardDelete(Member $member): bool
+    {
+        return in_array($member->status->value, ['pending', 'expelled'], true);
+    }
+
+    private function approveMember(Member $member): void
+    {
+        $old = $member->only(['status', 'approved_by', 'approved_at']);
+
+        $member->update([
+            'status' => 'active',
+            'approved_by' => auth()->id(),
+            'approved_at' => now(),
+        ]);
+
+        MemberRole::updateOrCreate(
+            ['member_id' => $member->id],
+            ['role' => 'general_member', 'assigned_by' => auth()->id(), 'assigned_at' => now()]
+        );
+
+        $this->auditLog->log('member.approved', $member, $old, $member->only(['status', 'approved_by', 'approved_at']));
+        $member->user?->notify(new MemberApprovedNotification($member));
+    }
+
+    private function rejectMember(Member $member, ?string $reason = null): void
+    {
+        $this->auditLog->log('member.rejected', $member, $member->only(['status']), [], $reason);
+        $member->user?->notify(new MemberRejectedNotification($member, $reason));
+        User::destroy($member->user_id);
+    }
+
+    private function suspendMember(Member $member, ?string $reason = null): void
+    {
+        $old = $member->only(['status']);
+        $member->update(['status' => 'suspended']);
+        $member->deactivateAllPositions('Suspended by admin.');
+        $this->auditLog->log('member.suspended', $member, $old, $member->only(['status']), $reason);
+        $member->user?->notify(new MemberSuspendedNotification($member, $reason));
+    }
+
+    private function expelMember(Member $member, ?string $reason = null): void
+    {
+        $old = $member->only(['status']);
+        $member->update(['status' => 'expelled']);
+        $member->deactivateAllPositions('Expelled by admin.');
+        $this->auditLog->log('member.expelled', $member, $old, $member->only(['status']), $reason);
+        $member->user?->notify(new MemberExpelledNotification($member, $reason));
+    }
+
+    private function hardDeleteMember(Member $member, string $reason): void
+    {
+        $snapshot = $member->toArray();
+
+        $this->docService->delete($member->photo_path);
+        $this->docService->delete($member->nid_doc_path, 'local');
+        $this->docService->delete($member->student_id_doc_path, 'local');
+
+        $this->auditLog->log('member.deleted', $member, $snapshot, [], $reason);
+
+        User::destroy($member->user_id);
     }
 }
