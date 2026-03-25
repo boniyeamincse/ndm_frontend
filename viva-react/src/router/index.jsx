@@ -36,6 +36,10 @@ const CommitteeManagement= lazy(() => import('../pages/dashboard/admin/Committee
 const MemberSearch       = lazy(() => import('../pages/dashboard/admin/MemberSearch'));
 const BlogManagement     = lazy(() => import('../pages/dashboard/admin/BlogManagement'));
 const CommitteeDetail    = lazy(() => import('../pages/dashboard/admin/CommitteeDetail'));
+const SystemMonitoring   = lazy(() => import('../pages/dashboard/admin/SystemMonitoring'));
+const CommunicationCenter= lazy(() => import('../pages/dashboard/admin/CommunicationCenter'));
+const BulkOperations     = lazy(() => import('../pages/dashboard/admin/BulkOperations'));
+const FileManagement     = lazy(() => import('../pages/dashboard/admin/FileManagement'));
 
 // ── Member pages ──────────────────────────────────────────────────────────────
 const MemberDashboard   = lazy(() => import('../pages/dashboard/member/MemberDashboard'));
@@ -103,6 +107,7 @@ export const router = createBrowserRouter([
           { path: 'members',            element: <AllMembers /> },
           { path: 'members/pending',    element: <PendingApprovals /> },
           { path: 'members/search',     element: <MemberSearch /> },
+          { path: 'members/reports',    element: <MemberReports /> },
           { path: 'members/:id',        element: <MemberDetail /> },
           { path: 'roles',              element: <RoleManagement /> },
           { path: 'units',              element: <UnitManagement /> },
@@ -113,7 +118,10 @@ export const router = createBrowserRouter([
           { path: 'positions',          element: <PositionManagement /> },
           { path: 'positions/history',  element: <PositionHistory /> },
           { path: 'settings',           element: <AdminSettings /> },
-          { path: 'members/reports',     element: <MemberReports /> },
+          { path: 'system-monitoring',  element: <SystemMonitoring /> },
+          { path: 'communications',     element: <CommunicationCenter /> },
+          { path: 'bulk-operations',    element: <BulkOperations /> },
+          { path: 'files',              element: <FileManagement /> },
         ]
       }
     ],

@@ -101,6 +101,15 @@ const ADMIN_SECTIONS = [
     ],
   },
   {
+    label: 'Operations',
+    items: [
+      { to: '/dashboard/admin/system-monitoring', label: 'System Monitoring', icon: 'alert' },
+      { to: '/dashboard/admin/communications', label: 'Communications', icon: 'bell' },
+      { to: '/dashboard/admin/bulk-operations', label: 'Bulk Operations', icon: 'plus' },
+      { to: '/dashboard/admin/files', label: 'File Management', icon: 'plus' },
+    ],
+  },
+  {
     label: 'Tools',
     items: [
       { to: '/dashboard/admin/members/reports', label: 'Reports',  icon: 'reports'  },
