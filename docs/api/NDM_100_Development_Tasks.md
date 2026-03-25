@@ -63,7 +63,7 @@
   ```
 - **Test:** Check `.env` — `JWT_SECRET=` should now have a value
 - **Google:** `tymon jwt-auth laravel 11 install`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -84,7 +84,7 @@
   ```
 - **Test:** Make an OPTIONS request from Postman/browser — should return 200 with CORS headers
 - **Google:** `laravel 11 cors middleware configuration`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -97,7 +97,7 @@
   - `app/Enums/Gender.php` → `male | female | other`
 - **Test:** `php artisan tinker` → `App\Enums\MemberStatus::ACTIVE->label()` should return `"Active Member"`
 - **Google:** `php 8.1 backed enum string laravel cast`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -116,7 +116,7 @@
   Fill each migration with correct columns, types, foreign keys (see Blueprint in main doc).
 - **Test:** `php artisan migrate` — all 7 tables created with no errors
 - **Google:** `laravel migration foreignId constrained cascadeOnDelete`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -134,7 +134,7 @@
   Add `$fillable`, `$casts`, relationships, and scopes to each (see Models section).
 - **Test:** `php artisan tinker` → `App\Models\Member::count()` should return `0`
 - **Google:** `laravel eloquent model enum cast relationship`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -151,7 +151,7 @@
   ```
 - **Test:** Login with `POST /api/auth/login` using admin credentials → should receive JWT
 - **Google:** `laravel seeder bcrypt password`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -168,7 +168,7 @@
   ```
 - **Test:** `GET /api/units` → should return tree with central + 8 divisions
 - **Google:** `bangladesh 8 divisions list`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -178,7 +178,7 @@
 - **How:** See `RoleSeeder` in main blueprint — create ~19 standard roles across all unit types
 - **Test:** `GET /api/admin/roles` (as admin) → should list all seeded roles
 - **Google:** `laravel seeder factory order dependency`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -198,7 +198,7 @@
   ```
 - **Test:** `php artisan tinker` → `JWTAuth::fromUser(User::first())` should return a token string
 - **Google:** `tymon jwtsubject laravel 11`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -208,7 +208,7 @@
 - **How:** Rules: `email` → unique, `password` → min:8|confirmed, `full_name` → required, etc.
 - **Test:** POST with missing `email` → should return `422` with `errors.email` field
 - **Google:** `laravel form request validation 422 response`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -218,7 +218,7 @@
 - **How:** Use `DB::transaction()` with MySQL `INSERT ... ON DUPLICATE KEY UPDATE` on `member_id_sequences` table
 - **Test:** Call `generate()` 5 times in a loop → should produce `20261, 20262, 20263, 20264, 20265`
 - **Google:** `mysql insert on duplicate key update atomic counter`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -228,7 +228,7 @@
 - **How:** Use `RegisterRequest`, `MemberIdService::generate()`, `User::create()`, `Member::create()`
 - **Test:** POST `/api/auth/register` with valid body → 201 response with `member_id` like `"20261"`
 - **Google:** `laravel 11 api controller json response`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -239,7 +239,7 @@
 - **Test 1:** Login with pending member → 403
 - **Test 2:** Login with active member → 200 with `access_token`
 - **Google:** `tymon jwtauth attempt invalidate token`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -250,7 +250,7 @@
   Register alias `'admin'` in `bootstrap/app.php`
 - **Test:** Call `GET /api/admin/members` with member JWT → should return 403
 - **Google:** `laravel 11 middleware alias bootstrap app.php`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -265,7 +265,7 @@
   Enable token blacklisting in `config/jwt.php`: `'blacklist_enabled' => true`
 - **Test:** Login → get token → logout → use same token → should return 401
 - **Google:** `tymon jwt blacklist token logout laravel`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -279,7 +279,7 @@
   Write tests for: register success, duplicate email, pending login block, active login success, logout
 - **Test:** `php artisan test --filter AuthTest` → all pass
 - **Google:** `pest php laravel feature test json response`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -293,7 +293,7 @@
 - **How:** Include: `member_id, full_name, institution, join_year, photo_url, unit, positions`
 - **Test:** `GET /api/members/20261` → response should NOT contain `user_id` or `password`
 - **Google:** `laravel api resource hide fields conditional loading`
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -353,7 +353,7 @@
 - **How:** Query by `member_id` string field, only show `status = active`, load positions and unit
 - **Test:** Active member → 200 with full profile. Pending member → 404
 - **Google:** `laravel route parameter model binding custom column`
-- [ ] Done
+- [x] Done
 
 ---
 

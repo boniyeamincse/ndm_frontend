@@ -104,6 +104,53 @@ class AuthTest extends TestCase
             ]);
     }
 
+    public function test_can_register_with_full_details_and_files(): void
+    {
+        \Illuminate\Support\Facades\Storage::fake('public');
+
+        $photo = \Illuminate\Http\Testing\File::image('profile.jpg');
+        $nidDoc = \Illuminate\Http\Testing\File::create('nid.pdf', 500);
+
+        $response = $this->postJson('/api/auth/register', [
+            'email' => 'full@example.com',
+            'password' => 'Password@123',
+            'password_confirmation' => 'Password@123',
+            'full_name' => 'Full Detail Member',
+            'father_name' => 'Father Name',
+            'mother_name' => 'Mother Name',
+            'nid_or_bc' => '1234567890',
+            'phone' => '01711111111',
+            'emergency_contact_name' => 'Emergency Name',
+            'emergency_contact_phone' => '01700000000',
+            'skills' => 'Laravel, React',
+            'photo' => $photo,
+            'nid_doc' => $nidDoc,
+        ]);
+
+        $response->assertStatus(201);
+
+        $this->assertDatabaseHas('members', [
+            'full_name' => 'Full Detail Member',
+            'emergency_contact_name' => 'Emergency Name',
+        ]);
+
+        $member = \App\Models\Member::where('full_name', 'Full Detail Member')->first();
+        
+        // Test Encryption: The raw database value should NOT be '1234567890'
+        $rawNid = \Illuminate\Support\Facades\DB::table('members')
+            ->where('id', $member->id)
+            ->value('nid_or_bc');
+            
+        $this->assertNotEquals('1234567890', $rawNid);
+        
+        // Test Decryption via Model: Accessor should return original value
+        $this->assertEquals('1234567890', $member->nid_or_bc);
+
+        // Test File Storage
+        \Illuminate\Support\Facades\Storage::disk('public')->assertExists($member->photo_path);
+        \Illuminate\Support\Facades\Storage::disk('public')->assertExists($member->nid_doc_path);
+    }
+
     public function test_logout_invalidates_current_token(): void
     {
         $user = User::factory()->create([

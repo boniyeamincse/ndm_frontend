@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Models\Member;
 use App\Models\User;
+use App\Services\DocumentUploadService;
 use App\Services\MemberIdService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,8 +16,10 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-    public function __construct(private readonly MemberIdService $memberIdService)
-    {
+    public function __construct(
+        private readonly MemberIdService $memberIdService,
+        private readonly DocumentUploadService $documentUploadService
+    ) {
     }
 
     /**
@@ -33,17 +36,41 @@ class AuthController extends Controller
 
         $memberId = $this->memberIdService->generate();
 
+        // Handle File Uploads
+        $photoPath = $request->file('photo') 
+            ? $this->documentUploadService->upload($request->file('photo'), 'photos', 'profile') 
+            : null;
+            
+        $nidPath = $request->file('nid_doc') 
+            ? $this->documentUploadService->upload($request->file('nid_doc'), 'documents', 'nid') 
+            : null;
+            
+        $studentIdPath = $request->file('student_id_doc') 
+            ? $this->documentUploadService->upload($request->file('student_id_doc'), 'documents', 'sid') 
+            : null;
+
         Member::create([
             'user_id' => $user->id,
             'member_id' => $memberId,
             'full_name' => $request->string('full_name')->toString(),
+            'father_name' => $request->string('father_name')->toString(),
+            'mother_name' => $request->string('mother_name')->toString(),
+            'date_of_birth' => $request->input('date_of_birth'),
+            'gender' => $request->input('gender'),
+            'nid_or_bc' => $request->input('nid_or_bc'), // Will be encrypted via Model cast
+            'blood_group' => $request->input('blood_group'),
             'phone' => $request->input('phone'),
+            'present_address' => $request->input('present_address'),
+            'permanent_address' => $request->input('permanent_address'),
+            'emergency_contact_name' => $request->input('emergency_contact_name'),
+            'emergency_contact_phone' => $request->input('emergency_contact_phone'),
             'institution' => $request->input('institution'),
             'department' => $request->input('department'),
             'session' => $request->input('session'),
-            'present_address' => $request->input('present_address'),
-            'date_of_birth' => $request->input('date_of_birth'),
-            'gender' => $request->input('gender'),
+            'skills' => $request->input('skills'),
+            'photo_path' => $photoPath,
+            'nid_doc_path' => $nidPath,
+            'student_id_doc_path' => $studentIdPath,
             'join_year' => now()->year,
             'status' => 'pending',
             'organizational_unit_id' => $request->input('organizational_unit_id'),

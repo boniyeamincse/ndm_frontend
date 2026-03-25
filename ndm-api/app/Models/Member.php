@@ -2,81 +2,73 @@
 
 namespace App\Models;
 
-use App\Enums\MemberStatus;
 use App\Enums\Gender;
+use App\Enums\MemberStatus;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Member extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'user_id', 'member_id', 'full_name', 'father_name', 'mother_name',
-        'date_of_birth', 'gender', 'nid_or_bc', 'blood_group', 'phone',
-        'email', 'present_address', 'permanent_address',
-        'institution', 'department', 'session', 'photo_path',
-        'status', 'approved_by', 'approved_at', 'join_year',
+        'user_id',
+        'member_id',
+        'full_name',
+        'father_name',
+        'mother_name',
+        'date_of_birth',
+        'gender',
+        'nid_or_bc',
+        'blood_group',
+        'phone',
+        'email',
+        'present_address',
+        'permanent_address',
+        'emergency_contact_name',
+        'emergency_contact_phone',
+        'institution',
+        'department',
+        'session',
+        'skills',
+        'photo_path',
+        'nid_doc_path',
+        'student_id_doc_path',
+        'status',
+        'approved_by',
+        'approved_at',
+        'join_year',
         'organizational_unit_id',
     ];
 
     protected $casts = [
-        'status'       => MemberStatus::class,
-        'gender'       => Gender::class,
-        'approved_at'  => 'datetime',
-        'date_of_birth'=> 'date',
+        'date_of_birth' => 'date',
+        'approved_at' => 'datetime',
+        'gender' => Gender::class,
+        'status' => MemberStatus::class,
+        'join_year' => 'integer',
+        'nid_or_bc' => 'encrypted',
     ];
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $belongsTo(User::class);
     }
 
-    public function unit(): BelongsTo
+    public function organizationalUnit(): BelongsTo
     {
-        return $this->belongsTo(OrganizationalUnit::class, 'organizational_unit_id');
-    }
-
-    public function approvedBy(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'approved_by');
+        return $this->belongsTo(OrganizationalUnit::class);
     }
 
     public function positions(): HasMany
     {
-        return $this->hasMany(MemberPosition::class)->where('is_active', 1);
-    }
-
-    public function allPositions(): HasMany
-    {
         return $this->hasMany(MemberPosition::class);
     }
 
-    public function positionHistory(): HasMany
+    public function approver(): BelongsTo
     {
-        return $this->hasMany(PositionHistory::class);
-    }
-
-    public function getPhotoUrlAttribute(): ?string
-    {
-        return $this->photo_path
-            ? asset('storage/' . $this->photo_path)
-            : null;
-    }
-
-    public function deactivateAllPositions(string $remarks = ''): void
-    {
-        $this->positions()->update(['is_active' => 0, 'relieved_at' => now()]);
-
-        PositionHistory::insert(
-            $this->positions()->get()->map(fn($p) => [
-                'member_id'    => $this->id,
-                'role_id'      => $p->role_id,
-                'unit_id'      => $p->unit_id,
-                'action'       => 'relieved',
-                'performed_by' => auth()->id(),
-                'performed_at' => now(),
-                'remarks'      => $remarks,
-            ])->toArray()
-        );
+        return $this->belongsTo(User::class, 'approved_by');
     }
 }
