@@ -340,7 +340,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/ui/Dropdown.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Task 26 [ ] — Prompt 26 — Footer Component
+### Task 26 [x] — Prompt 26 — Footer Component
 **Goal**: Build a professional multi-column footer with newsletter integration.
 **Rules**:
 - Include a full-width newsletter signup bar with brand colors.
@@ -993,7 +993,7 @@ This document contains rewritten prompts in a professional format designed for h
 **Deliver**: `src/components/contact/BranchFinder.jsx`.
 **Then ask**: "Before giving code, list the possible mistakes and confirm the rules NSM-100"
 
-### Task 75 [ ] — Prompt 75 — Dark Mode Implementation
+### Task 75 [/] — Prompt 75 — Dark Mode Implementation
 **Goal**: implement a persistent dark mode system using CSS variables.
 **Rules**:
 - support system-preference detection and local-storage persistence.
