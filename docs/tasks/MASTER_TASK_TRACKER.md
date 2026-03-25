@@ -277,10 +277,10 @@ Status logic for **Overall Status**:
 
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 157 | Build full admin control center | Design and implement a high-level admin control panel for centralized system supervision, including dashboard-level access to members, units, tasks, content, communication, audit, settings, and operational tools. | Pending | Pending | Pending | Pending |
+| 157 | Build full admin control center | Design and implement a high-level admin control panel for centralized system supervision, including dashboard-level access to members, units, tasks, content, communication, audit, settings, and operational tools. | In Progress | Pending | In Progress | In Progress |
 | 158 | Build user permission management module | Create a complete permission-management workflow for admins to assign, update, revoke, and review user permissions and role-based access across all enabled modules. Include audit logging and privilege-escalation safeguards. | Pending | Pending | Pending | Pending |
-| 159 | Add module enable and disable controls | Build a module-control system so authorized admins can enable or disable product modules such as news, activities, directory, committees, tasks, blog, notifications, and ID cards without changing code manually. Include safe defaults and environment-aware controls. | Pending | Pending | Pending | Pending |
-| 160 | Add system-level admin settings and safeguards | Create system settings for feature flags, maintenance controls, branding settings, communication options, storage controls, and security restrictions. Ensure only the highest authorized admin roles can access destructive or global settings. | Pending | Pending | Pending | Pending |
+| 159 | Add module enable and disable controls | Build a module-control system so authorized admins can enable or disable product modules such as news, activities, directory, committees, tasks, blog, notifications, and ID cards without changing code manually. Include safe defaults and environment-aware controls. | In Progress | Pending | In Progress | In Progress |
+| 160 | Add system-level admin settings and safeguards | Create system settings for feature flags, maintenance controls, branding settings, communication options, storage controls, and security restrictions. Ensure only the highest authorized admin roles can access destructive or global settings. | In Progress | Pending | In Progress | In Progress |
 
 ## Task 15 — Complaint And Feedback System
 

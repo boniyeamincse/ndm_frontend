@@ -184,9 +184,9 @@ const AdminDashboard = () => {
                 />
                 <ActionCard
                     to="/dashboard/admin/settings"
-                    label="Create Unit"
-                    desc="Add an organizational unit"
-                    icon="+"
+                    label="Control Center"
+                    desc="System settings, governance, and safeguards"
+                    icon="CC"
                 />
             </motion.div>
 
