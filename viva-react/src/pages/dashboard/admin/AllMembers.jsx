@@ -1,7 +1,25 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../../services/api';
+
+const BLOOD_GROUPS = ['A+','A-','B+','B-','AB+','AB-','O+','O-'];
+const INIT_FORM = {
+  full_name: '', email: '', password: '', mobile: '', institution: '',
+  department: '', gender: '', date_of_birth: '', blood_group: '',
+  organizational_unit_id: '', status: 'active',
+  join_year: new Date().getFullYear(), present_address: '',
+};
+const inp = 'w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30';
+const Lbl = ({ label, required, err, children }) => (
+  <div>
+    <label className="block text-xs font-medium text-gray-600 mb-1">
+      {label}{required && <span className="text-red-500 ml-0.5">*</span>}
+    </label>
+    {children}
+    {err && <p className="text-xs text-red-500 mt-1">{err}</p>}
+  </div>
+);
 
 const STATUS_OPTIONS = ['', 'active', 'pending', 'suspended', 'expelled'];
 const statusStyle = {
@@ -12,13 +30,57 @@ const statusStyle = {
 };
 
 const AllMembers = () => {
+  const [searchParams] = useSearchParams();
   const [members, setMembers] = useState([]);
   const [meta, setMeta]       = useState(null);
   const [page, setPage]       = useState(1);
-  const [filters, setFilters] = useState({ status: '', search: '' });
+  const [filters, setFilters] = useState({ status: searchParams.get('status') ?? '', search: '' });
+
+  useEffect(() => {
+    setFilters(f => ({ ...f, status: searchParams.get('status') ?? '' }));
+    setPage(1);
+  }, [searchParams]);
+
   const [loading, setLoading] = useState(true);
   const [toast, setToast]     = useState(null);
-  const [actionRow, setActionRow] = useState(null); // member id being acted on
+  const [actionRow, setActionRow] = useState(null);
+
+  // ── Add Member slide-over ──────────────────────────────────────────
+  const [showAdd, setShowAdd] = useState(false);
+  const [form, setForm]       = useState(INIT_FORM);
+  const [units, setUnits]     = useState([]);
+  const [saving, setSaving]   = useState(false);
+  const [formErr, setFormErr] = useState({});
+  const firstRef              = useRef(null);
+
+  useEffect(() => {
+    api.get('/units/campus').then(r => setUnits(r.data?.data ?? r.data ?? [])).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (showAdd) setTimeout(() => firstRef.current?.focus(), 80);
+    else { setForm(INIT_FORM); setFormErr({}); }
+  }, [showAdd]);
+
+  const setF = (k, v) => setForm(f => ({ ...f, [k]: v }));
+
+  const submitAdd = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    setFormErr({});
+    try {
+      await api.post('/admin/members', form);
+      showToast('Member added successfully.');
+      setShowAdd(false);
+      load();
+    } catch (err) {
+      const errs = err.response?.data?.errors ?? {};
+      if (Object.keys(errs).length) setFormErr(errs);
+      else showToast(err.response?.data?.message ?? 'Failed to add member.', 'error');
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const showToast = (msg, type = 'success') => {
     setToast({ msg, type });
@@ -57,7 +119,126 @@ const AllMembers = () => {
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">All Members</h1>
+      <div className="flex items-center justify-between gap-4">
+        <h1 className="text-2xl font-bold text-gray-900">All Members</h1>
+        <button
+          onClick={() => setShowAdd(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow transition-colors"
+        >
+          <span className="text-lg leading-none">+</span> Add Member
+        </button>
+      </div>
+
+      {/* ── Add Member Slide-Over ────────────────────────────────────── */}
+      <AnimatePresence>
+        {showAdd && (
+          <>
+            <motion.div
+              key="bd"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/40 z-30"
+              onClick={() => !saving && setShowAdd(false)}
+            />
+            <motion.aside
+              key="panel"
+              initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
+              transition={{ type: 'tween', duration: 0.25 }}
+              className="fixed right-0 top-0 h-full w-full max-w-lg bg-white shadow-2xl z-40 flex flex-col"
+            >
+              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <h2 className="text-lg font-bold text-gray-900">Add Member Manually</h2>
+                <button onClick={() => setShowAdd(false)} className="text-gray-400 hover:text-gray-700 text-xl font-bold leading-none">✕</button>
+              </div>
+
+              <form onSubmit={submitAdd} className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
+                <p className="text-xs text-blue-700 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">
+                  Admin-created members are set to <strong>Active</strong> by default and bypass the approval queue.
+                </p>
+
+                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400">Account</p>
+                <div className="grid grid-cols-2 gap-4">
+                  <Lbl label="Email" required err={formErr.email?.[0]}>
+                    <input ref={firstRef} type="email" value={form.email} onChange={e => setF('email', e.target.value)} className={inp} required />
+                  </Lbl>
+                  <Lbl label="Password" required err={formErr.password?.[0]}>
+                    <input type="password" value={form.password} onChange={e => setF('password', e.target.value)} className={inp} required minLength={8} />
+                  </Lbl>
+                </div>
+
+                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 pt-2">Personal Info</p>
+                <Lbl label="Full Name" required err={formErr.full_name?.[0]}>
+                  <input type="text" value={form.full_name} onChange={e => setF('full_name', e.target.value)} className={inp} required maxLength={191} />
+                </Lbl>
+                <div className="grid grid-cols-2 gap-4">
+                  <Lbl label="Mobile" err={formErr.mobile?.[0]}>
+                    <input type="tel" value={form.mobile} onChange={e => setF('mobile', e.target.value)} className={inp} />
+                  </Lbl>
+                  <Lbl label="Date of Birth" err={formErr.date_of_birth?.[0]}>
+                    <input type="date" value={form.date_of_birth} onChange={e => setF('date_of_birth', e.target.value)} className={inp} />
+                  </Lbl>
+                  <Lbl label="Gender">
+                    <select value={form.gender} onChange={e => setF('gender', e.target.value)} className={inp}>
+                      <option value="">Select…</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </Lbl>
+                  <Lbl label="Blood Group">
+                    <select value={form.blood_group} onChange={e => setF('blood_group', e.target.value)} className={inp}>
+                      <option value="">Select…</option>
+                      {BLOOD_GROUPS.map(b => <option key={b} value={b}>{b}</option>)}
+                    </select>
+                  </Lbl>
+                </div>
+
+                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 pt-2">Academic &amp; Org</p>
+                <div className="grid grid-cols-2 gap-4">
+                  <Lbl label="Institution">
+                    <input type="text" value={form.institution} onChange={e => setF('institution', e.target.value)} className={inp} maxLength={255} />
+                  </Lbl>
+                  <Lbl label="Department">
+                    <input type="text" value={form.department} onChange={e => setF('department', e.target.value)} className={inp} maxLength={191} />
+                  </Lbl>
+                  <Lbl label="Organizational Unit" err={formErr.organizational_unit_id?.[0]}>
+                    <select value={form.organizational_unit_id} onChange={e => setF('organizational_unit_id', e.target.value)} className={inp}>
+                      <option value="">Not assigned</option>
+                      {units.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
+                    </select>
+                  </Lbl>
+                  <Lbl label="Join Year">
+                    <input type="number" value={form.join_year} onChange={e => setF('join_year', e.target.value)} className={inp} min={2000} max={2100} />
+                  </Lbl>
+                </div>
+
+                <Lbl label="Present Address">
+                  <textarea value={form.present_address} onChange={e => setF('present_address', e.target.value)} className={inp} rows={2} maxLength={500} />
+                </Lbl>
+
+                <Lbl label="Initial Status">
+                  <select value={form.status} onChange={e => setF('status', e.target.value)} className={inp}>
+                    <option value="active">Active (approved immediately)</option>
+                    <option value="pending">Pending (requires approval)</option>
+                  </select>
+                </Lbl>
+
+                <div className="flex gap-3 pt-2 pb-6">
+                  <button type="submit" disabled={saving}
+                    className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-semibold rounded-xl text-sm transition-colors"
+                  >
+                    {saving ? 'Saving…' : 'Add Member'}
+                  </button>
+                  <button type="button" onClick={() => setShowAdd(false)}
+                    className="px-5 py-2.5 border border-gray-300 rounded-xl text-sm text-gray-600 hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-3 items-center">

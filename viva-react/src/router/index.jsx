@@ -2,6 +2,7 @@ import React, { lazy } from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import { useAuth } from '../context/AuthContext';
+import DashboardLayout from '../components/layout/DashboardLayout';
 
 // ── Public pages ─────────────────────────────────────────────────────────────
 const Home          = lazy(() => import('../pages/Home'));
@@ -26,6 +27,8 @@ const RoleManagement     = lazy(() => import('../pages/dashboard/admin/RoleManag
 const UnitManagement     = lazy(() => import('../pages/dashboard/admin/UnitManagement'));
 const PositionManagement = lazy(() => import('../pages/dashboard/admin/PositionManagement'));
 const PositionHistory    = lazy(() => import('../pages/dashboard/admin/PositionHistory'));
+const AdminSettings      = lazy(() => import('../pages/dashboard/admin/AdminSettings'));
+const MemberReports      = lazy(() => import('../pages/dashboard/admin/MemberReports'));
 
 // ── Member pages ──────────────────────────────────────────────────────────────
 const MemberDashboard   = lazy(() => import('../pages/dashboard/member/MemberDashboard'));
@@ -67,10 +70,15 @@ export const router = createBrowserRouter([
     path: '/dashboard/member',
     element: <RequireAuth />,
     children: [
-      { index: true,       element: <MemberDashboard /> },
-      { path: 'profile',   element: <MemberProfilePage /> },
-      { path: 'positions', element: <MemberPositions /> },
-      { path: 'settings',  element: <MemberSettings /> },
+      {
+        element: <DashboardLayout />,
+        children: [
+          { index: true,       element: <MemberDashboard /> },
+          { path: 'profile',   element: <MemberProfilePage /> },
+          { path: 'positions', element: <MemberPositions /> },
+          { path: 'settings',  element: <MemberSettings /> },
+        ]
+      }
     ],
   },
   // ── Admin dashboard ──────────────────────────────────────────────
@@ -78,14 +86,21 @@ export const router = createBrowserRouter([
     path: '/dashboard/admin',
     element: <RequireAuth role="admin" />,
     children: [
-      { index: true,                element: <AdminDashboard /> },
-      { path: 'members',            element: <AllMembers /> },
-      { path: 'members/pending',    element: <PendingApprovals /> },
-      { path: 'members/:id',        element: <MemberDetail /> },
-      { path: 'roles',              element: <RoleManagement /> },
-      { path: 'units',              element: <UnitManagement /> },
-      { path: 'positions',          element: <PositionManagement /> },
-      { path: 'positions/history',  element: <PositionHistory /> },
+      {
+        element: <DashboardLayout />,
+        children: [
+          { index: true,                element: <AdminDashboard /> },
+          { path: 'members',            element: <AllMembers /> },
+          { path: 'members/pending',    element: <PendingApprovals /> },
+          { path: 'members/:id',        element: <MemberDetail /> },
+          { path: 'roles',              element: <RoleManagement /> },
+          { path: 'units',              element: <UnitManagement /> },
+          { path: 'positions',          element: <PositionManagement /> },
+          { path: 'positions/history',  element: <PositionHistory /> },
+          { path: 'settings',           element: <AdminSettings /> },
+          { path: 'members/reports',     element: <MemberReports /> },
+        ]
+      }
     ],
   },
   { path: '*', element: <NotFound /> },
