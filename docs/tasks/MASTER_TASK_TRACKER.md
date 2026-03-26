@@ -30,8 +30,8 @@ Status logic for **Overall Status**:
 
 - Total Tasks: 201
 - Completed: 10
-- In Progress: 96
-- Pending: 95
+- In Progress: 101
+- Pending: 90
 
 ## Development Phase Kickoff (2026-03-25)
 
@@ -295,11 +295,11 @@ Status logic for **Overall Status**:
 
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 165 | Build internal election framework | Design and implement internal election workflows for committee selection across units and organizational levels, including election schedule, election type, and eligible voter/candidate scope rules. | Pending | Pending | Pending | Pending |
-| 166 | Add candidate nomination workflow | Build candidate nomination, proposer/seconder rules, nomination verification, approval/rejection pipeline, and candidate profile publication controls for internal elections. | Pending | Pending | Pending | Pending |
-| 167 | Build secure digital voting engine | Implement secure digital voting with one-member-one-vote enforcement, ballot secrecy, anti-duplicate protections, session integrity, and audit-safe vote event logs. | Pending | Pending | Pending | Pending |
-| 168 | Add automated result generation | Build automated vote counting, tie handling policies, winner declaration logic, result publication controls, and downloadable result reports for authorized roles. | Pending | Pending | Pending | Pending |
-| 169 | Add election and voting analytics | Create analytics for turnout, unit-wise participation, candidate performance, invalid vote patterns, and election-cycle comparisons for leadership decision support. | Pending | Pending | Pending | Pending |
+| 165 | Build internal election framework | Design and implement internal election workflows for committee selection across units and organizational levels, including election schedule, election type, and eligible voter/candidate scope rules. | Done | Pending | Uploaded | In Progress |
+| 166 | Add candidate nomination workflow | Build candidate nomination, proposer/seconder rules, nomination verification, approval/rejection pipeline, and candidate profile publication controls for internal elections. | Done | Pending | Uploaded | In Progress |
+| 167 | Build secure digital voting engine | Implement secure digital voting with one-member-one-vote enforcement, ballot secrecy, anti-duplicate protections, session integrity, and audit-safe vote event logs. | Done | Pending | Uploaded | In Progress |
+| 168 | Add automated result generation | Build automated vote counting, tie handling policies, winner declaration logic, result publication controls, and downloadable result reports for authorized roles. | Done | Pending | Uploaded | In Progress |
+| 169 | Add election and voting analytics | Create analytics for turnout, unit-wise participation, candidate performance, invalid vote patterns, and election-cycle comparisons for leadership decision support. | Done | Pending | Uploaded | In Progress |
 
 ## Task 17 — Event And Campaign Management
 

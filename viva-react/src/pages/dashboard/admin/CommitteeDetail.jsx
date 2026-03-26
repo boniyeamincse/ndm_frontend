@@ -16,6 +16,7 @@ const CommitteeDetail = () => {
     const [form, setForm] = useState({ member_id: '', designation: '' });
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
 
     const OFFICIAL_ROLES = [
         'President', 'Vice President', 'General Secretary', 'Joint General Secretary',
@@ -76,6 +77,16 @@ const CommitteeDetail = () => {
 
     // Group roles visually
     const activeRoles = committee.roles?.filter(r => r.status === 'active') || [];
+    const leadershipRoles = activeRoles.filter(r => r.designation !== 'General Member' && r.designation !== 'Executive Member');
+    
+    const filteredRoles = activeRoles.filter(r => {
+        const search = searchTerm.toLowerCase();
+        return (
+            r.member?.full_name?.toLowerCase().includes(search) ||
+            r.member?.member_id?.toLowerCase().includes(search) ||
+            r.designation?.toLowerCase().includes(search)
+        );
+    });
 
     return (
         <div className="max-w-7xl mx-auto p-6 space-y-8 pb-20">
@@ -113,20 +124,20 @@ const CommitteeDetail = () => {
             <div className="space-y-8 mt-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
                 <div className="flex items-center justify-between border-b border-white/5 pb-4">
                     <h3 className="text-xl font-black text-white uppercase tracking-tight flex items-center gap-3">
-                        <FiShield className="text-primary" /> Active Leadership Protocol ({activeRoles.length})
+                        <FiShield className="text-primary" /> Primary Command Staff ({leadershipRoles.length})
                     </h3>
                 </div>
                 
-                {activeRoles.length === 0 ? (
-                    <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-20 text-center shadow-2xl relative overflow-hidden group">
+                {leadershipRoles.length === 0 ? (
+                    <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-12 text-center shadow-2xl relative overflow-hidden group">
                         <div className="absolute inset-0 bg-primary/5 opacity-30 blur-3xl" />
                         <div className="relative text-slate-500 font-black uppercase tracking-widest text-[10px]">
-                            No designate nodes detected in current cluster.
+                            No leadership nodes designated in current cluster.
                         </div>
                     </div>
                 ) : (
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {activeRoles.map(role => (
+                        {leadershipRoles.map(role => (
                             <div key={role.id} className="bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 shadow-xl p-8 relative group overflow-hidden hover:bg-white/[0.07] hover:border-white/20 transition-all">
                                 <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0">
                                     <button onClick={() => handleRemoveRole(role.id)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:bg-rose-500 hover:text-white transition-all shadow-lg">
@@ -155,6 +166,93 @@ const CommitteeDetail = () => {
                         ))}
                     </div>
                 )}
+            </div>
+
+            {/* ── Deployment Roster ── */}
+            <div className="space-y-8 mt-20 animate-in fade-in slide-in-from-bottom-6 duration-1000">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/5 pb-6">
+                    <div>
+                        <h3 className="text-xl font-black text-white uppercase tracking-tight flex items-center gap-3">
+                            <FiShield className="text-slate-500" /> Full Deployment Roster ({activeRoles.length})
+                        </h3>
+                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-2 ml-8">Comprehensive personnel mapping for this node.</p>
+                    </div>
+                    <div className="relative w-full md:w-80 group">
+                        <span className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary transition-colors text-sm">🔍</span>
+                        <input
+                            type="text"
+                            placeholder="SEARCH PERSONNEL..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-12 py-3.5 text-[10px] text-slate-200 font-black uppercase tracking-widest placeholder:text-slate-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
+                        />
+                    </div>
+                </div>
+
+                <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 shadow-2xl overflow-hidden">
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left">
+                            <thead className="bg-white/[0.02] border-b border-white/10">
+                                <tr>
+                                    <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Personnel Identity</th>
+                                    <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Assigned Role</th>
+                                    <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Deployment ID</th>
+                                    <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Status</th>
+                                    <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-right">Operations</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-white/5">
+                                {filteredRoles.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={5} className="px-8 py-20 text-center">
+                                            <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">No matching personnel detected in current query.</p>
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    filteredRoles.map(role => (
+                                        <tr key={role.id} className="group hover:bg-white/[0.03] transition-all">
+                                            <td className="px-8 py-5">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-primary font-black text-xs uppercase group-hover:border-primary/40 transition-colors shadow-inner">
+                                                        {role.member?.full_name?.charAt(0)}
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-xs font-black text-slate-200 uppercase tracking-tight group-hover:text-white transition-colors">{role.member?.full_name}</p>
+                                                        <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mt-1">{role.member?.mobile || 'NO_MOBILE_LINK'}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-8 py-5">
+                                                <span className={`text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-lg border ${role.designation === 'General Member' ? 'bg-slate-500/10 text-slate-400 border-slate-500/20' : 'bg-primary/10 text-primary border-primary/20'}`}>
+                                                    {role.designation}
+                                                </span>
+                                            </td>
+                                            <td className="px-8 py-5">
+                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest font-mono">{role.member?.member_id}</p>
+                                            </td>
+                                            <td className="px-8 py-5">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.4)]" />
+                                                    <span className="text-[9px] font-black text-emerald-400 uppercase tracking-widest">Deployed</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-8 py-5 text-right">
+                                                <div className="flex items-center justify-end gap-3">
+                                                    <Link to={`/dashboard/admin/members/${role.member?.id}`}>
+                                                        <button className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-[9px] font-black text-slate-400 uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all">View Profile</button>
+                                                    </Link>
+                                                    <button onClick={() => handleRemoveRole(role.id)} className="p-2 rounded-xl bg-rose-500/5 border border-rose-500/10 text-rose-500/40 hover:bg-rose-500 hover:text-white transition-all opacity-0 group-hover:opacity-100">
+                                                        <FiTrash2 size={13} />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             {/* Assign Modal */}

@@ -17,6 +17,11 @@ use App\Http\Controllers\API\Admin\CommitteeRoleController;
 use App\Http\Controllers\API\Admin\PositionController;
 use App\Http\Controllers\API\Admin\BlogPostController;
 use App\Http\Controllers\API\Admin\SystemSettingController;
+use App\Http\Controllers\API\Admin\ElectionController;
+use App\Http\Controllers\API\Admin\ElectionNominationAdminController;
+use App\Http\Controllers\API\Admin\ElectionResultController;
+use App\Http\Controllers\API\Admin\ElectionAnalyticsController;
+use App\Http\Controllers\API\ElectionMemberController;
 use Illuminate\Support\Facades\Route;
 
 // ── Public ─────────────────────────────────────────────────────────────────
@@ -73,6 +78,15 @@ Route::middleware(['auth:api', 'active.member', 'audit'])->group(function () {
     // Task assignments (member view)
     Route::get('tasks/my',                    [TaskController::class, 'myTasks']);
     Route::put('tasks/{taskId}/progress',     [TaskController::class, 'updateProgress']);
+
+    // ── Elections (member-facing) ──────────────────────────────────────────
+    // Task 165-167: browse elections, self-nominate, vote, view results
+    Route::get ('elections',                                    [ElectionMemberController::class, 'index']);
+    Route::get ('elections/{id}',                               [ElectionMemberController::class, 'show']);
+    Route::get ('elections/{id}/results',                       [ElectionMemberController::class, 'results']);
+    Route::post('elections/nominate',                           [ElectionMemberController::class, 'nominate']);
+    Route::post('elections/{electionId}/withdraw-nomination',   [ElectionMemberController::class, 'withdrawNomination']);
+    Route::post('elections/{electionId}/vote',                  [ElectionMemberController::class, 'vote']);
 });
 
 // ── Admin ───────────────────────────────────────────────────────────────────
@@ -153,4 +167,34 @@ Route::prefix('admin')
         // System Settings & Governance (Task 14)
         Route::get   ('settings',            [SystemSettingController::class, 'index']);
         Route::post  ('settings/bulk-update', [SystemSettingController::class, 'update']);
+
+        // ── Election & Voting System (Tasks 165-169) ───────────────────────────
+
+        // Task 165: election framework CRUD + lifecycle transitions
+        Route::get   ('elections',                          [ElectionController::class, 'index']);
+        Route::post  ('elections',                          [ElectionController::class, 'store']);
+        Route::get   ('elections/{id}',                     [ElectionController::class, 'show']);
+        Route::put   ('elections/{id}',                     [ElectionController::class, 'update']);
+        Route::delete('elections/{id}',                     [ElectionController::class, 'destroy']);
+        Route::post  ('elections/{id}/transition',          [ElectionController::class, 'transition']);
+
+        // Task 166: nomination workflow (admin review)
+        Route::get   ('elections/{electionId}/nominations',                         [ElectionNominationAdminController::class, 'index']);
+        Route::get   ('elections/{electionId}/nominations/{nominationId}',          [ElectionNominationAdminController::class, 'show']);
+        Route::post  ('elections/{electionId}/nominations/{nominationId}/approve',  [ElectionNominationAdminController::class, 'approve']);
+        Route::post  ('elections/{electionId}/nominations/{nominationId}/reject',   [ElectionNominationAdminController::class, 'reject']);
+        Route::patch ('elections/{electionId}/nominations/{nominationId}/publish',  [ElectionNominationAdminController::class, 'togglePublish']);
+
+        // Task 168: result generation
+        Route::get   ('elections/{electionId}/results',             [ElectionResultController::class, 'index']);
+        Route::post  ('elections/{electionId}/results/tally',       [ElectionResultController::class, 'tally']);
+        Route::post  ('elections/{electionId}/results/declare-winners', [ElectionResultController::class, 'declareWinners']);
+        Route::post  ('elections/{electionId}/results/publish',     [ElectionResultController::class, 'publish']);
+        Route::get   ('elections/{electionId}/results/report',      [ElectionResultController::class, 'report']);
+
+        // Task 169: election analytics
+        Route::get   ('elections/{electionId}/analytics/summary',               [ElectionAnalyticsController::class, 'summary']);
+        Route::get   ('elections/{electionId}/analytics/unit-participation',    [ElectionAnalyticsController::class, 'unitParticipation']);
+        Route::get   ('elections/{electionId}/analytics/candidate-performance', [ElectionAnalyticsController::class, 'candidatePerformance']);
+        Route::get   ('elections/analytics/cycle-comparison',                   [ElectionAnalyticsController::class, 'cycleComparison']);
     });
