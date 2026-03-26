@@ -21,7 +21,27 @@ use App\Http\Controllers\API\Admin\ElectionController;
 use App\Http\Controllers\API\Admin\ElectionNominationAdminController;
 use App\Http\Controllers\API\Admin\ElectionResultController;
 use App\Http\Controllers\API\Admin\ElectionAnalyticsController;
+use App\Http\Controllers\API\Admin\EventManagementController;
+use App\Http\Controllers\API\Admin\CampaignManagementController;
+use App\Http\Controllers\API\Admin\MembershipRenewalAdminController;
+use App\Http\Controllers\API\Admin\DonationCampaignController;
+use App\Http\Controllers\API\Admin\DonationController;
+use App\Http\Controllers\API\Admin\TrainingCourseController;
+use App\Http\Controllers\API\Admin\TrainingEnrollmentController;
+use App\Http\Controllers\API\Admin\TrainingCertificationController;
+use App\Http\Controllers\API\Admin\LeadershipPipelineController;
+use App\Http\Controllers\API\Admin\TrainingAnalyticsController;
+use App\Http\Controllers\API\Admin\IntegrationConnectorController;
+use App\Http\Controllers\API\Admin\AudienceSegmentController;
+use App\Http\Controllers\API\Admin\OutreachCampaignController;
+use App\Http\Controllers\API\Admin\OutreachDeliveryController;
+use App\Http\Controllers\API\Admin\CommunicationGovernanceController;
+use App\Http\Controllers\API\DonationPublicController;
 use App\Http\Controllers\API\ElectionMemberController;
+use App\Http\Controllers\API\EventMemberController;
+use App\Http\Controllers\API\MembershipRenewalMemberController;
+use App\Http\Controllers\API\TrainingMemberController;
+use App\Http\Controllers\API\CommunicationPreferenceController;
 use Illuminate\Support\Facades\Route;
 
 // ── Public ─────────────────────────────────────────────────────────────────
@@ -38,6 +58,10 @@ Route::get('members/{member_id}', [MemberController::class, 'publicProfile'])
     ->where('member_id', '^(?!me$).+');
 
 Route::get('settings/public', [SystemSettingController::class, 'public']);
+
+// Fundraising (Task 18)
+Route::get('fundraising/campaigns', [DonationPublicController::class, 'campaigns']);
+Route::post('fundraising/donations', [DonationPublicController::class, 'submitDonation']);
 
 // ── Auth ────────────────────────────────────────────────────────────────────
 
@@ -87,6 +111,26 @@ Route::middleware(['auth:api', 'active.member', 'audit'])->group(function () {
     Route::post('elections/nominate',                           [ElectionMemberController::class, 'nominate']);
     Route::post('elections/{electionId}/withdraw-nomination',   [ElectionMemberController::class, 'withdrawNomination']);
     Route::post('elections/{electionId}/vote',                  [ElectionMemberController::class, 'vote']);
+
+    // ── Events & Campaigns (member-facing) ───────────────────────────────
+    Route::get ('events',                       [EventMemberController::class, 'index']);
+    Route::get ('events/{id}',                  [EventMemberController::class, 'show']);
+    Route::post('events/{id}/rsvp',             [EventMemberController::class, 'rsvp']);
+    Route::post('events/{id}/attendance/check-in',  [EventMemberController::class, 'checkIn']);
+    Route::post('events/{id}/attendance/check-out', [EventMemberController::class, 'checkOut']);
+
+    // ── Membership Renewal & Re-verification (Task 19) ───────────────────
+    Route::get ('membership/renewals',      [MembershipRenewalMemberController::class, 'index']);
+    Route::post('membership/renewals',      [MembershipRenewalMemberController::class, 'submitRenewal']);
+    Route::post('membership/reverification', [MembershipRenewalMemberController::class, 'submitReverification']);
+
+    // ── Training & Cadre Development (Task 20) ───────────────────────────
+    Route::get ('training/courses',                  [TrainingMemberController::class, 'courses']);
+    Route::post('training/courses/{courseId}/enroll', [TrainingMemberController::class, 'enroll']);
+    Route::get ('training/enrollments/me',           [TrainingMemberController::class, 'myEnrollments']);
+
+    // ── Integration Hub & Mass Outreach (Task 21) ────────────────────────
+    Route::post('communications/preferences/unsubscribe', [CommunicationPreferenceController::class, 'unsubscribe']);
 });
 
 // ── Admin ───────────────────────────────────────────────────────────────────
@@ -197,4 +241,86 @@ Route::prefix('admin')
         Route::get   ('elections/{electionId}/analytics/unit-participation',    [ElectionAnalyticsController::class, 'unitParticipation']);
         Route::get   ('elections/{electionId}/analytics/candidate-performance', [ElectionAnalyticsController::class, 'candidatePerformance']);
         Route::get   ('elections/analytics/cycle-comparison',                   [ElectionAnalyticsController::class, 'cycleComparison']);
+
+        // ── Event & Campaign Management (Tasks 170-174) ───────────────────
+        Route::get   ('events',                                 [EventManagementController::class, 'index']);
+        Route::post  ('events',                                 [EventManagementController::class, 'store']);
+        Route::get   ('events/{id}',                            [EventManagementController::class, 'show']);
+        Route::put   ('events/{id}',                            [EventManagementController::class, 'update']);
+        Route::post  ('events/{id}/approve',                    [EventManagementController::class, 'approve']);
+        Route::get   ('events/{id}/attendance-summary',         [EventManagementController::class, 'attendanceSummary']);
+        Route::post  ('events/{id}/report',                     [EventManagementController::class, 'upsertReport']);
+
+        Route::get   ('campaigns',                              [CampaignManagementController::class, 'index']);
+        Route::post  ('campaigns',                              [CampaignManagementController::class, 'store']);
+        Route::get   ('campaigns/{id}',                         [CampaignManagementController::class, 'show']);
+        Route::put   ('campaigns/{id}',                         [CampaignManagementController::class, 'update']);
+        Route::post  ('campaigns/{id}/tasks',                   [CampaignManagementController::class, 'assignTask']);
+
+        // ── Fundraising & Donation Tracking (Task 18) ───────────────────
+        Route::get   ('fundraising/stats',            [DonationController::class, 'stats']);
+        Route::apiResource('fundraising/campaigns',   DonationCampaignController::class);
+        Route::apiResource('fundraising/donations',   DonationController::class);
+        Route::post  ('fundraising/donations/{id}/verify', [DonationController::class, 'verify']);
+        Route::post  ('fundraising/donations/{id}/reject', [DonationController::class, 'reject']);
+
+        // ── Membership Renewal & Re-verification (Task 19) ───────────────
+        Route::get ('membership/renewals',                                [MembershipRenewalAdminController::class, 'renewalsIndex']);
+        Route::post('membership/renewals/{renewal}/approve',              [MembershipRenewalAdminController::class, 'renewalsApprove']);
+        Route::post('membership/renewals/{renewal}/reject',               [MembershipRenewalAdminController::class, 'renewalsReject']);
+        Route::get ('membership/reverification',                           [MembershipRenewalAdminController::class, 'reverificationIndex']);
+        Route::post('membership/reverification/{reverification}/approve',  [MembershipRenewalAdminController::class, 'reverificationApprove']);
+        Route::post('membership/reverification/{reverification}/reject',   [MembershipRenewalAdminController::class, 'reverificationReject']);
+        Route::get ('membership/reminders',                               [MembershipRenewalAdminController::class, 'reminders']);
+        Route::post('membership/reminders/queue',                         [MembershipRenewalAdminController::class, 'queueReminders']);
+        Route::post('membership/process-expiry',                          [MembershipRenewalAdminController::class, 'processExpiry']);
+        Route::get ('membership/reports/retention',                       [MembershipRenewalAdminController::class, 'retentionReport']);
+
+        // ── Training & Cadre Development (Task 20) ───────────────────────
+        Route::get   ('training/courses',                     [TrainingCourseController::class, 'index']);
+        Route::post  ('training/courses',                     [TrainingCourseController::class, 'store']);
+        Route::get   ('training/courses/{id}',                [TrainingCourseController::class, 'show']);
+        Route::put   ('training/courses/{id}',                [TrainingCourseController::class, 'update']);
+        Route::delete('training/courses/{id}',                [TrainingCourseController::class, 'destroy']);
+
+        Route::get   ('training/enrollments',                 [TrainingEnrollmentController::class, 'index']);
+        Route::post  ('training/enrollments',                 [TrainingEnrollmentController::class, 'store']);
+        Route::put   ('training/enrollments/{id}',            [TrainingEnrollmentController::class, 'update']);
+
+        Route::post  ('training/enrollments/{enrollmentId}/certificate/issue', [TrainingCertificationController::class, 'issue']);
+        Route::post  ('training/certificates/{certificateId}/revoke',           [TrainingCertificationController::class, 'revoke']);
+        Route::get   ('training/certificates/verify/{verificationId}',          [TrainingCertificationController::class, 'verify']);
+
+        Route::get   ('training/leadership-pipeline',         [LeadershipPipelineController::class, 'index']);
+        Route::post  ('training/leadership-pipeline',         [LeadershipPipelineController::class, 'store']);
+        Route::put   ('training/leadership-pipeline/{id}',    [LeadershipPipelineController::class, 'update']);
+
+        Route::get   ('training/analytics/summary',           [TrainingAnalyticsController::class, 'summary']);
+
+        // ── Integration Hub & Mass Outreach Campaigns (Task 21) ──────────
+        Route::get   ('integration/connectors',                    [IntegrationConnectorController::class, 'index']);
+        Route::post  ('integration/connectors',                    [IntegrationConnectorController::class, 'store']);
+        Route::put   ('integration/connectors/{id}',               [IntegrationConnectorController::class, 'update']);
+        Route::post  ('integration/connectors/{id}/health-check',  [IntegrationConnectorController::class, 'healthCheck']);
+
+        Route::get   ('integration/segments',                      [AudienceSegmentController::class, 'index']);
+        Route::post  ('integration/segments',                      [AudienceSegmentController::class, 'store']);
+        Route::put   ('integration/segments/{id}',                 [AudienceSegmentController::class, 'update']);
+        Route::get   ('integration/segments/{id}/preview-count',   [AudienceSegmentController::class, 'previewCount']);
+
+        Route::get   ('integration/campaigns',                     [OutreachCampaignController::class, 'index']);
+        Route::post  ('integration/campaigns',                     [OutreachCampaignController::class, 'store']);
+        Route::get   ('integration/campaigns/{id}',                [OutreachCampaignController::class, 'show']);
+        Route::put   ('integration/campaigns/{id}',                [OutreachCampaignController::class, 'update']);
+        Route::post  ('integration/campaigns/{id}/approve',        [OutreachCampaignController::class, 'approve']);
+        Route::post  ('integration/campaigns/{id}/schedule',       [OutreachCampaignController::class, 'schedule']);
+        Route::post  ('integration/campaigns/{id}/send-now',       [OutreachCampaignController::class, 'sendNow']);
+
+        Route::get   ('integration/delivery/logs',                 [OutreachDeliveryController::class, 'logs']);
+        Route::post  ('integration/delivery/retry',                [OutreachDeliveryController::class, 'retry']);
+        Route::get   ('integration/delivery/retry-queue',          [OutreachDeliveryController::class, 'retryQueue']);
+
+        Route::get   ('integration/governance/consent-report',     [CommunicationGovernanceController::class, 'consentReport']);
+        Route::get   ('integration/governance/audit-trail',        [CommunicationGovernanceController::class, 'auditTrail']);
+        Route::post  ('integration/governance/campaigns/{campaignId}/moderate', [CommunicationGovernanceController::class, 'moderation']);
     });
