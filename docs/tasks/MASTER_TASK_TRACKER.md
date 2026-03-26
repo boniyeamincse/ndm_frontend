@@ -228,7 +228,7 @@ Status logic for **Overall Status**:
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 121 | Set up frontend test framework | Add Vitest or Jest, React Testing Library, coverage reporting, and test scripts. This task can be implemented using AI-assisted development. | Done | Passed | Uploaded | Completed |
-| 122 | Add router and auth tests | Validate guarded routes, redirects, login state restoration, and logout behavior. This task can be implemented using AI-assisted development. | Pending | Pending | Pending | Pending |
+| 122 | Add router and auth tests | Validate guarded routes, redirects, login state restoration, and logout behavior. This task can be implemented using AI-assisted development. | Done | Passed | Uploaded | Completed |
 | 123 | Add registration form tests | Cover step transitions, field validation, file upload state, and submission error handling. This task can be implemented using AI-assisted development. | Pending | Pending | Pending | Pending |
 | 124 | Add member dashboard tests | Test profile rendering, task widgets, ID card download triggers, and empty states. This task can be implemented using AI-assisted development. | Pending | Pending | Pending | Pending |
 | 125 | Add admin dashboard tests | Test KPI rendering, pending list behavior, member actions, and list filtering. This task can be implemented using AI-assisted development. | Pending | Pending | Pending | Pending |
