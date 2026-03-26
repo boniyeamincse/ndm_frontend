@@ -40,6 +40,17 @@ const SystemMonitoring   = lazy(() => import('../pages/dashboard/admin/SystemMon
 const CommunicationCenter= lazy(() => import('../pages/dashboard/admin/CommunicationCenter'));
 const BulkOperations     = lazy(() => import('../pages/dashboard/admin/BulkOperations'));
 const FileManagement     = lazy(() => import('../pages/dashboard/admin/FileManagement'));
+const ElectionOperationsDashboard = lazy(() => import('../pages/dashboard/admin/ElectionOperationsDashboard'));
+const EventCampaignOperationsDashboard = lazy(() => import('../pages/dashboard/admin/EventCampaignOperationsDashboard'));
+const TrainingCadreOperationsDashboard = lazy(() => import('../pages/dashboard/admin/TrainingCadreOperationsDashboard'));
+const IntegrationHubOperationsDashboard = lazy(() => import('../pages/dashboard/admin/IntegrationHubOperationsDashboard'));
+const FundraisingDashboard = lazy(() => import('../pages/dashboard/admin/Fundraising/FundraisingDashboard'));
+const DonationCampaigns   = lazy(() => import('../pages/dashboard/admin/Fundraising/DonationCampaigns'));
+const DonationRegistry    = lazy(() => import('../pages/dashboard/admin/Fundraising/DonationRegistry'));
+const FundraisingReports   = lazy(() => import('../pages/dashboard/admin/Fundraising/FundraisingReports'));
+
+// ── Organizer pages ──────────────────────────────────────────────────────────
+const OrganizerDashboard = lazy(() => import('../pages/dashboard/organizer/OrganizerDashboard'));
 
 // ── Member pages ──────────────────────────────────────────────────────────────
 const MemberDashboard   = lazy(() => import('../pages/dashboard/member/MemberDashboard'));
@@ -48,11 +59,21 @@ const MemberPositions   = lazy(() => import('../pages/dashboard/member/MemberPos
 const MemberSettings    = lazy(() => import('../pages/dashboard/member/MemberSettings'));
 
 // ── Route guards ──────────────────────────────────────────────────────────────
+const resolveRole = (user) => {
+  if (!user) return 'guest';
+  if (user.user_type === 'admin') return 'admin';
+  if (user?.member?.member_role?.role === 'organizer') return 'organizer';
+  return 'member';
+};
+
 const RequireAuth = ({ role }) => {
   const { user, loading } = useAuth();
+  const resolvedRole = resolveRole(user);
+
   if (loading) return <div className="flex items-center justify-center h-screen text-gray-400">Loading…</div>;
   if (!user)   return <Navigate to="/login" replace />;
-  if (role === 'admin' && user.user_type !== 'admin') return <Navigate to="/dashboard/member" replace />;
+  if (role === 'admin' && resolvedRole !== 'admin') return <Navigate to={resolvedRole === 'organizer' ? '/dashboard/organizer' : '/dashboard/member'} replace />;
+  if (role === 'organizer' && !['organizer', 'admin'].includes(resolvedRole)) return <Navigate to="/dashboard/member" replace />;
   return <Outlet />;
 };
 
@@ -122,6 +143,30 @@ export const router = createBrowserRouter([
           { path: 'communications',     element: <CommunicationCenter /> },
           { path: 'bulk-operations',    element: <BulkOperations /> },
           { path: 'files',              element: <FileManagement /> },
+           { path: 'elections',          element: <ElectionOperationsDashboard /> },
+          { path: 'events-campaigns',   element: <EventCampaignOperationsDashboard /> },
+          { path: 'training-cadre',     element: <TrainingCadreOperationsDashboard /> },
+          { path: 'integration-hub',    element: <IntegrationHubOperationsDashboard /> },
+          { path: 'fundraising',        element: <FundraisingDashboard /> },
+          { path: 'fundraising/campaigns', element: <DonationCampaigns /> },
+          { path: 'fundraising/donations', element: <DonationRegistry /> },
+          { path: 'fundraising/reports',   element: <FundraisingReports /> },
+        ]
+      }
+    ],
+  },
+  // ── Organizer dashboard ──────────────────────────────────────────
+  {
+    path: '/dashboard/organizer',
+    element: <RequireAuth role="organizer" />,
+    children: [
+      {
+        element: <DashboardLayout />,
+        children: [
+          { index: true,       element: <OrganizerDashboard /> },
+          { path: 'profile',   element: <MemberProfilePage /> },
+          { path: 'positions', element: <MemberPositions /> },
+          { path: 'settings',  element: <MemberSettings /> },
         ]
       }
     ],
