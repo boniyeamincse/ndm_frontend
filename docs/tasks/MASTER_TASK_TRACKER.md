@@ -222,7 +222,7 @@ Status logic for **Overall Status**:
 | 117 | Add middleware tests | Validate `AdminMiddleware`, `ActiveMemberMiddleware`, `AuditMiddleware`, and `SecurityHeadersMiddleware`. This task can be implemented using AI-assisted development. | Done | Passed | Uploaded | Completed |
 | 118 | Add service unit tests | Unit-test member ID generation, upload service behavior, audit logging, and ID card composition logic. This task can be implemented using AI-assisted development. | Done | Passed | Uploaded | Completed |
 | 119 | Add seeder and migration smoke tests | Verify schema can migrate and seed cleanly in CI and test environments. This task can be implemented using AI-assisted development. | Done | Passed | Uploaded | Completed |
-| 120 | Add API contract regression suite | Build repeatable endpoint contract tests for payload structure, error shape, and pagination metadata. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
+| 120 | Add API contract regression suite | Build repeatable endpoint contract tests for payload structure, error shape, and pagination metadata. This task can be implemented using AI-assisted development. | Done | Passed | Uploaded | Completed |
 ## Task 11 — Frontend Testing, Security, And Quality
 
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
