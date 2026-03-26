@@ -1,28 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import api from '../../../services/api';
-
-const statusColor = {
-  active:    'bg-emerald-100 text-emerald-700 ring-1 ring-emerald-700/10',
-  pending:   'bg-amber-100 text-amber-700 ring-1 ring-amber-700/10',
-  suspended: 'bg-orange-100 text-orange-700 ring-1 ring-orange-700/10',
-  expelled:  'bg-red-100 text-red-700 ring-1 ring-red-700/10',
-};
-
-const InfoRow = ({ label, value }) => (
-  <div className="flex justify-between items-center text-sm py-2.5 border-b border-slate-50/50 last:border-0 group transition-colors hover:bg-slate-50/30 px-2 rounded-lg">
-    <span className="text-slate-400 font-bold uppercase tracking-widest text-[10px] w-32 shrink-0">{label}</span>
-    <span className="text-slate-900 font-black text-right truncate ml-4">{value ?? '—'}</span>
-  </div>
-);
+import MemberCard from '../../../components/member/MemberCard';
+import MemberEmptyState from '../../../components/member/MemberEmptyState';
+import MemberInfoRow from '../../../components/member/MemberInfoRow';
+import MemberSectionHeader from '../../../components/member/MemberSectionHeader';
+import MemberStatusBadge from '../../../components/member/MemberStatusBadge';
 
 const MemberDashboard = () => {
   const [profile, setProfile] = useState(null);
   const [tasks, setTasks]     = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState(null);
-  const [downloading, setDownloading] = useState(false);
+  const [idCardAction, setIdCardAction] = useState(null);
+  const [idCardError, setIdCardError] = useState('');
 
   useEffect(() => {
     const load = async () => {
@@ -44,22 +36,44 @@ const MemberDashboard = () => {
     load();
   }, []);
 
-  const downloadIdCard = async () => {
-    setDownloading(true);
+  const getIdCardBlobUrl = async () => {
+    const res = await api.get('/id-card', { responseType: 'blob' });
+    const blob = new Blob([res.data], { type: 'application/pdf' });
+    return URL.createObjectURL(blob);
+  };
+
+  const triggerDownload = (url) => {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `NDM_ID_${profile?.member_id ?? 'card'}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+
+  const isMobileViewport = () => window.matchMedia('(max-width: 768px)').matches;
+
+  const handleIdCard = async (mode) => {
+    setIdCardAction(mode);
+    setIdCardError('');
+
     try {
-      const res = await api.get('/id-card', { responseType: 'blob' });
-      const url = URL.createObjectURL(new Blob([res.data], { type: 'application/pdf' }));
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `NDM_ID_${profile?.member_id ?? 'card'}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
+      const url = await getIdCardBlobUrl();
+
+      if (mode === 'preview' && !isMobileViewport()) {
+        const preview = window.open(url, '_blank', 'noopener,noreferrer');
+        if (!preview) {
+          triggerDownload(url);
+        }
+      } else {
+        triggerDownload(url);
+      }
+
+      window.setTimeout(() => URL.revokeObjectURL(url), 30000);
     } catch {
-      alert('Could not generate ID card. Please try again.');
+      setIdCardError('Could not generate ID card. Please try again.');
     } finally {
-      setDownloading(false);
+      setIdCardAction(null);
     }
   };
 
@@ -107,9 +121,9 @@ const MemberDashboard = () => {
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Profile Card */}
-        <motion.div
+        <MemberCard
           variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-          className="lg:col-span-1 bg-white/70 backdrop-blur-md rounded-2xl shadow-sm border border-white/40 p-6 flex flex-col items-center text-center relative overflow-hidden"
+          className="lg:col-span-1 p-6 flex flex-col items-center text-center relative overflow-hidden"
         >
           <div className="absolute top-0 inset-x-0 h-1.5 bg-primary/20" />
           {avatar
@@ -118,9 +132,7 @@ const MemberDashboard = () => {
           }
           <h2 className="text-xl font-black text-slate-900">{profile?.full_name}</h2>
           <p className="text-xs text-slate-400 mt-1 font-black uppercase tracking-[0.2em]">{profile?.member_id}</p>
-          <span className={`mt-3 px-4 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider ${statusColor[profile?.status] ?? 'bg-slate-100 text-slate-600 ring-1 ring-slate-200'}`}>
-            {profile?.status}
-          </span>
+          <MemberStatusBadge status={profile?.status} className="mt-3 px-4" />
 
           <div className="mt-8 w-full space-y-2 text-left">
             <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.15em] mb-3 px-1">Active Positions</p>
@@ -135,73 +147,76 @@ const MemberDashboard = () => {
 
           <div className="mt-8 w-full space-y-3">
             {profile?.status === 'active' && (
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={downloadIdCard}
-                disabled={downloading}
-                className="w-full py-3.5 bg-slate-900 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-primary transition-all shadow-lg shadow-slate-900/10 disabled:opacity-60 flex items-center justify-center gap-2"
-              >
-                {downloading ? 'Generating Card...' : <><span>ID CARD</span> <span className="opacity-50 text-[16px]">↓</span></>}
-              </motion.button>
+              <div className="grid grid-cols-2 gap-2">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => handleIdCard('preview')}
+                  disabled={Boolean(idCardAction)}
+                  className="w-full py-3 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-primary transition-all shadow-lg shadow-slate-900/10 disabled:opacity-60"
+                >
+                  {idCardAction === 'preview' ? 'Opening...' : 'Preview'}
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => handleIdCard('download')}
+                  disabled={Boolean(idCardAction)}
+                  className="w-full py-3 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-primary transition-all shadow-lg shadow-slate-900/10 disabled:opacity-60"
+                >
+                  {idCardAction === 'download' ? 'Downloading...' : 'Download'}
+                </motion.button>
+              </div>
+            )}
+
+            {idCardError && (
+              <p className="text-[10px] text-red-600 font-bold">{idCardError}</p>
             )}
 
             <Link to="/dashboard/member/profile" className="block w-full py-3 text-xs font-bold text-primary bg-primary/5 rounded-xl border border-primary/10 hover:bg-primary/10 transition-colors">
               Update Profile Details →
             </Link>
           </div>
-        </motion.div>
+        </MemberCard>
 
         {/* Info + Tasks */}
         <div className="lg:col-span-2 space-y-6">
           {/* Personal Info */}
-          <motion.div
+          <MemberCard
             variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-            className="bg-white/70 backdrop-blur-md rounded-2xl shadow-sm border border-white/40 p-6"
+            className="p-6"
           >
-            <div className="flex items-center gap-2 mb-6 px-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-              <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest">Personal Identification</h3>
-            </div>
+            <MemberSectionHeader title="Personal Identification" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1">
-              <InfoRow label="Phone Contact"      value={profile?.mobile} />
-              <InfoRow label="Email Address"     value={profile?.email} />
-              <InfoRow label="Blood Group"       value={profile?.blood_group} />
-              <InfoRow label="Join Year"         value={profile?.join_year} />
-              <InfoRow label="Institution"       value={profile?.institution} />
-              <InfoRow label="Department"        value={profile?.department} />
-              <InfoRow label="Academic Session"  value={profile?.session} />
-              <InfoRow label="Primary Unit"      value={profile?.organizational_unit?.name} />
+              <MemberInfoRow label="Phone Contact"      value={profile?.mobile} />
+              <MemberInfoRow label="Email Address"     value={profile?.email} />
+              <MemberInfoRow label="Blood Group"       value={profile?.blood_group} />
+              <MemberInfoRow label="Join Year"         value={profile?.join_year} />
+              <MemberInfoRow label="Institution"       value={profile?.institution} />
+              <MemberInfoRow label="Department"        value={profile?.department} />
+              <MemberInfoRow label="Academic Session"  value={profile?.session} />
+              <MemberInfoRow label="Primary Unit"      value={profile?.organizational_unit?.name} />
             </div>
-          </motion.div>
+          </MemberCard>
 
           {/* Tasks */}
-          <motion.div
+          <MemberCard
             variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-            className="bg-white/70 backdrop-blur-md rounded-2xl shadow-sm border border-white/40 p-6 overflow-hidden relative"
+            className="p-6 overflow-hidden relative"
           >
             <div className="absolute top-0 right-0 p-4 opacity-5">
               <span className="text-8xl font-black">NDM</span>
             </div>
-            <div className="flex justify-between items-center mb-6 px-1">
-              <div className="flex items-center gap-2">
-                 <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                 <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest">Assignment Tracker</h3>
-              </div>
-              <Link to="/dashboard/member/tasks" className="text-[10px] font-black text-primary uppercase tracking-widest hover:underline px-3 py-1 bg-primary/5 rounded-lg">View History</Link>
-            </div>
+            <MemberSectionHeader
+              title="Assignment Tracker"
+              accentClass="bg-amber-400"
+              action={<Link to="/dashboard/member/tasks" className="text-[10px] font-black text-primary uppercase tracking-widest hover:underline px-3 py-1 bg-primary/5 rounded-lg">View History</Link>}
+            />
             {tasks.length === 0 ? (
-              <div className="py-12 text-center bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
-                <p className="text-sm font-medium text-slate-400 italic">No tasks currently assigned to your profile.</p>
-              </div>
+              <MemberEmptyState text="No tasks currently assigned to your profile." className="py-12" />
             ) : (
               <ul className="space-y-3">
                 {tasks.map(a => {
-                  const statusCls = {
-                    pending: 'bg-amber-50 text-amber-700 ring-1 ring-amber-700/10',
-                    in_progress: 'bg-blue-50 text-blue-700 ring-1 ring-blue-700/10',
-                    done: 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-700/10'
-                  };
                   return (
                     <li key={a.id} className="flex items-center justify-between gap-4 p-4 bg-slate-50/50 rounded-xl border border-white/50 hover:border-primary/20 transition-all group">
                       <div className="min-w-0">
@@ -210,13 +225,13 @@ const MemberDashboard = () => {
                           <span className="opacity-50 italic">Deadline:</span> {new Date(a.task.due_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                         </p>}
                       </div>
-                      <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-tighter shrink-0 ${statusCls[a.status] ?? 'bg-slate-100 text-slate-600'}`}>{a.status?.replace('_', ' ')}</span>
+                      <MemberStatusBadge status={a.status} variant="task" className="shrink-0 tracking-tighter" />
                     </li>
                   );
                 })}
               </ul>
             )}
-          </motion.div>
+          </MemberCard>
         </div>
       </div>
     </motion.div>

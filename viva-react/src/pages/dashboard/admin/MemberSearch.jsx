@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../../services/api';
 
@@ -26,7 +26,10 @@ const MemberSearch = () => {
     mobile:      '',
     institution: '',
     status:      '',
+    organizational_unit_id: '',
   });
+
+  const [units,    setUnits]     = useState([]);
 
   const [results,   setResults]   = useState(null);
   const [meta,      setMeta]      = useState(null);
@@ -37,6 +40,10 @@ const MemberSearch = () => {
 
   const abortRef = useRef(null);
 
+  useEffect(() => {
+    api.get('/units/campus').then(r => setUnits(r.data?.data ?? r.data ?? [])).catch(() => {});
+  }, []);
+
   const run = useCallback(async (p = 1) => {
     const params = { page: p };
     if (form.search)      params.search      = form.search.trim();
@@ -44,6 +51,7 @@ const MemberSearch = () => {
     if (form.mobile)      params.mobile      = form.mobile.trim();
     if (form.institution) params.institution = form.institution.trim();
     if (form.status)      params.status      = form.status;
+    if (form.organizational_unit_id) params.organizational_unit_id = form.organizational_unit_id;
 
     if (Object.keys(params).length === 1) return; // only page key → nothing entered
 
@@ -77,7 +85,7 @@ const MemberSearch = () => {
   };
 
   const handleReset = () => {
-    setForm({ search: '', member_id: '', mobile: '', institution: '', status: '' });
+    setForm({ search: '', member_id: '', mobile: '', institution: '', status: '', organizational_unit_id: '' });
     setResults(null);
     setMeta(null);
     setSearched(false);
@@ -165,6 +173,19 @@ const MemberSearch = () => {
               placeholder="UNIVERSITY / COLLEGE"
               className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white font-black uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/40 placeholder-slate-800 shadow-inner"
             />
+          </div>
+
+          {/* Unit Filter */}
+          <div className="space-y-3">
+            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Organizational Cluster</label>
+            <select
+              value={form.organizational_unit_id}
+              onChange={e => setForm(f => ({ ...f, organizational_unit_id: e.target.value }))}
+              className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs text-white font-black uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/40 appearance-none cursor-pointer hover:bg-white/[0.08] transition-all shadow-inner"
+            >
+              <option value="" className="bg-slate-900">ALL NODES</option>
+              {units.map(u => <option key={u.id} value={u.id} className="bg-slate-900">{u.name.toUpperCase()}</option>)}
+            </select>
           </div>
         </div>
 

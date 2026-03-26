@@ -2,18 +2,28 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
-    /**
-     * A basic test example.
-     */
-    public function test_the_application_returns_a_successful_response(): void
+    public function test_profile_endpoint_requires_authentication(): void
     {
-        $response = $this->get('/');
+        $response = $this->getJson('/api/profile');
 
-        $response->assertStatus(200);
+        $response->assertStatus(401);
+    }
+
+    public function test_member_task_endpoint_requires_authentication(): void
+    {
+        $response = $this->getJson('/api/tasks/my');
+
+        $response->assertStatus(401);
+    }
+
+    public function test_id_card_download_endpoint_requires_authentication(): void
+    {
+        $response = $this->getJson('/api/id-card');
+
+        $response->assertStatus(401);
     }
 }

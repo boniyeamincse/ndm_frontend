@@ -18,12 +18,15 @@ class MemberTask extends Model
         'status',
         'priority',
         'due_date',
+        'escalation_at',
         'created_by',
         'parent_task_id',
+        'campaign_id',
     ];
 
     protected $casts = [
         'due_date' => 'date',
+        'escalation_at' => 'datetime',
     ];
 
     public function creator(): BelongsTo
@@ -34,6 +37,11 @@ class MemberTask extends Model
     public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_task_id');
+    }
+
+    public function campaign(): BelongsTo
+    {
+        return $this->belongsTo(Campaign::class);
     }
 
     public function subTasks(): HasMany

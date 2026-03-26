@@ -9,6 +9,7 @@ import Select from '../components/ui/Select';
 import Card from '../components/ui/Card';
 
 const BLOOD_GROUPS = ['A+','A-','B+','B-','AB+','AB-','O+','O-'].map(b => ({ id: b, name: b }));
+const REGISTRATION_DRAFT_KEY = 'ndm_registration_draft_v1';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [campuses, setCampuses] = useState([]);
   const [errors, setErrors] = useState({});
+  const [draftRestored, setDraftRestored] = useState(false);
   const [files, setFiles] = useState({ photo: null, nid_doc: null, student_id_doc: null });
   const photoRef = useRef(null);
   const nidRef   = useRef(null);
@@ -42,6 +44,47 @@ const Register = () => {
     emergency_contact_name: '',
     emergency_contact_phone: '',
   });
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(REGISTRATION_DRAFT_KEY);
+      if (!raw) return;
+
+      const parsed = JSON.parse(raw);
+
+      if (parsed?.formData && typeof parsed.formData === 'object') {
+        setFormData(prev => ({ ...prev, ...parsed.formData }));
+      }
+
+      if (parsed?.step && Number.isInteger(parsed.step)) {
+        setStep(Math.min(4, Math.max(1, parsed.step)));
+      }
+
+      setDraftRestored(true);
+    } catch {
+      localStorage.removeItem(REGISTRATION_DRAFT_KEY);
+    }
+  }, []);
+
+  useEffect(() => {
+    const hasDraft = Object.values(formData).some(v => String(v || '').trim() !== '');
+    if (!hasDraft) return;
+
+    const timer = setTimeout(() => {
+      localStorage.setItem(REGISTRATION_DRAFT_KEY, JSON.stringify({
+        step,
+        formData,
+        updatedAt: new Date().toISOString(),
+      }));
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [formData, step]);
+
+  const clearDraft = () => {
+    localStorage.removeItem(REGISTRATION_DRAFT_KEY);
+    setDraftRestored(false);
+  };
 
   useEffect(() => {
     const fetchCampuses = async () => {
@@ -123,6 +166,7 @@ const Register = () => {
 
     try {
       await authService.register(fd);
+      clearDraft();
       navigate('/login', { state: { message: 'Registration submitted! Please wait for admin approval.' } });
     } catch (err) {
       if (err.response?.status === 422) {
@@ -166,6 +210,23 @@ const Register = () => {
               />
             ))}
           </div>
+
+          {draftRestored && (
+            <motion.div
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4 inline-flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-700"
+            >
+              <span>Draft restored from local storage</span>
+              <button
+                type="button"
+                onClick={clearDraft}
+                className="font-bold underline underline-offset-2 hover:text-emerald-900"
+              >
+                Clear Draft
+              </button>
+            </motion.div>
+          )}
         </div>
 
         <Card className="p-8 md:p-12 relative overflow-hidden">

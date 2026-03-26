@@ -1,11 +1,16 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../../services/api';
+import AdminSurface from '../../../components/admin/AdminSurface';
+import AdminToast from '../../../components/admin/AdminToast';
+import AdminLoadingState from '../../../components/admin/AdminLoadingState';
+import AdminEmptyState from '../../../components/admin/AdminEmptyState';
 
 const COLS = ['Member', 'Mobile', 'NID', 'Institution', 'Unit', 'Registered', 'Actions'];
 
-const ConfirmModal = ({ action, member, onClose, onConfirm, loading }) => (
-  <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 px-6" onClick={onClose}>
+const ConfirmModal = ({ action, member, ids, onClose, onConfirm, loading }) => (
+  <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[110] flex items-center justify-center p-4 px-6" onClick={onClose}>
     <motion.div
       initial={{ opacity: 0, scale: 0.95, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -18,8 +23,8 @@ const ConfirmModal = ({ action, member, onClose, onConfirm, loading }) => (
         Confirm Action
       </h2>
       <p className="text-sm text-slate-400 mb-8 leading-relaxed">
-        Are you sure you want to <span className="text-primary font-black uppercase tracking-widest">{action}</span> <span className="text-white font-bold">{member?.full_name}</span>?
-        {action === 'reject' && ' This will permanently remove their registration from the cluster.'}
+        Are you sure you want to <span className="text-primary font-black uppercase tracking-widest">{action}</span> {ids ? <span className="text-white font-bold">{ids.length} members</span> : <span className="text-white font-bold">{member?.full_name}</span>}?
+        {action === 'reject' && ' This will permanently remove the record(s) from the cluster.'}
       </p>
       
       <div className="flex gap-4 justify-end">
@@ -53,6 +58,8 @@ const PendingApprovals = () => {
   const [modal, setModal]     = useState(null);
   const [acting, setActing]   = useState(false);
   const [toast, setToast]     = useState(null);
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [previewMember, setPreviewMember] = useState(null);
 
   const showToast = (msg, type = 'success') => {
     setToast({ msg, type });
@@ -65,6 +72,7 @@ const PendingApprovals = () => {
       const res = await api.get('/admin/members/pending', { params: { page } });
       setMembers(res.data.data.data);
       setMeta(res.data.data);
+      setSelectedIds([]);
     } catch {
       showToast('Failed to load pending members.', 'error');
     } finally {
@@ -74,16 +82,28 @@ const PendingApprovals = () => {
 
   useEffect(() => { load(); }, [load]);
 
-  const doAction = async () => {
+  const toggleSelect = (id) => {
+    setSelectedIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
+  };
+
+  const toggleAll = () => {
+    if (selectedIds.length === members.length) setSelectedIds([]);
+    else setSelectedIds(members.map(m => m.id));
+  };
+
+  const executeAction = async () => {
     if (!modal) return;
     setActing(true);
     try {
-      const { action, member } = modal;
-      if (action === 'approve') await api.post(`/admin/members/${member.id}/approve`);
-      else if (action === 'reject')  await api.post(`/admin/members/${member.id}/reject`);
-      else if (action === 'suspend') await api.post(`/admin/members/${member.id}/suspend`);
+      const { action, member, ids } = modal;
+      if (ids) {
+        await api.post('/admin/members/bulk-status', { ids, action });
+        showToast(`${ids.length} members ${action}d.`);
+      } else {
+        await api.post(`/admin/members/${member.id}/${action}`);
+        showToast(`Member ${action}d successfully.`);
+      }
       setModal(null);
-      showToast(`Member ${action}d successfully.`);
       load();
     } catch (err) {
       showToast(err.response?.data?.message ?? 'Action failed.', 'error');
@@ -93,7 +113,132 @@ const PendingApprovals = () => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
+    <div className="p-6 max-w-7xl mx-auto space-y-6 pb-32">
+      {/* Modals & Overlays */}
+      {modal && <ConfirmModal {...modal} onClose={() => setModal(null)} onConfirm={executeAction} loading={acting} />}
+
+      <AnimatePresence>
+        {previewMember && (
+          <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[100] flex items-center justify-center p-6 md:p-12" onClick={() => setPreviewMember(null)}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              onClick={e => e.stopPropagation()}
+              className="bg-slate-900 border border-white/10 rounded-[2.5rem] w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl"
+            >
+              <div className="flex items-center justify-between px-10 py-6 border-b border-white/5 bg-white/[0.02]">
+                <div>
+                  <h2 className="text-xl font-black text-white uppercase tracking-tight">{previewMember.full_name}</h2>
+                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">Personnel Document Validation Protocol</p>
+                </div>
+                <button onClick={() => setPreviewMember(null)} className="text-slate-500 hover:text-white transition-colors text-2xl leading-none">✕</button>
+              </div>
+              
+              <div className="flex-1 overflow-y-auto p-10 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {/* Photo */}
+                <div className="space-y-4">
+                  <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em] border-b border-primary/20 pb-2 flex justify-between">
+                    Identity Photo <span>01/03</span>
+                  </p>
+                  <div className="aspect-[3/4] rounded-2xl bg-white/5 border border-white/10 overflow-hidden group/img relative shadow-inner">
+                    {previewMember.photo_path ? (
+                       <img src={`${import.meta.env.VITE_API_URL?.replace('/api', '')}/storage/${previewMember.photo_path}`} className="w-full h-full object-cover transition-transform duration-700 group-hover/img:scale-110" alt="Identity" />
+                    ) : (
+                       <div className="flex flex-col items-center justify-center h-full text-slate-700 space-y-4">
+                         <span className="text-4xl opacity-20">👤</span>
+                         <span className="text-[9px] font-black tracking-tighter">NO_DATA</span>
+                       </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Identity Doc */}
+                <div className="space-y-4">
+                  <p className="text-[10px] font-black text-rose-400 uppercase tracking-[0.2em] border-b border-rose-500/20 pb-2 flex justify-between">
+                    NID / Birth Cert <span>02/03</span>
+                  </p>
+                  <div className="aspect-[3/4] rounded-2xl bg-white/5 border border-white/10 overflow-hidden group/img relative shadow-inner">
+                    {previewMember.nid_doc_path ? (
+                       <img src={`${import.meta.env.VITE_API_URL?.replace('/api', '')}/storage/${previewMember.nid_doc_path}`} className="w-full h-full object-cover transition-transform duration-700 group-hover/img:scale-110" alt="NID" />
+                    ) : (
+                       <div className="flex flex-col items-center justify-center h-full text-slate-700 space-y-4">
+                         <span className="text-4xl opacity-20">🪪</span>
+                         <span className="text-[9px] font-black tracking-tighter">NO_DATA</span>
+                       </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Student Doc */}
+                <div className="space-y-4">
+                  <p className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em] border-b border-emerald-500/20 pb-2 flex justify-between">
+                    Institution ID <span>03/03</span>
+                  </p>
+                  <div className="aspect-[3/4] rounded-2xl bg-white/5 border border-white/10 overflow-hidden group/img relative shadow-inner">
+                    {previewMember.student_id_path ? (
+                       <img src={`${import.meta.env.VITE_API_URL?.replace('/api', '')}/storage/${previewMember.student_id_path}`} className="w-full h-full object-cover transition-transform duration-700 group-hover/img:scale-110" alt="Student ID" />
+                    ) : (
+                       <div className="flex flex-col items-center justify-center h-full text-slate-700 space-y-4">
+                         <span className="text-4xl opacity-20">🎓</span>
+                         <span className="text-[9px] font-black tracking-tighter">NO_DATA</span>
+                       </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-8 bg-white/[0.02] border-t border-white/5 flex gap-4">
+                <button onClick={() => { setModal({ action: 'approve', member: previewMember }); setPreviewMember(null); }} className="flex-1 py-4 bg-primary hover:bg-emerald-400 text-slate-900 font-black uppercase tracking-widest text-[10px] rounded-xl transition-all shadow-xl shadow-primary/20">Grant Admission</button>
+                <button onClick={() => { setModal({ action: 'reject',  member: previewMember }); setPreviewMember(null); }} className="flex-1 py-4 bg-rose-500/10 text-rose-400 border border-rose-500/20 font-black uppercase tracking-widest text-[10px] rounded-xl hover:bg-rose-500/20 transition-all">Reject Vector</button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {selectedIds.length > 0 && (
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[90] w-full max-w-xl px-4"
+          >
+            <div className="bg-slate-900/90 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center justify-between gap-6">
+              <div className="flex items-center gap-4 pl-4">
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-black text-xs ring-4 ring-primary/5">
+                  {selectedIds.length}
+                </div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-white">Selected Units</p>
+              </div>
+
+              <div className="flex items-center gap-2 pr-2">
+                <button
+                  onClick={() => setModal({ action: 'approve', ids: selectedIds })}
+                  disabled={acting}
+                  className="px-6 py-3 bg-primary hover:bg-emerald-400 text-slate-900 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all disabled:opacity-50"
+                >
+                  Approve Bulk
+                </button>
+                <button
+                  onClick={() => setModal({ action: 'reject', ids: selectedIds })}
+                  disabled={acting}
+                  className="px-6 py-3 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/10 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all disabled:opacity-50"
+                >
+                  Reject All
+                </button>
+                <button
+                  onClick={() => setSelectedIds([])}
+                  className="p-3 text-slate-500 hover:text-white transition-colors"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 bg-white/5 backdrop-blur-xl p-8 rounded-[2rem] border border-white/10 shadow-2xl relative overflow-hidden group">
@@ -122,42 +267,54 @@ const PendingApprovals = () => {
 
       {/* Toast */}
       {toast && (
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }} 
-          animate={{ opacity: 1, y: 0 }}
-          className={`px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest border shadow-xl ${
-            toast.type === 'error' 
-              ? 'bg-rose-500/10 text-rose-400 border-rose-500/20 ring-1 ring-rose-500/10' 
-              : 'bg-primary/10 text-primary border-primary/20 ring-1 ring-primary/10'
-          }`}
-        >
-          {toast.msg}
+        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+          <AdminToast
+            message={toast.msg}
+            type={toast.type}
+            mode="dark"
+            className="px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest border shadow-xl"
+          />
         </motion.div>
       )}
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center h-72 space-y-4 animate-pulse">
-          <div className="w-10 h-10 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Retrieving Population Data...</p>
-        </div>
+        <AdminLoadingState text="Retrieving Population Data..." className="h-72 space-y-4" />
       ) : members.length === 0 ? (
-        <div className="bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 p-24 text-center">
-          <div className="text-5xl mb-6 opacity-30">⚡</div>
-          <h3 className="text-xl font-black text-white uppercase tracking-tight">Queue Depleted</h3>
-          <p className="text-slate-500 mt-2 text-xs font-bold uppercase tracking-widest leading-relaxed">System operational status: nominal.</p>
-        </div>
+        <AdminSurface className="rounded-[2rem] p-24">
+          <AdminEmptyState
+            icon="⚡"
+            title="Queue Depleted"
+            subtitle="System operational status: nominal."
+          />
+        </AdminSurface>
       ) : (
-        <div className="bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 shadow-2xl overflow-hidden">
+        <AdminSurface className="rounded-[2rem] overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-left text-[10px] uppercase tracking-[0.2em] text-slate-500 font-black border-b border-white/5">
+                  <th className="px-6 py-5 w-10 text-center">
+                    <input 
+                      type="checkbox" 
+                      checked={members.length > 0 && selectedIds.length === members.length}
+                      onChange={toggleAll}
+                      className="rounded border-white/10 bg-white/5 text-primary focus:ring-primary/40"
+                    />
+                  </th>
                   {COLS.map(c => <th key={c} className="px-6 py-5">{c === 'Member' ? 'Identity Snapshot' : c === 'Registered' ? 'Timeline' : c}</th>)}
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
                 {members.map(m => (
-                  <tr key={m.id} className="hover:bg-white/[0.03] transition-colors group">
+                  <tr key={m.id} className={`hover:bg-white/[0.03] transition-colors group ${selectedIds.includes(m.id) ? 'bg-primary/5' : ''}`}>
+                    <td className="px-6 py-5 text-center">
+                      <input 
+                        type="checkbox" 
+                        checked={selectedIds.includes(m.id)}
+                        onChange={() => toggleSelect(m.id)}
+                        className="rounded border-white/10 bg-white/5 text-primary focus:ring-primary/40"
+                      />
+                    </td>
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-4">
                         <div className="relative shrink-0">
@@ -169,7 +326,10 @@ const PendingApprovals = () => {
                         </div>
                         <div className="min-w-0">
                           <p className="font-black text-slate-200 group-hover:text-white transition-colors uppercase tracking-tight truncate">{m.full_name}</p>
-                          <Link to={`/dashboard/admin/members/${m.id}`} className="text-[10px] font-bold text-primary hover:text-emerald-400 mt-1 inline-block uppercase tracking-widest">Open Profile →</Link>
+                          <div className="flex gap-4 mt-1">
+                            <button onClick={() => setPreviewMember(m)} className="text-[10px] font-bold text-primary hover:text-emerald-400 uppercase tracking-widest">Review Docs</button>
+                            <Link to={`/dashboard/admin/members/${m.id}`} className="text-[10px] font-bold text-slate-500 hover:text-slate-300 uppercase tracking-widest">Detail →</Link>
+                          </div>
                         </div>
                       </div>
                     </td>
@@ -221,13 +381,10 @@ const PendingApprovals = () => {
               ))}
             </div>
           )}
-        </div>
+        </AdminSurface>
       )}
-
-      {modal && <ConfirmModal {...modal} onClose={() => setModal(null)} onConfirm={doAction} loading={acting} />}
     </div>
   );
 };
 
 export default PendingApprovals;
-

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
@@ -42,6 +43,8 @@ class Member extends Model
         'status',
         'approved_by',
         'approved_at',
+        'membership_expires_at',
+        'last_renewed_at',
         'join_year',
         'organizational_unit_id',
         'mobile',
@@ -55,6 +58,8 @@ class Member extends Model
     protected $casts = [
         'date_of_birth' => 'date',
         'approved_at' => 'datetime',
+        'membership_expires_at' => 'date',
+        'last_renewed_at' => 'date',
         'gender' => Gender::class,
         'status' => MemberStatus::class,
         'join_year' => 'integer',
@@ -104,6 +109,36 @@ class Member extends Model
     public function committeeRoles(): HasMany
     {
         return $this->hasMany(CommitteeRole::class);
+    }
+
+    public function renewals(): HasMany
+    {
+        return $this->hasMany(MembershipRenewal::class);
+    }
+
+    public function reverificationRequests(): HasMany
+    {
+        return $this->hasMany(MemberReverificationRequest::class);
+    }
+
+    public function renewalReminders(): HasMany
+    {
+        return $this->hasMany(RenewalReminder::class);
+    }
+
+    public function trainingEnrollments(): HasMany
+    {
+        return $this->hasMany(TrainingEnrollment::class);
+    }
+
+    public function leadershipPipeline(): HasOne
+    {
+        return $this->hasOne(LeadershipPipeline::class);
+    }
+
+    public function communicationPreference(): HasOne
+    {
+        return $this->hasOne(MemberCommunicationPreference::class);
     }
 
     public function getPhotoUrlAttribute(): ?string

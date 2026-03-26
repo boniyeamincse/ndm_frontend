@@ -54,6 +54,7 @@ const OrganizerDashboard = lazy(() => import('../pages/dashboard/organizer/Organ
 
 // ── Member pages ──────────────────────────────────────────────────────────────
 const MemberDashboard   = lazy(() => import('../pages/dashboard/member/MemberDashboard'));
+const MemberTasks       = lazy(() => import('../pages/dashboard/member/MemberTasks'));
 const MemberProfilePage = lazy(() => import('../pages/dashboard/member/MemberProfilePage'));
 const MemberPositions   = lazy(() => import('../pages/dashboard/member/MemberPositions'));
 const MemberSettings    = lazy(() => import('../pages/dashboard/member/MemberSettings'));
@@ -112,6 +113,7 @@ export const router = createBrowserRouter([
           { path: 'profile',   element: <MemberProfilePage /> },
           { path: 'positions', element: <MemberPositions /> },
           { path: 'settings',  element: <MemberSettings /> },
+          { path: 'tasks',     element: <MemberTasks /> },
         ]
       }
     ],

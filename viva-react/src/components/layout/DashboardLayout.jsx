@@ -27,6 +27,7 @@ const P = {
   key:       'M7 14a5 5 0 110-10 5 5 0 010 10zm13-2h-4l-1 1v2h-2v2h-2v-3.17L13.17 12H20z',
   api:       'M3 5h18v2H3V5zm0 6h12v2H3v-2zm0 6h18v2H3v-2zm14-7h4v2h-4v-2z',
   alert:     'M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z',
+  ballot:    'M14 2H6c-1.1 0-2 .9-2 2v16l4-4h6c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm5 4h-1v12H8v1c0 1.1.9 2 2 2h9c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z',
 };
 
 const Ic = ({ n, s = 18 }) => (
@@ -103,6 +104,10 @@ const ADMIN_SECTIONS = [
   {
     label: 'Operations',
     items: [
+      { to: '/dashboard/admin/elections', label: 'Election Operations', icon: 'ballot', permission: 'elections.manage' },
+      { to: '/dashboard/admin/events-campaigns', label: 'Event & Campaign Ops', icon: 'community', permission: 'events.manage' },
+      { to: '/dashboard/admin/training-cadre', label: 'Training & Cadre Ops', icon: 'roles', permission: 'training.manage' },
+      { to: '/dashboard/admin/integration-hub', label: 'Integration Hub Ops', icon: 'api', permission: 'integration.manage' },
       { to: '/dashboard/admin/system-monitoring', label: 'System Monitoring', icon: 'alert' },
       { to: '/dashboard/admin/communications', label: 'Communications', icon: 'bell' },
       { to: '/dashboard/admin/bulk-operations', label: 'Bulk Operations', icon: 'plus' },
@@ -138,14 +143,97 @@ const MEMBER_SECTIONS = [
     items: [
       { to: '/dashboard/member',           label: 'Dashboard', icon: 'dashboard', exact: true },
       { to: '/dashboard/member/profile',   label: 'Profile',   icon: 'user'      },
+      { to: '/dashboard/member/tasks',     label: 'Tasks',     icon: 'reports'   },
       { to: '/dashboard/member/positions', label: 'Positions', icon: 'roles'     },
       { to: '/dashboard/member/settings',  label: 'Settings',  icon: 'settings'  },
     ],
   },
 ];
 
+const ORGANIZER_SECTIONS = [
+  {
+    label: null,
+    items: [
+      { to: '/dashboard/organizer', label: 'Organizer Dashboard', icon: 'dashboard', exact: true, roles: ['organizer', 'admin'] },
+      { to: '/dashboard/organizer/profile', label: 'Profile', icon: 'user', roles: ['organizer', 'admin'] },
+      { to: '/dashboard/organizer/positions', label: 'Positions', icon: 'roles', roles: ['organizer', 'admin'] },
+      { to: '/dashboard/organizer/settings', label: 'Settings', icon: 'settings', roles: ['organizer', 'admin'] },
+    ],
+  },
+];
+
+const ROLE_THEME = {
+  admin: {
+    label: 'Admin Port',
+    accentText: 'text-primary-400',
+    accentDot: 'bg-amber-300',
+    avatar: 'from-primary-400 to-primary-600',
+  },
+  organizer: {
+    label: 'Organizer Port',
+    accentText: 'text-blue-300',
+    accentDot: 'bg-blue-300',
+    avatar: 'from-blue-400 to-blue-600',
+  },
+  member: {
+    label: 'Member Port',
+    accentText: 'text-emerald-300',
+    accentDot: 'bg-emerald-300',
+    avatar: 'from-emerald-400 to-emerald-600',
+  },
+};
+
+const resolveUserRole = (user) => {
+  if (!user) return 'member';
+  if (user.user_type === 'admin') return 'admin';
+  if (user?.member?.member_role?.role === 'organizer') return 'organizer';
+  return 'member';
+};
+
+const hasPermission = (userPermissions, permissionKey) => {
+  if (!permissionKey) return true;
+  if (!Array.isArray(userPermissions) || userPermissions.length === 0) return true;
+  return userPermissions.includes(permissionKey) || userPermissions.includes('*');
+};
+
+const filterSectionsByAccess = (sections, userRole, userPermissions) => {
+  return sections
+    .map((section) => {
+      const items = section.items
+        .map((item) => {
+          if (item.children) {
+            const children = item.children.filter((child) => {
+              if (child.heading) return true;
+              if (child.roles && !child.roles.includes(userRole)) return false;
+              return hasPermission(userPermissions, child.permission);
+            });
+
+            const hasVisibleLink = children.some((child) => !child.heading);
+            if (!hasVisibleLink) return null;
+
+            if (item.roles && !item.roles.includes(userRole)) return null;
+            if (!hasPermission(userPermissions, item.permission)) return null;
+
+            return { ...item, children };
+          }
+
+          if (item.roles && !item.roles.includes(userRole)) return null;
+          if (!hasPermission(userPermissions, item.permission)) return null;
+          return item;
+        })
+        .filter(Boolean);
+
+      return { ...section, items };
+    })
+    .filter((section) => section.items.length > 0);
+};
+
 const QUICK_ACTIONS = [
   { label: 'Pending Approvals', to: '/dashboard/admin/members/pending', icon: 'members'   },
+  { label: 'Election Ops',      to: '/dashboard/admin/elections',       icon: 'ballot'    },
+  { label: 'Event Ops',         to: '/dashboard/admin/events-campaigns', icon: 'community' },
+  { label: 'Training Ops',      to: '/dashboard/admin/training-cadre',  icon: 'roles'     },
+  { label: 'Integration Hub',   to: '/dashboard/admin/integration-hub',  icon: 'api'       },
   { label: 'Assign Position',   to: '/dashboard/admin/positions',       icon: 'roles'     },
   { label: 'Create Unit',       to: '/dashboard/admin/units',           icon: 'structure' },
   { label: 'New Blog Post',     to: '/dashboard/admin/blog',            icon: 'blog'      },
@@ -163,10 +251,19 @@ const PAGE_TITLES = {
   '/dashboard/admin/committees':        'Community',
   '/dashboard/admin/blog':              'Blog',
   '/dashboard/admin/profile':           'My Profile',
+  '/dashboard/admin/elections':         'Election Operations',
+  '/dashboard/admin/events-campaigns':  'Event & Campaign Ops',
+  '/dashboard/admin/training-cadre':    'Training & Cadre Ops',
+  '/dashboard/admin/integration-hub':   'Integration Hub Ops',
   '/dashboard/admin/settings':          'Settings',
   '/dashboard/admin/members/reports':   'Reports',
+  '/dashboard/organizer':               'Organizer Dashboard',
+  '/dashboard/organizer/profile':       'My Profile',
+  '/dashboard/organizer/positions':     'My Positions',
+  '/dashboard/organizer/settings':      'Settings',
   '/dashboard/member':                  'Dashboard',
   '/dashboard/member/profile':          'My Profile',
+  '/dashboard/member/tasks':            'My Tasks',
   '/dashboard/member/positions':        'My Positions',
   '/dashboard/member/settings':         'Settings',
 };
@@ -362,7 +459,7 @@ const NotificationBell = ({ count }) => {
 };
 
 /* ─── Topbar: Profile Menu ───────────────────────────────────────────────── */
-const ProfileMenu = ({ user, onSignOut, isAdmin }) => {
+const ProfileMenu = ({ user, onSignOut, isAdmin, isOrganizer }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   const close = useCallback(() => setOpen(false), []);
@@ -372,9 +469,21 @@ const ProfileMenu = ({ user, onSignOut, isAdmin }) => {
     ? user.name.split(' ').slice(0, 2).map(n => n[0]).join('').toUpperCase()
     : user?.email?.[0]?.toUpperCase() ?? '?';
   const displayName = user?.name || user?.email || 'User';
-  const settingsPath = isAdmin ? '/dashboard/admin/settings?section=account' : '/dashboard/member/settings';
-  const profilePath = isAdmin ? '/dashboard/admin/profile' : '/dashboard/member/profile';
-  const passwordPath = isAdmin ? '/dashboard/admin/profile?tab=password' : '/dashboard/member/profile?tab=password';
+  const settingsPath = isAdmin
+    ? '/dashboard/admin/settings?section=account'
+    : isOrganizer
+      ? '/dashboard/organizer/settings'
+      : '/dashboard/member/settings';
+  const profilePath = isAdmin
+    ? '/dashboard/admin/profile'
+    : isOrganizer
+      ? '/dashboard/organizer/profile'
+      : '/dashboard/member/profile';
+  const passwordPath = isAdmin
+    ? '/dashboard/admin/profile?tab=password'
+    : isOrganizer
+      ? '/dashboard/organizer/profile?tab=password'
+      : '/dashboard/member/profile?tab=password';
 
   return (
     <div ref={ref} className="relative">
@@ -541,8 +650,12 @@ const DashboardLayout = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
-  const isAdmin  = location.pathname.startsWith('/dashboard/admin');
-  const sections = isAdmin ? ADMIN_SECTIONS : MEMBER_SECTIONS;
+  const isAdmin = location.pathname.startsWith('/dashboard/admin');
+  const isOrganizer = location.pathname.startsWith('/dashboard/organizer');
+  const userRole = resolveUserRole(user);
+  const roleTheme = ROLE_THEME[isAdmin ? 'admin' : isOrganizer ? 'organizer' : 'member'];
+  const baseSections = isAdmin ? ADMIN_SECTIONS : isOrganizer ? ORGANIZER_SECTIONS : MEMBER_SECTIONS;
+  const sections = filterSectionsByAccess(baseSections, userRole, user?.permissions ?? []);
 
   const allItems    = sections.flatMap(s => s.items);
   const defaultOpen = allItems
@@ -621,8 +734,8 @@ const DashboardLayout = () => {
             </div>
             <div className="min-w-0">
               <p className="text-white font-black text-base leading-tight tracking-tight uppercase">NDSM</p>
-              <p className="text-primary-400 text-[10px] font-bold uppercase tracking-[0.2em] mt-0.5">
-                {isAdmin ? 'Admin Port' : 'Member Port'}
+              <p className={`${roleTheme.accentText} text-[10px] font-bold uppercase tracking-[0.2em] mt-0.5`}>
+                {roleTheme.label}
               </p>
             </div>
           </Link>
@@ -641,7 +754,7 @@ const DashboardLayout = () => {
         {/* User footer */}
         <div className="relative p-4 border-t border-white/5 flex-shrink-0">
           <div className="flex items-center gap-3 px-3 py-3 rounded-2xl bg-white/5 border border-white/5 shadow-inner">
-            <div className="w-9 h-9 bg-gradient-to-br from-primary-400 to-primary-600 text-white rounded-full flex items-center justify-center text-xs font-black flex-shrink-0 shadow-lg shadow-primary-500/20">
+            <div className={`w-9 h-9 bg-gradient-to-br ${roleTheme.avatar} text-white rounded-full flex items-center justify-center text-xs font-black flex-shrink-0 shadow-lg shadow-slate-900/20`}>
               {user?.name?.[0]?.toUpperCase() ?? user?.email?.[0]?.toUpperCase() ?? '?'}
             </div>
             <div className="flex-1 min-w-0">
@@ -677,6 +790,7 @@ const DashboardLayout = () => {
               <div className="flex items-center gap-2 overflow-hidden">
                 <span className="text-slate-600 text-xs font-medium shrink-0 uppercase tracking-widest">Pages</span>
                 <span className="text-slate-700 text-xs shrink-0">/</span>
+                <span className={`w-1.5 h-1.5 rounded-full ${roleTheme.accentDot}`} />
                 <h2 className="text-sm font-bold text-slate-100 truncate uppercase tracking-widest">{pageTitle}</h2>
               </div>
             </div>
@@ -686,7 +800,7 @@ const DashboardLayout = () => {
             {isAdmin && <QuickActions />}
             {isAdmin && <NotificationBell count={notifCount} />}
             <div className="w-px h-8 bg-white/5 mx-2 hidden sm:block" />
-            <ProfileMenu user={user} onSignOut={signOut} isAdmin={isAdmin} />
+            <ProfileMenu user={user} onSignOut={signOut} isAdmin={isAdmin} isOrganizer={isOrganizer} />
           </div>
         </header>
 

@@ -1,6 +1,10 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../../services/api';
+import AdminSurface from '../../../components/admin/AdminSurface';
+import AdminToast from '../../../components/admin/AdminToast';
+import AdminLoadingState from '../../../components/admin/AdminLoadingState';
 
 const BLOOD_GROUPS = ['A+','A-','B+','B-','AB+','AB-','O+','O-'];
 const INIT_FORM = {
@@ -42,9 +46,11 @@ const AllMembers = () => {
   const [page, setPage]       = useState(1);
   const currentStatus = searchParams.get('status') ?? '';
   const [search, setSearch]   = useState('');
+  const [unitFilter, setUnitFilter] = useState('');
   const [loading, setLoading] = useState(true);
   const [toast, setToast]     = useState(null);
   const [actionRow, setActionRow] = useState(null);
+  const [selectedIds, setSelectedIds] = useState([]);
 
   // ── Add Member slide-over ──────────────────────────────────────────────────
   const [showAdd, setShowAdd] = useState(false);
@@ -92,21 +98,27 @@ const AllMembers = () => {
     setLoading(true);
     try {
       const res = await api.get('/admin/members', {
-        params: { page, status: currentStatus || undefined, search: search || undefined },
+        params: { 
+          page, 
+          status: currentStatus || undefined, 
+          search: search || undefined,
+          organizational_unit_id: unitFilter || undefined 
+        },
       });
       setMembers(res.data.data.data);
       setMeta(res.data.data);
+      setSelectedIds([]); // Reset selection on load
     } catch {
       showToast('Failed to load members.', 'error');
     } finally {
       setLoading(false);
     }
-  }, [page, currentStatus, search]);
+  }, [page, currentStatus, search, unitFilter]);
 
   useEffect(() => { load(); }, [load]);
 
-  // Reset page when tab or search changes
-  useEffect(() => { setPage(1); }, [currentStatus, search]);
+  // Reset page when tab, search, or unit changes
+  useEffect(() => { setPage(1); }, [currentStatus, search, unitFilter]);
 
   const switchTab = (status) => {
     const next = new URLSearchParams();
@@ -125,6 +137,29 @@ const AllMembers = () => {
     } finally {
       setActionRow(null);
     }
+  };
+
+  const doBulkAction = async (action) => {
+    setSaving(true);
+    try {
+      await api.post('/admin/members/bulk-status', { ids: selectedIds, action });
+      showToast(`${selectedIds.length} members ${action}d.`);
+      setSelectedIds([]);
+      load();
+    } catch (err) {
+      showToast(err.response?.data?.message ?? 'Bulk action failed.', 'error');
+    } finally {
+      setSaving(false);
+    }
+  };
+  
+  const toggleSelect = (id) => {
+    setSelectedIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
+  };
+
+  const toggleAll = () => {
+    if (selectedIds.length === members.length) setSelectedIds([]);
+    else setSelectedIds(members.map(m => m.id));
   };
 
   return (
@@ -155,7 +190,7 @@ const AllMembers = () => {
       </div>
 
       {/* ── Status Tabs ── */}
-      <div className="bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 shadow-2xl overflow-hidden">
+      <AdminSurface className="rounded-[2rem] overflow-hidden">
         <div className="flex border-b border-white/5 overflow-x-auto scrollbar-hide">
           {STATUS_TABS.map(tab => (
             <button
@@ -187,6 +222,16 @@ const AllMembers = () => {
               className="w-full bg-white/5 border border-white/5 rounded-xl px-11 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all border-none"
             />
           </div>
+          <div className="relative group min-w-[200px]">
+            <select
+              value={unitFilter}
+              onChange={e => setUnitFilter(e.target.value)}
+              className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-300 font-bold uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all appearance-none cursor-pointer"
+            >
+              <option value="" className="bg-slate-900">All Nodes</option>
+              {units.map(u => <option key={u.id} value={u.id} className="bg-slate-900">{u.name.toUpperCase()}</option>)}
+            </select>
+          </div>
           <button onClick={load} className="text-xs font-bold text-primary hover:text-primary-light uppercase tracking-widest transition-colors flex items-center gap-2">
             <span>↻</span> Refresh
           </button>
@@ -194,24 +239,32 @@ const AllMembers = () => {
 
         {/* ── Toast ── */}
         {toast && (
-          <div className={`mx-4 mt-3 px-4 py-3 rounded-lg text-sm font-medium ${toast.type === 'error' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-green-50 text-green-700 border border-green-200'}`}>
-            {toast.msg}
-          </div>
+          <AdminToast
+            message={toast.msg}
+            type={toast.type}
+            mode="light"
+            className="mx-4 mt-3"
+          />
         )}
 
         {/* ── Table ── */}
         {loading ? (
-          <div className="flex flex-col items-center justify-center h-64 text-slate-500 gap-4">
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
-            <p className="text-xs font-bold uppercase tracking-widest animate-pulse">Synchronizing Data…</p>
-          </div>
+          <AdminLoadingState text="Synchronizing Data…" className="h-64 text-slate-500" />
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-white/5 bg-white/[0.02]">
+                  <th className="px-8 py-5 w-10 text-center">
+                    <input 
+                      type="checkbox" 
+                      checked={members.length > 0 && selectedIds.length === members.length}
+                      onChange={toggleAll}
+                      className="rounded border-white/10 bg-white/5 text-primary focus:ring-primary/40"
+                    />
+                  </th>
                   {['Member Identity', 'Cluster ID', 'Uplink', 'Institution', 'Security State', 'Lifecycle', 'Operations'].map(c => (
-                    <th key={c} className="text-left px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">{c}</th>
+                    <th key={c} className="text-left px-4 py-5 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">{c}</th>
                   ))}
                 </tr>
               </thead>
@@ -224,8 +277,16 @@ const AllMembers = () => {
                   </tr>
                 )}
                 {members.map(m => (
-                  <tr key={m.id} className="hover:bg-white/[0.03] transition-colors group">
-                    <td className="px-8 py-5">
+                  <tr key={m.id} className={`hover:bg-white/[0.03] transition-colors group ${selectedIds.includes(m.id) ? 'bg-primary/5' : ''}`}>
+                    <td className="px-8 py-5 text-center">
+                      <input 
+                        type="checkbox" 
+                        checked={selectedIds.includes(m.id)}
+                        onChange={() => toggleSelect(m.id)}
+                        className="rounded border-white/10 bg-white/5 text-primary focus:ring-primary/40"
+                      />
+                    </td>
+                    <td className="px-4 py-5">
                       <div className="flex items-center gap-5">
                         <div className="relative shrink-0">
                           {m.photo_path
@@ -240,15 +301,15 @@ const AllMembers = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="px-8 py-5 font-bold text-[10px] text-slate-500 uppercase tracking-widest">{m.member_id ?? 'PENDING'}</td>
-                    <td className="px-8 py-5 text-slate-400 font-bold uppercase tracking-widest text-[10px]">{m.mobile ?? '—'}</td>
-                    <td className="px-8 py-5 text-slate-400 font-bold uppercase tracking-widest text-[10px] max-w-[160px] truncate">{m.institution ?? '—'}</td>
-                    <td className="px-8 py-5 text-slate-400">
+                    <td className="px-4 py-5 font-bold text-[10px] text-slate-500 uppercase tracking-widest">{m.member_id ?? 'PENDING'}</td>
+                    <td className="px-4 py-5 text-slate-400 font-bold uppercase tracking-widest text-[10px]">{m.mobile ?? '—'}</td>
+                    <td className="px-4 py-5 text-slate-400 font-bold uppercase tracking-widest text-[10px] max-w-[160px] truncate">{m.institution ?? '—'}</td>
+                    <td className="px-4 py-5 text-slate-400">
                       <span className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest ${statusStyle[m.status] ?? 'bg-white/5 text-slate-400'}`}>
                         {m.status}
                       </span>
                     </td>
-                    <td className="px-8 py-5 text-slate-500 text-[10px] font-black uppercase tracking-widest">{m.join_year}</td>
+                    <td className="px-4 py-5 text-slate-500 text-[10px] font-black uppercase tracking-widest">{m.join_year}</td>
                     <td className="px-8 py-5 text-slate-400">
                       <div className="flex gap-2.5 flex-wrap">
                         <Link to={`/dashboard/admin/members/${m.id}`} className="px-4 py-2 text-[10px] font-black uppercase tracking-widest bg-white/5 text-slate-300 rounded-xl hover:bg-white/10 hover:text-white transition-all border border-white/5">View</Link>
@@ -272,7 +333,61 @@ const AllMembers = () => {
             )}
           </div>
         )}
-      </div>
+      </AdminSurface>
+
+      {/* ── Bulk Action Bar ── */}
+      <AnimatePresence>
+        {selectedIds.length > 0 && (
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-2xl px-4"
+          >
+            <div className="bg-slate-900/90 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center justify-between gap-6">
+              <div className="flex items-center gap-4 pl-4">
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-black text-xs ring-4 ring-primary/5">
+                  {selectedIds.length}
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white">Entities Isolated</p>
+                  <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Awaiting sector command</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 pr-2">
+                <button
+                  onClick={() => doBulkAction('approve')}
+                  disabled={saving}
+                  className="px-6 py-3 bg-primary hover:bg-emerald-400 text-slate-900 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all disabled:opacity-50"
+                >
+                  Approve All
+                </button>
+                <button
+                  onClick={() => doBulkAction('suspend')}
+                  disabled={saving}
+                  className="px-6 py-3 bg-white/5 hover:bg-white/10 text-amber-400 border border-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all disabled:opacity-50"
+                >
+                  Suspend
+                </button>
+                <button
+                  onClick={() => doBulkAction('expel')}
+                  disabled={saving}
+                  className="px-6 py-3 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/10 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all disabled:opacity-50"
+                >
+                  Expel
+                </button>
+                <button
+                  onClick={() => setSelectedIds([])}
+                  className="p-3 text-slate-500 hover:text-white transition-colors"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── Add Member Slide-Over ── */}
       {showAdd && (

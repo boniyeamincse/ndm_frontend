@@ -58,6 +58,8 @@ const MemberProfilePage = () => {
   const [photoPreview, setPhotoPreview] = useState('');
   const [photoError, setPhotoError] = useState('');
   const [photoSaving, setPhotoSaving] = useState(false);
+  const [idCardAction, setIdCardAction] = useState(null);
+  const [idCardError, setIdCardError] = useState('');
 
   const [activity, setActivity] = useState([]);
   const [activityLoading, setActivityLoading] = useState(false);
@@ -270,16 +272,47 @@ const MemberProfilePage = () => {
     }
   };
 
-  const handleIdCardDownload = async () => {
-    if (!hasMemberProfile) return;
+  const getIdCardBlobUrl = async () => {
     const res = await api.get('/id-card', { responseType: 'blob' });
     const blob = new Blob([res.data], { type: 'application/pdf' });
-    const url = URL.createObjectURL(blob);
+    return URL.createObjectURL(blob);
+  };
+
+  const triggerIdCardDownload = (url) => {
     const a = document.createElement('a');
     a.href = url;
     a.download = `${profile?.member_id || 'member'}_id_card.pdf`;
+    document.body.appendChild(a);
     a.click();
-    URL.revokeObjectURL(url);
+    a.remove();
+  };
+
+  const isMobileViewport = () => window.matchMedia('(max-width: 768px)').matches;
+
+  const handleIdCardAction = async (mode) => {
+    if (!hasMemberProfile) return;
+
+    setIdCardAction(mode);
+    setIdCardError('');
+
+    try {
+      const url = await getIdCardBlobUrl();
+
+      if (mode === 'preview' && !isMobileViewport()) {
+        const preview = window.open(url, '_blank', 'noopener,noreferrer');
+        if (!preview) {
+          triggerIdCardDownload(url);
+        }
+      } else {
+        triggerIdCardDownload(url);
+      }
+
+      window.setTimeout(() => URL.revokeObjectURL(url), 30000);
+    } catch (error) {
+      setIdCardError(error.response?.data?.message || 'Could not generate ID card. Please try again.');
+    } finally {
+      setIdCardAction(null);
+    }
   };
 
   if (loading) {
@@ -316,7 +349,15 @@ const MemberProfilePage = () => {
         </div>
 
         <div className="space-y-2">
-          <Button className="w-full" onClick={handleIdCardDownload} disabled={!hasMemberProfile}>Download ID Card</Button>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <Button className="w-full" onClick={() => handleIdCardAction('preview')} disabled={!hasMemberProfile || Boolean(idCardAction)}>
+              {idCardAction === 'preview' ? 'Opening...' : 'Preview ID Card'}
+            </Button>
+            <Button className="w-full" onClick={() => handleIdCardAction('download')} disabled={!hasMemberProfile || Boolean(idCardAction)}>
+              {idCardAction === 'download' ? 'Downloading...' : 'Download ID Card'}
+            </Button>
+          </div>
+          {idCardError && <p className="text-xs text-red-600 font-semibold">{idCardError}</p>}
           {hasMemberProfile && profile?.member_id && (
             <a
               href={`/members/${profile.member_id}`}

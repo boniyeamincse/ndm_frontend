@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../../services/api';
+import MemberCard from '../../../components/member/MemberCard';
+import MemberEmptyState from '../../../components/member/MemberEmptyState';
+import MemberStatusBadge from '../../../components/member/MemberStatusBadge';
 
 const formatDate = (value) => (value ? new Date(value).toLocaleDateString() : 'Present');
 
@@ -34,21 +37,21 @@ const MemberPositions = () => {
 
 			<div className="grid gap-4">
 				{positions.length === 0 && (
-					<div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 text-center text-gray-400">
-						No positions found for your profile.
-					</div>
+					<MemberEmptyState text="No positions found for your profile." className="bg-white border-gray-100 text-gray-400 p-10" />
 				)}
 
 				{positions.map((position) => (
-					<div key={position.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+					<MemberCard key={position.id} className="bg-white border-gray-100 p-6">
 						<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
 							<div>
 								<h2 className="text-lg font-semibold text-gray-900">{position.role?.name ?? 'Unassigned Role'}</h2>
 								<p className="text-sm text-gray-500">{position.organizational_unit?.name ?? 'No unit assigned'}</p>
 							</div>
-							<span className={`px-3 py-1 rounded-full text-xs font-medium ${position.is_active ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
-								{position.is_active ? 'Active' : 'Completed'}
-							</span>
+							<MemberStatusBadge
+								status={position.is_active ? 'active' : 'completed'}
+								variant="position"
+								className="rounded-full text-xs font-medium tracking-normal px-3"
+							/>
 						</div>
 
 						<div className="grid md:grid-cols-3 gap-4 mt-4 text-sm">
@@ -65,7 +68,7 @@ const MemberPositions = () => {
 								<p className="font-medium text-gray-800 mt-1">{position.notes || 'No notes available'}</p>
 							</div>
 						</div>
-					</div>
+					</MemberCard>
 				))}
 			</div>
 		</div>
