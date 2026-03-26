@@ -29,8 +29,8 @@ Status logic for **Overall Status**:
 ## Summary
 
 - Total Tasks: 201
-- Completed: 16
-- In Progress: 124
+- Completed: 17
+- In Progress: 123
 - Pending: 61
 
 ## Development Phase Kickoff (2026-03-25)
@@ -187,10 +187,10 @@ Status logic for **Overall Status**:
 | 90 | Complete member profile page | Build editable member profile UI for personal details, education, addresses, and emergency contacts. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
 | 91 | Complete member positions page | Display role/position history, current assignments, and unit hierarchy in a readable layout. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
 | 92 | Complete member settings page | Add password, session, notification, and account-level settings appropriate for the current auth model. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
-| 93 | Add member task management UI | Provide task list filters, progress updates, due-date cues, and completion confirmation UX. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
-| 94 | Add ID card preview/download UX | Improve PDF preview, download states, failure handling, and mobile compatibility. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
+| 93 | Add member task management UI | Provide task list filters, progress updates, due-date cues, and completion confirmation UX. This task can be implemented using AI-assisted development. | Done | Pending | Uploaded | In Progress |
+| 94 | Add ID card preview/download UX | Improve PDF preview, download states, failure handling, and mobile compatibility. This task can be implemented using AI-assisted development. | Done | Pending | Uploaded | In Progress |
 | 95 | Standardize frontend API state handling | Unify loading, empty, error, retry, and toast patterns across auth and member pages. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
-| 96 | Extract reusable member components | Move dashboard-specific UI from pages into `components/member` for maintainability and reuse. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
+| 96 | Extract reusable member components | Move dashboard-specific UI from pages into `components/member` for maintainability and reuse. This task can be implemented using AI-assisted development. | Done | Pending | Uploaded | In Progress |
 ## Task 09 — Frontend Admin Dashboard
 
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
@@ -206,16 +206,16 @@ Status logic for **Overall Status**:
 | 105 | Complete position management UI | Build promote, relieve, and transfer workflows with search and validation support. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
 | 106 | Complete position history UI | Provide timeline and filterable history views for units and members. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
 | 107 | Add admin task management UI | Build admin-side task list, create/edit flows, assignee picker, and status reporting. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
-| 108 | Extract reusable admin components | Move table, filter, modal, and summary patterns into `components/admin` for reuse. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
+| 108 | Extract reusable admin components | Move table, filter, modal, and summary patterns into `components/admin` for reuse. This task can be implemented using AI-assisted development. | Done | Pending | Uploaded | In Progress |
 ## Task 10 — Backend Testing
 
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 109 | Clean placeholder test files | Replace example tests with domain-relevant backend feature and unit tests. This task can be implemented using AI-assisted development. | In Progress | In Progress | In Progress | In Progress |
-| 110 | Expand auth feature tests | Cover invalid login, token refresh, logout failures, suspended users, and admin login flows. This task can be implemented using AI-assisted development. | In Progress | In Progress | In Progress | In Progress |
-| 111 | Expand registration feature tests | Cover all validation rules, file uploads, encryption, unit assignment, and duplicate-mobile scenarios. This task can be implemented using AI-assisted development. | In Progress | In Progress | In Progress | In Progress |
-| 112 | Add profile API feature tests | Verify authenticated profile read, update, photo upload, and authorization failures. This task can be implemented using AI-assisted development. | In Progress | In Progress | In Progress | In Progress |
-| 113 | Add admin member operation tests | Cover approve, reject, suspend, expel, update, delete, and document-review endpoints. This task can be implemented using AI-assisted development. | In Progress | In Progress | In Progress | In Progress |
+| 109 | Clean placeholder test files | Replace example tests with domain-relevant backend feature and unit tests. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
+| 110 | Expand auth feature tests | Cover invalid login, token refresh, logout failures, suspended users, and admin login flows. This task can be implemented using AI-assisted development. | Done | Passed | Uploaded | Completed |
+| 111 | Expand registration feature tests | Cover all validation rules, file uploads, encryption, unit assignment, and duplicate-mobile scenarios. This task can be implemented using AI-assisted development. | Done | Passed | Uploaded | Completed |
+| 112 | Add profile API feature tests | Verify authenticated profile read, update, photo upload, and authorization failures. This task can be implemented using AI-assisted development. | Done | Passed | Uploaded | Completed |
+| 113 | Add admin member operation tests | Cover approve, reject, suspend, expel, update, delete, and document-review endpoints. This task can be implemented using AI-assisted development. | Done | Passed | Uploaded | Completed |
 | 114 | Add RBAC feature tests | Verify role CRUD, permission sync, admin middleware, and privilege-escalation prevention. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
 | 115 | Add task management feature tests | Cover task CRUD, assignment creation, member progress updates, and status transitions. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
 | 116 | Add ID card feature tests | Verify access rules, PDF response headers, and generation failures for active/inactive members. This task can be implemented using AI-assisted development. | Done | Passed | In Progress | In Progress |

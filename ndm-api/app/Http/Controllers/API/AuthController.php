@@ -78,6 +78,7 @@ class AuthController extends Controller
     {
         $user = auth()->user()?->load([
             'member.organizationalUnit',
+            'member.memberRole',
             'member.positions.role',
             'member.positions.organizationalUnit',
         ]);
@@ -121,9 +122,18 @@ class AuthController extends Controller
      */
     public function refresh(): JsonResponse
     {
+        $token = JWTAuth::getToken();
+
+        if (! $token) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Token not provided.',
+            ], 401);
+        }
+
         return response()->json([
             'success' => true,
-            'access_token' => JWTAuth::refresh(),
+            'access_token' => JWTAuth::setToken($token)->refresh(),
             'token_type' => 'bearer',
         ]);
     }
