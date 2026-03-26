@@ -16,6 +16,7 @@ use App\Http\Controllers\API\Admin\CommitteeController;
 use App\Http\Controllers\API\Admin\CommitteeRoleController;
 use App\Http\Controllers\API\Admin\PositionController;
 use App\Http\Controllers\API\Admin\BlogPostController;
+use App\Http\Controllers\API\Admin\SystemSettingController;
 use Illuminate\Support\Facades\Route;
 
 // ── Public ─────────────────────────────────────────────────────────────────
@@ -30,6 +31,8 @@ Route::get('id-cards/verify/{member_id}', [IdCardController::class, 'verify'])
 // Public member profile (by NDM member ID string, e.g. NDM-SW-2026-0001)
 Route::get('members/{member_id}', [MemberController::class, 'publicProfile'])
     ->where('member_id', '^(?!me$).+');
+
+Route::get('settings/public', [SystemSettingController::class, 'public']);
 
 // ── Auth ────────────────────────────────────────────────────────────────────
 
@@ -146,4 +149,8 @@ Route::prefix('admin')
         Route::post  ('committees/{id}/members',              [CommitteeRoleController::class, 'store']);
         Route::put   ('committees/{id}/roles/{role_id}',      [CommitteeRoleController::class, 'update']);
         Route::delete('committees/{id}/roles/{role_id}',      [CommitteeRoleController::class, 'destroy']);
+
+        // System Settings & Governance (Task 14)
+        Route::get   ('settings',            [SystemSettingController::class, 'index']);
+        Route::post  ('settings/bulk-update', [SystemSettingController::class, 'update']);
     });

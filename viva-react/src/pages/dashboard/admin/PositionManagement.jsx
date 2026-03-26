@@ -83,81 +83,97 @@ const PositionManagement = () => {
     };
 
     return (
-        <div className="p-6 max-w-7xl mx-auto space-y-6">
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-                <div>
-                    <h1 className="text-2xl font-black text-gray-900">Position Management</h1>
-                    <p className="text-sm text-gray-500 mt-1">Assign and manage active member positions across all organizational units.</p>
-                </div>
-                <div className="flex items-center gap-3 shrink-0">
-                    <Link to="/dashboard/admin/positions/history" className="text-sm font-medium text-primary hover:underline">
-                        View History →
-                    </Link>
-                    <Button onClick={() => { setError(''); setShowModal(true); }}>
-                        + Assign Position
-                    </Button>
+        <div className="max-w-7xl mx-auto p-6 space-y-8 pb-20">
+            {/* ── Page Header ── */}
+            <div className="rounded-[2.5rem] bg-white/5 backdrop-blur-xl px-10 py-10 border border-white/10 shadow-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full -mr-40 -mt-40 blur-3xl opacity-50 group-hover:bg-primary/10 transition-all pointer-events-none" />
+                <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Governance Layer</p>
+                        <h1 className="mt-3 text-4xl font-black text-white tracking-tight uppercase">Authority Node Registry</h1>
+                        <p className="text-sm font-medium text-slate-400 mt-2 max-w-2xl">Assign and monitor active leadership nodes across the organizational topology. Manage real-time authority distribution and unit placement.</p>
+                    </div>
+                    <div className="flex items-center gap-4 shrink-0">
+                        <Link to="/dashboard/admin/positions/history" className="px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-[10px] font-black text-primary uppercase tracking-widest hover:bg-white/10 transition-all shadow-xl">
+                            View History Protocol →
+                        </Link>
+                        <Button onClick={() => { setError(''); setShowModal(true); }} variant="accent" className="font-black uppercase tracking-widest text-[10px] py-4 px-8 shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+                            + Initialize Assignment
+                        </Button>
+                    </div>
                 </div>
             </div>
 
             {/* Filters */}
-            <div className="flex flex-wrap gap-3 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
-                <div className="flex-1 min-w-[160px]">
-                    <Select
-                        label=""
-                        options={[{ id: '', name: 'All Units' }, ...units.map(u => ({ id: u.id, name: u.name }))]}
+            <div className="bg-white/5 backdrop-blur-xl p-6 rounded-[2rem] border border-white/10 flex flex-wrap gap-6 shadow-xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-2xl opacity-20" />
+                <div className="flex-1 min-w-[200px] space-y-2">
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Topology Unit</label>
+                    <select
                         value={filter.unit_id}
                         onChange={e => setFilter(f => ({ ...f, unit_id: e.target.value }))}
-                    />
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-[10px] text-white font-black uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/40 appearance-none cursor-pointer hover:bg-white/[0.08] transition-all"
+                    >
+                        <option value="" className="bg-slate-900">ALL_UNITS</option>
+                        {units.map(u => <option key={u.id} value={u.id} className="bg-slate-900">{u.name?.toUpperCase() || 'UNKNOWN_UNIT'}</option>)}
+                    </select>
                 </div>
-                <div className="flex-1 min-w-[160px]">
-                    <Select
-                        label=""
-                        options={[{ id: '', name: 'All Roles' }, ...roles.map(r => ({ id: r.id, name: r.name }))]}
+                <div className="flex-1 min-w-[200px] space-y-2">
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Governance Role</label>
+                    <select
                         value={filter.role_id}
                         onChange={e => setFilter(f => ({ ...f, role_id: e.target.value }))}
-                    />
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-[10px] text-white font-black uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/40 appearance-none cursor-pointer hover:bg-white/[0.08] transition-all"
+                    >
+                        <option value="" className="bg-slate-900">ALL_ROLES</option>
+                        {roles.map(r => <option key={r.id} value={r.id} className="bg-slate-900">{r.name?.toUpperCase() || 'UNKNOWN_ROLE'}</option>)}
+                    </select>
                 </div>
             </div>
 
             {/* Table */}
-            <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 shadow-2xl overflow-hidden relative group animate-in fade-in slide-in-from-bottom-4 duration-700">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-30" />
+                
                 {loading ? (
-                    <div className="flex justify-center py-20">
-                        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+                    <div className="flex justify-center py-32 relative">
+                        <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin shadow-2xl" />
                     </div>
                 ) : positions.length === 0 ? (
-                    <div className="p-12 text-center text-gray-400">No active positions found.</div>
+                    <div className="p-32 text-center relative border border-white/5 rounded-[2rem] mx-8 my-8">
+                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">No active governance nodes mapped in current topology.</p>
+                    </div>
                 ) : (
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
-                            <thead className="bg-gray-50 border-b border-gray-100">
-                                <tr>
-                                    <th className="text-left px-6 py-4 font-semibold text-gray-600">Member</th>
-                                    <th className="text-left px-6 py-4 font-semibold text-gray-600">Role</th>
-                                    <th className="text-left px-6 py-4 font-semibold text-gray-600">Unit</th>
-                                    <th className="text-left px-6 py-4 font-semibold text-gray-600">Assigned On</th>
-                                    <th className="text-left px-6 py-4 font-semibold text-gray-600">Assigned By</th>
-                                    <th className="px-6 py-4"></th>
+                    <div className="overflow-x-auto relative">
+                        <table className="w-full text-sm text-left">
+                            <thead>
+                                <tr className="bg-white/5 border-b border-white/10">
+                                    {['Member Entity', 'Designated Role', 'Active Unit', 'Assigned', 'Origin Operator', ''].map(h => (
+                                        <th key={h} className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-slate-500">{h}</th>
+                                    ))}
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-gray-50">
+                            <tbody className="divide-y divide-white/5">
                                 {positions.map((pos) => (
-                                    <tr key={pos.id} className="hover:bg-gray-50 transition-colors">
-                                        <td className="px-6 py-4">
-                                            <p className="font-medium text-gray-900">{pos.member?.full_name ?? '—'}</p>
-                                            <p className="text-xs text-gray-400">{pos.member?.member_id ?? ''}</p>
+                                    <tr key={pos.id} className="hover:bg-white/[0.04] transition-all group/row">
+                                        <td className="px-6 py-5">
+                                            <div>
+                                                <p className="font-black text-white uppercase tracking-tight group-hover/row:text-primary transition-colors">{pos.member?.full_name ?? '—'}</p>
+                                                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">{pos.member?.member_id ?? ''}</p>
+                                            </div>
                                         </td>
-                                        <td className="px-6 py-4 text-gray-700">{pos.role?.name ?? '—'}</td>
-                                        <td className="px-6 py-4 text-gray-700">{pos.unit?.name ?? '—'}</td>
-                                        <td className="px-6 py-4 text-gray-500">{formatDate(pos.assigned_at)}</td>
-                                        <td className="px-6 py-4 text-gray-500">{pos.assigned_by?.name ?? '—'}</td>
-                                        <td className="px-6 py-4 text-right">
+                                        <td className="px-6 py-5">
+                                            <span className="text-slate-300 font-black uppercase tracking-tight px-3 py-1 rounded-lg bg-white/5 border border-white/10 shadow-inner">{pos.role?.name ?? '—'}</span>
+                                        </td>
+                                        <td className="px-6 py-5 text-slate-400 font-bold uppercase tracking-widest text-[10px]">{pos.unit?.name ?? '—'}</td>
+                                        <td className="px-6 py-5 text-slate-500 font-bold tabular-nums text-[10px] whitespace-nowrap">{formatDate(pos.assigned_at)}</td>
+                                        <td className="px-6 py-5 text-slate-500 font-black uppercase tracking-widest text-[9px]">{pos.assigned_by?.name ?? 'SYSTEM'}</td>
+                                        <td className="px-6 py-5 text-right">
                                             <button
                                                 onClick={() => handleRelieve(pos.id)}
-                                                className="text-xs font-medium text-red-600 hover:text-red-800 px-3 py-1.5 rounded-lg hover:bg-red-50 transition-colors"
+                                                className="px-4 py-2 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-500 hover:text-white transition-all shadow-lg active:scale-95"
                                             >
-                                                Relieve
+                                                Termination Protocol
                                             </button>
                                         </td>
                                     </tr>
@@ -170,50 +186,80 @@ const PositionManagement = () => {
 
             {/* Assign Modal */}
             {showModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm">
-                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden">
-                        <div className="p-6 border-b border-gray-100">
-                            <h2 className="text-xl font-bold text-gray-900">Assign Position</h2>
-                            <p className="text-sm text-gray-500">Assign a member to a role within an organizational unit.</p>
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-md">
+                    <div className="bg-slate-900 border border-white/10 rounded-[2.5rem] shadow-2xl w-full max-w-lg overflow-hidden relative">
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-50" />
+                        
+                        <div className="p-10 border-b border-white/5 relative">
+                            <h2 className="text-2xl font-black text-white uppercase tracking-tight">Assignment Prototype</h2>
+                            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-2 px-1">Injecting authority node into the organizational lattice.</p>
                         </div>
-                        <form onSubmit={handleAssign} className="p-6 space-y-4">
+                        
+                        <form onSubmit={handleAssign} className="p-10 space-y-8 relative">
                             {error && (
-                                <div className="p-3 bg-red-50 text-red-700 text-sm rounded-xl border border-red-100">{error}</div>
+                                <div className="px-6 py-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-[10px] font-black uppercase tracking-widest text-rose-400 flex items-center gap-3 animate-pulse">
+                                    <span className="text-lg">⚠</span> {error}
+                                </div>
                             )}
-                            <Select
-                                label="Member"
-                                options={[{ id: '', name: 'Select member…' }, ...members.map(m => ({ id: m.id, name: `${m.full_name} (${m.member_id ?? 'Pending'})` }))]}
-                                value={form.member_id}
-                                onChange={e => setForm(f => ({ ...f, member_id: e.target.value }))}
-                                required
-                            />
-                            <Select
-                                label="Role / Position"
-                                options={[{ id: '', name: 'Select role…' }, ...roles.map(r => ({ id: r.id, name: r.name }))]}
-                                value={form.role_id}
-                                onChange={e => setForm(f => ({ ...f, role_id: e.target.value }))}
-                                required
-                            />
-                            <Select
-                                label="Organizational Unit"
-                                options={[{ id: '', name: 'Select unit…' }, ...units.map(u => ({ id: u.id, name: u.name }))]}
-                                value={form.unit_id}
-                                onChange={e => setForm(f => ({ ...f, unit_id: e.target.value }))}
-                                required
-                            />
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Notes (optional)</label>
-                                <textarea
-                                    className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
-                                    rows={3}
-                                    value={form.notes}
-                                    onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
-                                    placeholder="Any remarks about this assignment…"
-                                />
+                            
+                            <div className="space-y-6">
+                                <div className="space-y-2">
+                                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Target Member Entity</label>
+                                    <select
+                                        value={form.member_id}
+                                        onChange={e => setForm(f => ({ ...f, member_id: e.target.value }))}
+                                        required
+                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-xs text-white font-black uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/40 appearance-none cursor-pointer"
+                                    >
+                                        <option value="" className="bg-slate-900">IDENTIFY ENTITY...</option>
+                                        {members.map(m => (
+                                            <option key={m.id} value={m.id} className="bg-slate-900">{m.full_name?.toUpperCase()} ({m.member_id ?? 'PENDING'})</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Designated Role</label>
+                                        <select
+                                            value={form.role_id}
+                                            onChange={e => setForm(f => ({ ...f, role_id: e.target.value }))}
+                                            required
+                                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-xs text-white font-black uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/40 appearance-none cursor-pointer"
+                                        >
+                                            <option value="" className="bg-slate-900">SELECT_ROLE</option>
+                                            {roles.map(r => <option key={r.id} value={r.id} className="bg-slate-900">{r.name?.toUpperCase() || 'UNKNOWN_ROLE'}</option>)}
+                                        </select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Target Unit</label>
+                                        <select
+                                            value={form.unit_id}
+                                            onChange={e => setForm(f => ({ ...f, unit_id: e.target.value }))}
+                                            required
+                                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-xs text-white font-black uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/40 appearance-none cursor-pointer"
+                                        >
+                                            <option value="" className="bg-slate-900">SELECT_UNIT</option>
+                                            {units.map(u => <option key={u.id} value={u.id} className="bg-slate-900">{u.name?.toUpperCase() || 'UNKNOWN_UNIT'}</option>)}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Protocol Remarks (OPTIONAL)</label>
+                                    <textarea
+                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs text-white font-black uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/40 placeholder-slate-700 resize-none shadow-inner"
+                                        rows={3}
+                                        value={form.notes}
+                                        onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
+                                        placeholder="INPUT ANNOTATIONS..."
+                                    />
+                                </div>
                             </div>
-                            <div className="pt-2 flex justify-end gap-3">
-                                <Button type="button" variant="ghost" onClick={() => setShowModal(false)}>Cancel</Button>
-                                <Button type="submit" isLoading={saving}>Assign</Button>
+
+                            <div className="pt-6 flex justify-end gap-4">
+                                <Button type="button" variant="ghost" onClick={() => setShowModal(false)} className="font-black uppercase tracking-widest text-[10px] text-slate-400 hover:text-white transition-colors">Abort Ingress</Button>
+                                <Button type="submit" variant="accent" isLoading={saving} className="font-black uppercase tracking-widest text-[10px] px-10 py-4 shadow-xl shadow-primary/20">Commit Ingress</Button>
                             </div>
                         </form>
                     </div>

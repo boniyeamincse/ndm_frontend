@@ -9,30 +9,30 @@ const INIT_FORM = {
   organizational_unit_id: '', status: 'active',
   join_year: new Date().getFullYear(), present_address: '',
 };
-const inp = 'w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30';
+const inp = 'w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/40 transition-all';
 const Lbl = ({ label, required, err, children }) => (
-  <div>
-    <label className="block text-xs font-medium text-gray-600 mb-1">
-      {label}{required && <span className="text-red-500 ml-0.5">*</span>}
+  <div className="space-y-1.5">
+    <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">
+      {label}{required && <span className="text-accent ml-1">*</span>}
     </label>
     {children}
-    {err && <p className="text-xs text-red-500 mt-1">{err}</p>}
+    {err && <p className="text-[10px] font-bold text-accent mt-1 ml-1">{err}</p>}
   </div>
 );
 
 const STATUS_TABS = [
-  { value: '',          label: 'All',       color: 'text-slate-700', activeColor: 'border-slate-700 text-slate-900' },
-  { value: 'active',    label: 'Active',    color: 'text-emerald-600', activeColor: 'border-emerald-600 text-emerald-700' },
-  { value: 'pending',   label: 'Pending',   color: 'text-amber-600',  activeColor: 'border-amber-600 text-amber-700' },
-  { value: 'suspended', label: 'Suspended', color: 'text-orange-600', activeColor: 'border-orange-600 text-orange-700' },
-  { value: 'expelled',  label: 'Expelled',  color: 'text-red-600',    activeColor: 'border-red-600 text-red-700' },
+  { value: '',          label: 'All',       color: 'text-slate-400', activeColor: 'text-slate-100 bg-white/10 border-primary' },
+  { value: 'active',    label: 'Active',    color: 'text-slate-400', activeColor: 'text-emerald-400 bg-emerald-500/10 border-emerald-500' },
+  { value: 'pending',   label: 'Pending',   color: 'text-slate-400', activeColor: 'text-amber-400 bg-amber-500/10 border-amber-500' },
+  { value: 'suspended', label: 'Suspended', color: 'text-slate-400', activeColor: 'text-orange-400 bg-orange-500/10 border-orange-500' },
+  { value: 'expelled',  label: 'Expelled',  color: 'text-slate-400', activeColor: 'text-rose-400 bg-rose-500/10 border-rose-500' },
 ];
 
 const statusStyle = {
-  active:    'bg-green-50 text-green-700',
-  pending:   'bg-yellow-50 text-yellow-700',
-  suspended: 'bg-orange-50 text-orange-700',
-  expelled:  'bg-red-50 text-red-700',
+  active:    'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
+  pending:   'bg-amber-500/10 text-amber-400 border border-amber-500/20',
+  suspended: 'bg-orange-500/10 text-orange-400 border border-orange-500/20',
+  expelled:  'bg-rose-500/10 text-rose-400 border border-rose-500/20',
 };
 
 const AllMembers = () => {
@@ -131,58 +131,65 @@ const AllMembers = () => {
     <div className="p-6 max-w-7xl mx-auto space-y-6">
 
       {/* ── Header ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-        <div>
-          <h1 className="text-2xl font-black text-gray-900">Member Management</h1>
-          <p className="text-sm text-gray-500 mt-1">{meta?.total ?? '—'} total members in the system</p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-8 bg-white/5 backdrop-blur-xl p-10 rounded-[2.5rem] border border-white/10 shadow-2xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full -mr-40 -mt-40 blur-3xl opacity-50 group-hover:bg-primary/10 transition-all pointer-events-none" />
+        <div className="relative">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Population Registry</p>
+          <h1 className="mt-3 text-4xl font-black text-white tracking-tight uppercase">Member Management</h1>
+          <p className="text-sm font-medium text-slate-400 mt-2 max-w-xl">Comprehensive supervision of the NDM Student Movement member clusters and onboarding protocols.</p>
         </div>
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-4 shrink-0 relative">
           <Link
             to="/dashboard/admin/members/search"
-            className="px-4 py-2 text-sm font-medium border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors text-gray-700"
+            className="px-6 py-3 text-[10px] font-black uppercase tracking-widest bg-white/5 text-slate-300 border border-white/10 rounded-xl hover:bg-white/10 transition-all"
           >
-            Advanced Search
+            Deep Search
           </Link>
           <button
             onClick={() => setShowAdd(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-white text-sm font-semibold rounded-xl shadow transition-colors"
+            className="flex items-center gap-3 px-8 py-3 bg-primary hover:bg-emerald-400 text-slate-900 text-[10px] font-black uppercase tracking-widest rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-95"
           >
-            <span className="text-lg leading-none">+</span> Add Member
+            <span className="text-lg leading-none">+</span> New Member
           </button>
         </div>
       </div>
 
       {/* ── Status Tabs ── */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="flex border-b border-gray-100 overflow-x-auto">
+      <div className="bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 shadow-2xl overflow-hidden">
+        <div className="flex border-b border-white/5 overflow-x-auto scrollbar-hide">
           {STATUS_TABS.map(tab => (
             <button
               key={tab.value}
               onClick={() => switchTab(tab.value)}
-              className={`px-5 py-3.5 text-sm font-semibold whitespace-nowrap border-b-2 transition-colors ${
+              className={`px-6 py-4 text-xs font-bold uppercase tracking-widest whitespace-nowrap border-b-2 transition-all duration-300 ${
                 currentStatus === tab.value
-                  ? `${tab.activeColor} bg-gray-50`
-                  : `border-transparent ${tab.color} hover:bg-gray-50`
+                  ? `${tab.activeColor} border-current`
+                  : `border-transparent ${tab.color} hover:text-slate-200 hover:bg-white/5`
               }`}
             >
               {tab.label}
             </button>
           ))}
-          <div className="ml-auto flex items-center pr-4">
-            <span className="text-xs text-gray-400">{meta?.total ?? 0} result{meta?.total !== 1 ? 's' : ''}</span>
+          <div className="ml-auto flex items-center pr-6">
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">{meta?.total ?? 0} results</span>
           </div>
         </div>
 
         {/* ── Search Row ── */}
-        <div className="flex flex-wrap gap-3 items-center px-4 py-3 bg-gray-50/50 border-b border-gray-100">
-          <input
-            type="text"
-            placeholder="Search name, member ID, mobile…"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-72 focus:outline-none focus:ring-2 focus:ring-primary/30"
-          />
-          <button onClick={load} className="text-sm text-primary hover:underline">↻ Refresh</button>
+        <div className="flex flex-wrap gap-4 items-center px-6 py-4 bg-white/[0.02] border-b border-white/5">
+          <div className="relative group flex-1 max-w-md">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary transition-colors text-sm">🔍</span>
+            <input
+              type="text"
+              placeholder="Search name, member ID, mobile…"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="w-full bg-white/5 border border-white/5 rounded-xl px-11 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all border-none"
+            />
+          </div>
+          <button onClick={load} className="text-xs font-bold text-primary hover:text-primary-light uppercase tracking-widest transition-colors flex items-center gap-2">
+            <span>↻</span> Refresh
+          </button>
         </div>
 
         {/* ── Toast ── */}
@@ -194,21 +201,21 @@ const AllMembers = () => {
 
         {/* ── Table ── */}
         {loading ? (
-          <div className="flex items-center justify-center h-48 text-gray-400">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mr-3"></div>
-            Loading…
+          <div className="flex flex-col items-center justify-center h-64 text-slate-500 gap-4">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+            <p className="text-xs font-bold uppercase tracking-widest animate-pulse">Synchronizing Data…</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b border-gray-100">
-                <tr>
-                  {['Member', 'Member ID', 'Mobile', 'Institution', 'Status', 'Joined', 'Actions'].map(c => (
-                    <th key={c} className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">{c}</th>
+              <thead>
+                <tr className="border-b border-white/5 bg-white/[0.02]">
+                  {['Member Identity', 'Cluster ID', 'Uplink', 'Institution', 'Security State', 'Lifecycle', 'Operations'].map(c => (
+                    <th key={c} className="text-left px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">{c}</th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
+              <tbody className="divide-y divide-white/5">
                 {members.length === 0 && (
                   <tr>
                     <td colSpan={7} className="py-16 text-center text-gray-400">
@@ -217,35 +224,38 @@ const AllMembers = () => {
                   </tr>
                 )}
                 {members.map(m => (
-                  <tr key={m.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        {m.photo_path
-                          ? <img src={`${import.meta.env.VITE_API_URL?.replace('/api', '')}/storage/${m.photo_path}`} alt="" className="w-9 h-9 rounded-full object-cover" />
-                          : <div className="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-bold">{m.full_name?.[0]}</div>
-                        }
-                        <div>
-                          <p className="font-semibold text-gray-900">{m.full_name}</p>
-                          <p className="text-xs text-gray-400">{m.organizational_unit?.name ?? '—'}</p>
+                  <tr key={m.id} className="hover:bg-white/[0.03] transition-colors group">
+                    <td className="px-8 py-5">
+                      <div className="flex items-center gap-5">
+                        <div className="relative shrink-0">
+                          {m.photo_path
+                            ? <img src={`${import.meta.env.VITE_API_URL?.replace('/api', '')}/storage/${m.photo_path}`} alt="" className="w-12 h-12 rounded-2xl object-cover ring-1 ring-white/10 group-hover:scale-105 transition-transform" />
+                            : <div className="w-12 h-12 rounded-2xl bg-white/5 text-primary flex items-center justify-center text-sm font-black border border-white/10 shadow-inner group-hover:scale-105 transition-transform">{m.full_name?.[0]}</div>
+                          }
+                          <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-slate-900 ${m.status === 'active' ? 'bg-emerald-500' : m.status === 'pending' ? 'bg-amber-500' : 'bg-rose-500'}`} />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-black text-slate-200 group-hover:text-white transition-colors uppercase tracking-tight truncate">{m.full_name}</p>
+                          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1.5">{m.organizational_unit?.name ?? 'Unassigned Unit'}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3 font-mono text-xs text-gray-600">{m.member_id ?? '—'}</td>
-                    <td className="px-4 py-3 text-gray-600">{m.mobile ?? '—'}</td>
-                    <td className="px-4 py-3 text-gray-600 max-w-[160px] truncate">{m.institution ?? '—'}</td>
-                    <td className="px-4 py-3">
-                      <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${statusStyle[m.status] ?? 'bg-gray-100 text-gray-600'}`}>
+                    <td className="px-8 py-5 font-bold text-[10px] text-slate-500 uppercase tracking-widest">{m.member_id ?? 'PENDING'}</td>
+                    <td className="px-8 py-5 text-slate-400 font-bold uppercase tracking-widest text-[10px]">{m.mobile ?? '—'}</td>
+                    <td className="px-8 py-5 text-slate-400 font-bold uppercase tracking-widest text-[10px] max-w-[160px] truncate">{m.institution ?? '—'}</td>
+                    <td className="px-8 py-5 text-slate-400">
+                      <span className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest ${statusStyle[m.status] ?? 'bg-white/5 text-slate-400'}`}>
                         {m.status}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-gray-400 text-xs">{m.join_year}</td>
-                    <td className="px-4 py-3">
-                      <div className="flex gap-1 flex-wrap">
-                        <Link to={`/dashboard/admin/members/${m.id}`} className="px-2.5 py-1 text-xs bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 font-medium">View</Link>
-                        {m.status === 'pending'   && <button onClick={() => doStatus(m.id, 'approve')} disabled={actionRow === m.id} className="px-2.5 py-1 text-xs bg-green-50 text-green-700 rounded-lg hover:bg-green-100 font-medium disabled:opacity-50">Approve</button>}
-                        {m.status === 'active'    && <button onClick={() => doStatus(m.id, 'suspend')} disabled={actionRow === m.id} className="px-2.5 py-1 text-xs bg-orange-50 text-orange-700 rounded-lg hover:bg-orange-100 font-medium disabled:opacity-50">Suspend</button>}
-                        {m.status === 'suspended' && <button onClick={() => doStatus(m.id, 'approve')} disabled={actionRow === m.id} className="px-2.5 py-1 text-xs bg-green-50 text-green-700 rounded-lg hover:bg-green-100 font-medium disabled:opacity-50">Reinstate</button>}
-                        {m.status !== 'expelled'  && <button onClick={() => doStatus(m.id, 'expel')}   disabled={actionRow === m.id} className="px-2.5 py-1 text-xs bg-red-50 text-red-700 rounded-lg hover:bg-red-100 font-medium disabled:opacity-50">Expel</button>}
+                    <td className="px-8 py-5 text-slate-500 text-[10px] font-black uppercase tracking-widest">{m.join_year}</td>
+                    <td className="px-8 py-5 text-slate-400">
+                      <div className="flex gap-2.5 flex-wrap">
+                        <Link to={`/dashboard/admin/members/${m.id}`} className="px-4 py-2 text-[10px] font-black uppercase tracking-widest bg-white/5 text-slate-300 rounded-xl hover:bg-white/10 hover:text-white transition-all border border-white/5">View</Link>
+                        {m.status === 'pending'   && <button onClick={() => doStatus(m.id, 'approve')} disabled={actionRow === m.id} className="px-4 py-2 text-[10px] font-black uppercase tracking-widest bg-primary text-slate-900 rounded-xl hover:bg-emerald-400 transition-all shadow-lg shadow-primary/20 disabled:opacity-50">Approve</button>}
+                        {m.status === 'active'    && <button onClick={() => doStatus(m.id, 'suspend')} disabled={actionRow === m.id} className="px-4 py-2 text-[10px] font-black uppercase tracking-widest bg-amber-400/20 text-amber-400 rounded-xl border border-amber-400/20 hover:bg-amber-400/30 transition-all disabled:opacity-50">Suspend</button>}
+                        {m.status === 'suspended' && <button onClick={() => doStatus(m.id, 'approve')} disabled={actionRow === m.id} className="px-4 py-2 text-[10px] font-black uppercase tracking-widest bg-primary text-slate-900 rounded-xl hover:bg-emerald-400 transition-all disabled:opacity-50">Reinstate</button>}
+                        {m.status !== 'expelled'  && <button onClick={() => doStatus(m.id, 'expel')}   disabled={actionRow === m.id} className="px-4 py-2 text-[10px] font-black uppercase tracking-widest bg-rose-500/10 text-rose-400 rounded-xl border border-rose-500/20 hover:bg-rose-500/20 transition-all disabled:opacity-50">Expel</button>}
                       </div>
                     </td>
                   </tr>
@@ -254,9 +264,9 @@ const AllMembers = () => {
             </table>
 
             {meta?.last_page > 1 && (
-              <div className="flex justify-center gap-2 px-4 py-3 border-t border-gray-100">
+              <div className="flex justify-center gap-2 px-6 py-6 border-t border-white/5 bg-white/[0.01]">
                 {Array.from({ length: meta.last_page }, (_, i) => i + 1).map(p => (
-                  <button key={p} onClick={() => setPage(p)} className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${page === p ? 'bg-primary text-white' : 'border border-gray-200 hover:bg-gray-50 text-gray-700'}`}>{p}</button>
+                  <button key={p} onClick={() => setPage(p)} className={`w-9 h-9 rounded-xl text-xs font-black transition-all ${page === p ? 'bg-primary text-white shadow-lg shadow-primary-500/20' : 'bg-white/5 border border-white/5 text-slate-500 hover:text-slate-100 hover:bg-white/10'}`}>{p}</button>
                 ))}
               </div>
             )}
@@ -268,36 +278,39 @@ const AllMembers = () => {
       {showAdd && (
         <>
           <div
-            className="fixed inset-0 bg-black/40 z-30 transition-opacity"
+            className="fixed inset-0 bg-black/60 backdrop-blur-md z-[60] transition-opacity"
             onClick={() => !saving && setShowAdd(false)}
           />
-          <aside className="fixed right-0 top-0 h-full w-full max-w-lg bg-white shadow-2xl z-40 flex flex-col">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-              <h2 className="text-lg font-bold text-gray-900">Add Member Manually</h2>
-              <button onClick={() => setShowAdd(false)} className="text-gray-400 hover:text-gray-700 text-xl font-bold leading-none">✕</button>
+          <aside className="fixed right-0 top-0 h-full w-full max-w-lg bg-slate-900 shadow-[0_0_50px_rgba(0,0,0,0.5)] z-[70] flex flex-col border-l border-white/10 animate-slide-in-right">
+            <div className="flex items-center justify-between px-8 py-6 border-b border-white/5 bg-white/[0.02]">
+              <h2 className="text-xl font-black text-white uppercase tracking-tight">Add Member Manually</h2>
+              <button onClick={() => setShowAdd(false)} className="text-slate-500 hover:text-white transition-colors text-2xl leading-none">✕</button>
             </div>
 
-            <form onSubmit={submitAdd} className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
-              <p className="text-xs text-blue-700 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">
-                Admin-created members are set to <strong>Active</strong> by default and bypass the approval queue.
-              </p>
+            <form onSubmit={submitAdd} className="flex-1 overflow-y-auto px-8 py-8 space-y-6">
+              <div className="border border-primary/20 bg-primary/5 rounded-2xl p-4 flex gap-3">
+                <span className="text-primary text-lg mt-0.5">ℹ</span>
+                <p className="text-xs font-medium text-slate-300 leading-relaxed">
+                  Admin-created members are set to <strong className="text-primary-light">Active</strong> by default and bypass the registration approval queue.
+                </p>
+              </div>
 
-              <p className="text-xs font-semibold uppercase tracking-wider text-gray-400">Account</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 pt-2 border-b border-white/5 pb-2">Account Credentials</p>
               <div className="grid grid-cols-2 gap-4">
-                <Lbl label="Email" required err={formErr.email?.[0]}>
+                <Lbl label="Email Address" required err={formErr.email?.[0]}>
                   <input ref={firstRef} type="email" value={form.email} onChange={e => setF('email', e.target.value)} className={inp} required />
                 </Lbl>
-                <Lbl label="Password" required err={formErr.password?.[0]}>
+                <Lbl label="Initial Password" required err={formErr.password?.[0]}>
                   <input type="password" value={form.password} onChange={e => setF('password', e.target.value)} className={inp} required minLength={8} />
                 </Lbl>
               </div>
 
-              <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 pt-2">Personal Info</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 pt-4 border-b border-white/5 pb-2">Personal Profile</p>
               <Lbl label="Full Name" required err={formErr.full_name?.[0]}>
                 <input type="text" value={form.full_name} onChange={e => setF('full_name', e.target.value)} className={inp} required maxLength={191} />
               </Lbl>
               <div className="grid grid-cols-2 gap-4">
-                <Lbl label="Mobile" err={formErr.mobile?.[0]}>
+                <Lbl label="Mobile Number" err={formErr.mobile?.[0]}>
                   <input type="tel" value={form.mobile} onChange={e => setF('mobile', e.target.value)} className={inp} />
                 </Lbl>
                 <Lbl label="Date of Birth" err={formErr.date_of_birth?.[0]}>
@@ -305,7 +318,7 @@ const AllMembers = () => {
                 </Lbl>
                 <Lbl label="Gender">
                   <select value={form.gender} onChange={e => setF('gender', e.target.value)} className={inp}>
-                    <option value="">Select…</option>
+                    <option value="">Select Option</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>
@@ -313,13 +326,13 @@ const AllMembers = () => {
                 </Lbl>
                 <Lbl label="Blood Group">
                   <select value={form.blood_group} onChange={e => setF('blood_group', e.target.value)} className={inp}>
-                    <option value="">Select…</option>
+                    <option value="">Select Option</option>
                     {BLOOD_GROUPS.map(b => <option key={b} value={b}>{b}</option>)}
                   </select>
                 </Lbl>
               </div>
 
-              <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 pt-2">Academic &amp; Org</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 pt-4 border-b border-white/5 pb-2">Academic & Organisational</p>
               <div className="grid grid-cols-2 gap-4">
                 <Lbl label="Institution">
                   <input type="text" value={form.institution} onChange={e => setF('institution', e.target.value)} className={inp} maxLength={255} />
@@ -327,9 +340,9 @@ const AllMembers = () => {
                 <Lbl label="Department">
                   <input type="text" value={form.department} onChange={e => setF('department', e.target.value)} className={inp} maxLength={191} />
                 </Lbl>
-                <Lbl label="Organizational Unit" err={formErr.organizational_unit_id?.[0]}>
+                <Lbl label="Org. Unit" err={formErr.organizational_unit_id?.[0]}>
                   <select value={form.organizational_unit_id} onChange={e => setF('organizational_unit_id', e.target.value)} className={inp}>
-                    <option value="">Not assigned</option>
+                    <option value="">Not Assigned</option>
                     {units.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
                   </select>
                 </Lbl>
@@ -342,21 +355,14 @@ const AllMembers = () => {
                 <textarea value={form.present_address} onChange={e => setF('present_address', e.target.value)} className={inp} rows={2} maxLength={500} />
               </Lbl>
 
-              <Lbl label="Initial Status">
-                <select value={form.status} onChange={e => setF('status', e.target.value)} className={inp}>
-                  <option value="active">Active (approved immediately)</option>
-                  <option value="pending">Pending (requires approval)</option>
-                </select>
-              </Lbl>
-
-              <div className="flex gap-3 pt-2 pb-6">
+              <div className="flex gap-4 pt-6 pb-12">
                 <button type="submit" disabled={saving}
-                  className="flex-1 py-2.5 bg-primary hover:bg-primary/90 disabled:opacity-60 text-white font-semibold rounded-xl text-sm transition-colors"
+                  className="flex-1 py-3 bg-primary hover:bg-primary-dark disabled:opacity-60 text-white font-black rounded-xl text-sm transition-all shadow-xl shadow-primary-500/20 active:scale-95"
                 >
-                  {saving ? 'Saving…' : 'Add Member'}
+                  {saving ? 'Processing…' : 'Finalize & Add Member'}
                 </button>
                 <button type="button" onClick={() => setShowAdd(false)}
-                  className="px-5 py-2.5 border border-gray-300 rounded-xl text-sm text-gray-600 hover:bg-gray-50"
+                  className="px-6 py-3 border border-white/10 rounded-xl text-sm font-bold text-slate-400 hover:bg-white/5 hover:text-white transition-all underline decoration-slate-400"
                 >
                   Cancel
                 </button>

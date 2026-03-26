@@ -47,42 +47,48 @@ const activityMeta = (action) => {
 const StatCard = ({ label, value, bar, barColor, sub, accent }) => (
     <motion.div
         whileHover={{ y: -4, transition: { duration: 0.2 } }}
-        className="bg-gradient-to-br from-white via-white/95 to-primary-50/30 backdrop-blur-md rounded-2xl border border-white/50 shadow-card hover:shadow-card-hover p-6 flex flex-col gap-3 transition-all"
+        className="bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 shadow-2xl p-7 flex flex-col gap-4 transition-all relative overflow-hidden group"
     >
-        <p className="text-[10px] font-bold uppercase tracking-widest text-primary-400">{label}</p>
-        <p className={`text-4xl font-black ${accent ?? 'text-primary-900'}`}>{toNum(value).toLocaleString()}</p>
+        <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12 blur-2xl group-hover:bg-primary/10 transition-all" />
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 relative">{label}</p>
+        <p className={`text-4xl font-black tracking-tight relative ${accent ?? 'text-white'}`}>{toNum(value).toLocaleString()}</p>
+        
         {bar !== undefined && (
-            <div className="h-2 bg-primary-100/40 rounded-full overflow-hidden mt-1">
+            <div className="h-1.5 bg-white/5 rounded-full overflow-hidden mt-1 relative">
                 <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${bar}%` }}
                     transition={{ duration: 1, delay: Math.random() * 0.3 }}
-                    className={`h-full rounded-full ${barColor ?? 'bg-primary-500'}`} 
+                    className={`h-full rounded-full ${barColor ?? 'bg-primary'}`} 
                 />
             </div>
         )}
-        {sub && <p className="text-[10px] font-medium text-primary-500 flex items-center gap-1.5">
-            <span className={`w-1.5 h-1.5 rounded-full ${barColor ?? 'bg-primary-500'}`} />
-            {sub}
-        </p>}
+        
+        {sub && (
+            <div className="flex items-center gap-2 relative">
+                <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${barColor ?? 'bg-primary'}`} />
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{sub}</p>
+            </div>
+        )}
     </motion.div>
 );
 
 // ── Quick Action Card ──────────────────────────────────────────────────────
 const ActionCard = ({ to, label, desc, icon }) => (
-    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+    <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
         <Link
             to={to}
-            className="flex items-center gap-4 bg-gradient-to-br from-white via-white/95 to-primary-50/20 backdrop-blur-md rounded-2xl border border-primary-200/40 shadow-card hover:shadow-card-hover p-5 hover:border-primary-300/60 transition-all group"
+            className="flex items-center gap-5 bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 shadow-2xl p-6 hover:bg-white/[0.08] hover:border-white/20 transition-all group relative overflow-hidden"
         >
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-100 to-primary-50 text-primary-600 text-2xl flex items-center justify-center shrink-0 group-hover:from-primary-500 group-hover:to-primary-600 group-hover:text-white transition-all shadow-sm shadow-primary-500/20">
+            <div className="absolute top-0 right-0 w-20 h-20 bg-primary/5 rounded-full -mr-10 -mt-10 blur-xl group-hover:bg-primary/10 transition-all pointer-events-none" />
+            <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 text-primary text-2xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform shadow-inner">
                 {icon}
             </div>
-            <div>
-                <p className="font-bold text-slate-900 text-sm">{label}</p>
-                <p className="text-[10px] text-primary-500 mt-0.5 font-medium">{desc}</p>
+            <div className="min-w-0">
+                <p className="font-black text-white text-base uppercase tracking-tight truncate">{label}</p>
+                <p className="text-[10px] text-slate-500 mt-1 font-bold uppercase tracking-widest truncate">{desc}</p>
             </div>
-            <span className="ml-auto text-primary-300 group-hover:text-primary-600 text-lg translate-x-0 group-hover:translate-x-1 transition-transform">›</span>
+            <span className="ml-auto text-slate-600 group-hover:text-primary transition-colors text-xl">→</span>
         </Link>
     </motion.div>
 );
@@ -169,8 +175,9 @@ const AdminDashboard = () => {
         >
             {/* ── Page Title ── */}
             <motion.div variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0 } }}>
-                <h1 className="text-3xl font-black text-slate-900 tracking-tight">Dashboard Overview</h1>
-                <p className="text-sm font-medium text-slate-400 mt-1">NDM Student Movement · Admin Insights</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Platform Intelligence</p>
+                <h1 className="mt-3 text-4xl font-black text-white tracking-tight uppercase">Dashboard Overview</h1>
+                <p className="text-sm font-medium text-slate-400 mt-2 leading-relaxed max-w-2xl">Real-time analytical insights and administrative supervision for the NDM Student Movement global cluster.</p>
             </motion.div>
 
             {/* ── Quick Actions ── */}
@@ -239,27 +246,27 @@ const AdminDashboard = () => {
             {/* ── Middle Row ── */}
             <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="grid grid-cols-1 xl:grid-cols-3 gap-4">
                 {/* Units breakdown */}
-                <div className="bg-white/70 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm overflow-hidden">
-                    <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/30">
-                        <h2 className="text-sm font-bold text-slate-900">Units by Tier</h2>
-                        <p className="text-[10px] font-medium text-slate-400 mt-0.5 uppercase tracking-wider">Organizational Distribution</p>
+                <div className="bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 shadow-2xl overflow-hidden group">
+                    <div className="px-8 py-6 border-b border-white/5 bg-white/[0.02]">
+                        <h2 className="text-sm font-black text-white uppercase tracking-tight">Hierarchy Topology</h2>
+                        <p className="text-[10px] font-bold text-slate-500 mt-1 uppercase tracking-widest leading-relaxed">Organizational Distribution</p>
                     </div>
-                    <div className="p-6 space-y-4">
+                    <div className="p-8 space-y-5">
                         {UNIT_ORDER.map((type) => {
                             const count = toNum(unitsByType[type]);
                             const pct   = toPercent(count, totalUnits || 1);
                             return (
-                                <div key={type}>
-                                    <div className="flex justify-between text-xs mb-1.5">
-                                        <span className="text-slate-500 font-semibold">{UNIT_LABELS[type]}</span>
-                                        <span className="font-black text-slate-900">{count}</span>
+                                <div key={type} className="group/item">
+                                    <div className="flex justify-between text-[11px] mb-2 font-bold uppercase tracking-widest">
+                                        <span className="text-slate-400 group-hover/item:text-slate-200 transition-colors">{UNIT_LABELS[type]}</span>
+                                        <span className="text-white">{count}</span>
                                     </div>
-                                    <div className="h-1.5 bg-slate-100/50 rounded-full overflow-hidden">
+                                    <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
                                         <motion.div
                                             initial={{ width: 0 }}
                                             animate={{ width: `${pct}%` }}
                                             transition={{ duration: 1, delay: 0.5 }}
-                                            className={`h-full rounded-full ${UNIT_COLORS[type]}`}
+                                            className={`h-full rounded-full ${UNIT_COLORS[type]} opacity-80 group-hover/item:opacity-100 transition-opacity`}
                                         />
                                     </div>
                                 </div>
@@ -269,50 +276,48 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* Pending approvals table */}
-                <div className="xl:col-span-2 bg-white/70 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm overflow-hidden">
-                    <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/30 flex items-center justify-between">
+                <div className="xl:col-span-2 bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 shadow-2xl overflow-hidden">
+                    <div className="px-8 py-6 border-b border-white/5 bg-white/[0.02] flex items-center justify-between gap-4">
                         <div>
-                            <h2 className="text-sm font-bold text-slate-900">Pending Approvals</h2>
-                            <p className="text-[10px] font-medium text-slate-400 mt-0.5 uppercase tracking-wider">Registration Queue</p>
+                            <h2 className="text-sm font-black text-white uppercase tracking-tight">Onboarding Queue</h2>
+                            <p className="text-[10px] font-bold text-slate-500 mt-1 uppercase tracking-widest leading-relaxed">Registration Approvals Pending</p>
                         </div>
                         <Link
                             to="/dashboard/admin/members/pending"
-                            className="text-xs px-3 py-1.5 rounded-lg bg-amber-400 text-slate-900 font-bold hover:bg-amber-500 transition-colors shadow-sm shadow-amber-500/20"
+                            className="text-[10px] px-5 py-2.5 rounded-xl bg-primary text-slate-900 font-black uppercase tracking-widest hover:bg-emerald-400 transition-all shadow-lg shadow-primary/20 shrink-0"
                         >
                             Open Queue
                         </Link>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
-                            <thead className="bg-slate-50/50 border-b border-slate-100">
-                                <tr className="text-left text-[10px] uppercase tracking-wider text-slate-400 font-black">
-                                    <th className="px-6 py-3">Member</th>
-                                    <th className="px-6 py-3">Contact</th>
-                                    <th className="px-6 py-3">Unit</th>
-                                    <th className="px-6 py-3">Applied</th>
+                            <thead>
+                                <tr className="text-left text-[10px] uppercase tracking-[0.15em] text-slate-500 font-black border-b border-white/5">
+                                    <th className="px-8 py-5">Identity Snapshot</th>
+                                    <th className="px-8 py-5">Uplink / Unit</th>
+                                    <th className="px-8 py-5">Timeline</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-50/50">
+                            <tbody className="divide-y divide-white/5">
                                 {pendingMembers.length === 0 && (
                                     <tr>
-                                        <td colSpan={4} className="px-6 py-8 text-slate-400 text-center font-medium">
-                                            No pending applications — all clear!
+                                        <td colSpan={3} className="px-8 py-12 text-slate-500 text-center font-bold uppercase tracking-widest text-xs italic">
+                                            No pending applications — Cluster Sync Complete
                                         </td>
                                     </tr>
                                 )}
                                 {pendingMembers.map((m) => (
-                                    <tr key={m.id} className="hover:bg-slate-50/50 transition-colors">
-                                        <td className="px-6 py-4">
-                                            <p className="font-bold text-slate-900">{m.full_name}</p>
-                                            <p className="text-[10px] font-mono text-slate-400">{m.member_id || 'PENDING'}</p>
+                                    <tr key={m.id} className="hover:bg-white/[0.02] transition-colors group">
+                                        <td className="px-8 py-5">
+                                            <p className="font-black text-slate-200 group-hover:text-white transition-colors">{m.full_name}</p>
+                                            <p className="text-[10px] font-bold text-slate-500 mt-1 uppercase tracking-widest">{m.mobile || '—'}</p>
                                         </td>
-                                        <td className="px-6 py-4 text-slate-600 font-medium">{m.mobile || m.phone || '—'}</td>
-                                        <td className="px-6 py-4">
-                                          <span className="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 text-[10px] font-bold ring-1 ring-blue-700/10 uppercase tracking-tighter">
-                                              {m.organizational_unit?.name || 'Unassigned'}
+                                        <td className="px-8 py-5">
+                                          <span className="px-3 py-1 rounded-md bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest ring-1 ring-primary/20">
+                                              {m.organizational_unit?.name || 'Unassigned Cluster'}
                                           </span>
                                         </td>
-                                        <td className="px-6 py-4 text-slate-400 text-[10px] font-medium whitespace-nowrap">{formatDate(m.created_at)}</td>
+                                        <td className="px-8 py-5 text-slate-500 text-[10px] font-black uppercase tracking-widest whitespace-nowrap">{formatDate(m.created_at)}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -324,29 +329,29 @@ const AdminDashboard = () => {
             {/* ── Bottom Row ── */}
             <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                 {/* Members by Year */}
-                <div className="bg-white/70 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm overflow-hidden">
-                    <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/30">
-                        <h2 className="text-sm font-bold text-slate-900">Growth Trends</h2>
-                        <p className="text-[10px] font-medium text-slate-400 mt-0.5 uppercase tracking-wider">Members by Join Year</p>
+                <div className="bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 shadow-2xl overflow-hidden group">
+                    <div className="px-8 py-6 border-b border-white/5 bg-white/[0.02]">
+                        <h2 className="text-sm font-black text-white uppercase tracking-tight">Temporal Growth</h2>
+                        <p className="text-[10px] font-bold text-slate-500 mt-1 uppercase tracking-widest leading-relaxed">Members by Join Year</p>
                     </div>
-                    <div className="p-6">
+                    <div className="p-8 space-y-5">
                         {(stats?.members_by_year ?? []).length === 0 && (
-                            <p className="text-sm text-slate-400">No yearly data yet.</p>
+                            <p className="text-xs text-slate-500 font-bold uppercase tracking-widest italic">No historical data available.</p>
                         )}
                         {(stats?.members_by_year ?? []).map((item) => {
                             const pct = toPercent(item.count, totalMembers || 1);
                             return (
-                                <div key={item.year} className="mb-4 last:mb-0">
-                                    <div className="flex justify-between text-xs mb-1.5">
-                                        <span className="text-slate-500 font-semibold">{item.year}</span>
-                                        <span className="font-black text-slate-900">{toNum(item.count).toLocaleString()}</span>
+                                <div key={item.year} className="group/item">
+                                    <div className="flex justify-between text-[11px] mb-2 font-bold uppercase tracking-widest">
+                                        <span className="text-slate-400 group-hover/item:text-slate-200 transition-colors">{item.year} Cluster</span>
+                                        <span className="text-white">{toNum(item.count).toLocaleString()}</span>
                                     </div>
-                                    <div className="h-1.5 bg-slate-100/50 rounded-full overflow-hidden">
+                                    <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
                                         <motion.div
                                             initial={{ width: 0 }}
                                             animate={{ width: `${pct}%` }}
                                             transition={{ duration: 1, delay: 0.8 }}
-                                            className="h-full bg-blue-500 rounded-full"
+                                            className="h-full bg-primary/60 rounded-full group-hover/item:bg-primary transition-colors"
                                         />
                                     </div>
                                 </div>
@@ -356,31 +361,39 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* Recent Activity */}
-                <div className="bg-white/70 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm overflow-hidden">
-                    <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/30">
-                        <h2 className="text-sm font-bold text-slate-900">Recent Pulse</h2>
-                        <p className="text-[10px] font-medium text-slate-400 mt-0.5 uppercase tracking-wider">System-wide events</p>
+                <div className="bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 shadow-2xl overflow-hidden group">
+                    <div className="px-8 py-6 border-b border-white/5 bg-white/[0.02]">
+                        <h2 className="text-sm font-black text-white uppercase tracking-tight">Recent Pulse</h2>
+                        <p className="text-[10px] font-bold text-slate-500 mt-1 uppercase tracking-widest leading-relaxed">Infrastructure Broadcast History</p>
                     </div>
-                    <div className="p-6 divide-y divide-slate-100/50">
+                    <div className="p-4 space-y-1">
                         {activity.length === 0 && (
-                            <p className="text-sm text-slate-400">No activity recorded yet.</p>
+                            <p className="px-4 py-8 text-xs text-slate-500 font-bold uppercase tracking-widest italic text-center">No broadcast activity recorded.</p>
                         )}
                         {activity.slice(0, 8).map((log) => {
                             const meta = activityMeta(log.action);
+                            // Convert standard colors to glass-friendly colors
+                            const getGlassColor = (c) => {
+                                if (c.includes('green')) return 'bg-emerald-500/20 text-emerald-400 ring-emerald-500/30';
+                                if (c.includes('blue'))  return 'bg-primary/20 text-primary ring-primary/30';
+                                if (c.includes('violet')) return 'bg-indigo-500/20 text-indigo-400 ring-indigo-500/30';
+                                if (c.includes('red'))    return 'bg-rose-500/20 text-rose-400 ring-rose-500/30';
+                                return 'bg-white/10 text-slate-400 ring-white/20';
+                            };
                             return (
-                                <div key={log.id} className="flex items-start gap-4 py-4 first:pt-0 last:pb-0 group transition-colors">
-                                    <span className={`mt-0.5 px-2.5 py-1 rounded-lg text-[10px] font-black shrink-0 shadow-sm ring-1 ring-black/5 ${meta.color} uppercase tracking-tighter`}>
+                                <div key={log.id} className="flex items-start gap-5 px-4 py-4 rounded-2xl hover:bg-white/[0.03] transition-all group/activity">
+                                    <span className={`mt-0.5 px-3 py-1.5 rounded-lg text-[10px] font-black shrink-0 ring-1 shadow-inner ${getGlassColor(meta.color)} uppercase tracking-widest`}>
                                         {meta.label}
                                     </span>
                                     <div className="min-w-0">
-                                        <p className="text-sm font-bold text-slate-800 truncate group-hover:text-primary transition-colors">
+                                        <p className="text-sm font-black text-slate-200 group-hover/activity:text-white transition-colors truncate">
                                             {log.action}
                                         </p>
-                                        <p className="text-[10px] font-medium text-slate-400 mt-1 flex items-center gap-2">
-                                            <span className="text-slate-500 font-bold">{log.performed_by ?? 'System-bot'}</span>
-                                            <span>•</span>
-                                            <span>{formatDate(log.performed_at)}</span>
-                                        </p>
+                                        <div className="text-[10px] font-bold text-slate-500 mt-1.5 flex items-center gap-2 uppercase tracking-widest">
+                                            <span className="text-primary truncate">{log.performed_by ?? 'System-bot'}</span>
+                                            <span className="opacity-30">•</span>
+                                            <span className="whitespace-nowrap">{formatDate(log.performed_at)}</span>
+                                        </div>
                                     </div>
                                 </div>
                             );

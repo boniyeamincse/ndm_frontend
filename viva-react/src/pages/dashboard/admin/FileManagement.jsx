@@ -46,81 +46,85 @@ const FileManagement = () => {
   };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-      {/* ── Header ── */}
-      <div className="rounded-2xl bg-gradient-to-br from-white via-white/95 to-primary-50/20 border border-primary-200/30 p-6">
-        <h1 className="text-3xl font-black text-slate-900">File Management</h1>
-        <p className="text-sm text-primary-600 font-medium mt-1">Upload, organize, and manage organization files</p>
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-7xl mx-auto p-6 space-y-8 pb-20">
+      {/* ── Page Header ── */}
+      <div className="rounded-[2.5rem] bg-white/5 backdrop-blur-xl px-10 py-10 border border-white/10 shadow-2xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full -mr-40 -mt-40 blur-3xl opacity-50 group-hover:bg-primary/10 transition-all pointer-events-none" />
+        <div className="relative">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Storage Governance</p>
+          <h1 className="mt-3 text-4xl font-black text-white tracking-tight uppercase">Data Vault Protocol</h1>
+          <p className="text-sm font-medium text-slate-400 mt-2 max-w-2xl">Manage organizational assets, canonical documentation, and encrypted registry exports within the NDM secure storage cluster.</p>
+        </div>
       </div>
 
       {/* ── Upload Section ── */}
-      <div className="rounded-2xl border border-primary-200/30 bg-white p-6">
-        <h2 className="text-lg font-bold text-slate-900 mb-4">Upload Files</h2>
-        <div className="border-2 border-dashed border-primary-300 rounded-lg p-8 text-center bg-primary-50/30 hover:bg-primary-50 transition-colors cursor-pointer">
+      <div className="rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl p-10 shadow-2xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-30" />
+        <h2 className="text-xl font-black text-white uppercase tracking-tight mb-8 relative">Ingest New Assets</h2>
+        <div className="border-2 border-dashed border-white/10 rounded-[2rem] p-12 text-center bg-white/[0.02] hover:bg-white/[0.05] hover:border-primary/40 transition-all group/upload cursor-pointer relative z-10">
           <input type="file" className="hidden" id="file-upload" multiple />
           <label htmlFor="file-upload" className="block cursor-pointer">
-            <p className="text-4xl mb-3">📁</p>
-            <p className="text-lg font-bold text-primary-700">Click to upload files</p>
-            <p className="text-sm text-slate-500 mt-1">or drag and drop</p>
-            <p className="text-xs text-slate-400 mt-2">Supported: PDF, CSV, XLSX, DOCX, Images up to 50 MB</p>
+            <p className="text-4xl mb-4 group-hover/upload:scale-110 transition-transform">📁</p>
+            <p className="text-sm font-black text-white uppercase tracking-widest">Initialize Asset Transfer</p>
+            <p className="text-[10px] text-slate-500 mt-2 font-bold uppercase tracking-widest">or drop entities into the buffer</p>
+            <p className="text-[9px] text-slate-600 mt-4 font-black uppercase tracking-[0.15em]">Limit: 50MB per cluster unit · PDF, CSV, XLSX, DOCX</p>
           </label>
         </div>
-        <div className="mt-4 p-3 rounded-lg bg-primary-50 border border-primary-200">
-          <p className="text-xs font-bold uppercase tracking-wider text-primary-600 mb-2">Upload Progress</p>
-          <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+        <div className="mt-8 p-6 rounded-2xl bg-white/[0.02] border border-white/5 shadow-inner relative z-10">
+          <div className="flex justify-between items-end mb-3">
+            <p className="text-[9px] font-black uppercase tracking-widest text-primary">Transfer Synchronicity</p>
+            <p className="text-xs font-black text-white tabular-nums">{uploadProgress > 0 && uploadProgress < 100 ? `${Math.floor(uploadProgress)}%` : uploadProgress === 100 ? 'SUCCESS' : 'STANDBY'}</p>
+          </div>
+          <div className="h-1.5 bg-white/10 rounded-full overflow-hidden shadow-inner">
             <motion.div
               initial={{ width: '0%' }}
               animate={{ width: `${uploadProgress}%` }}
               transition={{ duration: 0.3 }}
-              className="h-full bg-primary-600 rounded-full"
+              className="h-full bg-primary rounded-full shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]"
             />
           </div>
-          <p className="text-xs text-primary-600 mt-2">{uploadProgress > 0 && uploadProgress < 100 ? `Uploading... ${Math.floor(uploadProgress)}%` : ''}</p>
         </div>
       </div>
 
       {/* ── Storage Stats ── */}
-      <div className="grid md:grid-cols-4 gap-4">
-        <div className="rounded-2xl border border-primary-200/30 bg-gradient-to-br from-blue-50 to-blue-100/30 p-5">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-blue-600">Total Files</p>
-          <p className="text-3xl font-black text-blue-900 mt-2">{files.length}</p>
-        </div>
-        <div className="rounded-2xl border border-primary-200/30 bg-gradient-to-br from-amber-50 to-amber-100/30 p-5">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-amber-600">Total Size</p>
-          <p className="text-3xl font-black text-amber-900 mt-2">12.5 MB</p>
-        </div>
-        <div className="rounded-2xl border border-primary-200/30 bg-gradient-to-br from-emerald-50 to-emerald-100/30 p-5">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-600">Storage Used</p>
-          <p className="text-3xl font-black text-emerald-900 mt-2">42%</p>
-          <div className="h-1.5 bg-emerald-200 rounded-full mt-2 overflow-hidden">
-            <div className="h-full bg-emerald-600" style={{ width: '42%' }} />
+      <div className="grid md:grid-cols-4 gap-6">
+        {[
+          { label: 'Total Assets', val: files.length, color: 'text-primary', bg: 'bg-primary/5', border: 'border-primary/20' },
+          { label: 'Cluster Load', val: '12.5 MB', color: 'text-amber-400', bg: 'bg-amber-500/5', border: 'border-amber-500/20' },
+          { label: 'Quota Usage', val: '42%', color: 'text-emerald-400', bg: 'bg-emerald-500/5', border: 'border-emerald-500/20', bar: 42 },
+          { label: 'Shared Nodes', val: '01', color: 'text-violet-400', bg: 'bg-violet-500/5', border: 'border-violet-500/20' },
+        ].map((stat, i) => (
+          <div key={i} className={`rounded-[2rem] border ${stat.border} ${stat.bg} p-8 backdrop-blur-xl shadow-xl transition-all hover:scale-[1.02]`}>
+            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">{stat.label}</p>
+            <p className={`text-3xl font-black mt-3 uppercase tracking-tighter ${stat.color}`}>{stat.val}</p>
+            {stat.bar && (
+              <div className="h-1 bg-white/5 rounded-full mt-4 overflow-hidden">
+                <div className="h-full bg-emerald-500" style={{ width: `${stat.bar}%` }} />
+              </div>
+            )}
           </div>
-        </div>
-        <div className="rounded-2xl border border-primary-200/30 bg-gradient-to-br from-violet-50 to-violet-100/30 p-5">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-violet-600">Shared Files</p>
-          <p className="text-3xl font-black text-violet-900 mt-2">1</p>
-        </div>
+        ))}
       </div>
 
       {/* ── File Browser ── */}
-      <div className="grid lg:grid-cols-4 gap-6">
+      <div className="grid lg:grid-cols-4 gap-8">
         {/* Sidebar */}
-        <div className="rounded-2xl border border-primary-200/30 bg-white p-5 h-fit">
-          <h3 className="font-bold text-slate-900 mb-3">Categories</h3>
-          <div className="space-y-2">
+        <div className="rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl p-8 h-fit shadow-2xl space-y-6">
+          <h3 className="text-xs font-black text-white uppercase tracking-widest mb-6 border-b border-white/5 pb-4">Sectors</h3>
+          <div className="space-y-3">
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setActiveFilter(cat.id)}
-                className={`w-full text-left px-4 py-2.5 rounded-lg transition-all flex items-center justify-between ${
+                className={`w-full text-left px-5 py-4 rounded-2xl transition-all flex items-center justify-between group/cat ${
                   activeFilter === cat.id
-                    ? 'bg-primary-50 border border-primary-300 text-primary-700 font-bold'
-                    : 'hover:bg-slate-50 text-slate-700'
+                    ? 'bg-primary text-slate-900 font-black shadow-lg shadow-primary/20'
+                    : 'bg-white/5 border border-transparent hover:border-white/10 text-slate-400 hover:text-white'
                 }`}
               >
-                <span>{cat.label}</span>
-                <span className="text-xs font-bold bg-slate-100 text-slate-700 px-2 py-1 rounded">
-                  {cat.count}
+                <span className="text-[10px] uppercase tracking-widest leading-none">{cat.label}</span>
+                <span className={`text-[9px] font-black px-2 py-1 rounded-md ${activeFilter === cat.id ? 'bg-slate-900 text-primary' : 'bg-white/10 text-slate-500'}`}>
+                  {cat.count < 10 ? `0${cat.count}` : cat.count}
                 </span>
               </button>
             ))}
@@ -128,9 +132,12 @@ const FileManagement = () => {
         </div>
 
         {/* File List */}
-        <div className="lg:col-span-3 rounded-2xl border border-primary-200/30 bg-white p-6">
-          <h3 className="font-bold text-slate-900 mb-4">Files in {categories.find((c) => c.id === activeFilter)?.label}</h3>
-          <div className="space-y-2">
+        <div className="lg:col-span-3 rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl p-10 shadow-2xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-30" />
+          <h3 className="text-xl font-black text-white uppercase tracking-tight mb-8 relative">
+            Sector Content: {categories.find((c) => c.id === activeFilter)?.label.toUpperCase()}
+          </h3>
+          <div className="space-y-4 relative">
             {files.map((file) => {
               const fileInfo = getFileIcon(file.type);
               return (
@@ -138,31 +145,33 @@ const FileManagement = () => {
                   key={file.id}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="flex items-center justify-between p-4 rounded-lg border border-primary-200/20 hover:bg-primary-50/30 transition-colors group"
+                  className="flex items-center justify-between p-6 rounded-[1.5rem] border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/10 transition-all group/file"
                 >
-                  <div className="flex items-center gap-4 flex-1">
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-lg ${fileInfo.color}`}>
+                  <div className="flex items-center gap-6 flex-1">
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl shadow-inner ${fileInfo.color.replace('bg-', 'bg-').replace('-100', '/10').replace('text-', 'text-').replace('-700', '-400')}`}>
                       {fileInfo.icon}
                     </div>
                     <div className="flex-1">
-                      <p className="font-bold text-slate-900 text-sm">{file.name}</p>
-                      <p className="text-xs text-slate-500 mt-0.5">
-                        {file.size} • Uploaded by {file.uploadedBy} • {file.uploadedAt}
+                      <p className="font-black text-white text-sm uppercase tracking-tight group-hover/file:text-primary transition-colors">{file.name}</p>
+                      <p className="text-[10px] text-slate-500 mt-1 font-bold uppercase tracking-widest flex items-center gap-3">
+                        {file.size} <span className="w-1 h-1 rounded-full bg-slate-800" /> 
+                        BY {file.uploadedBy.toUpperCase()} <span className="w-1 h-1 rounded-full bg-slate-800" /> 
+                        {file.uploadedAt}
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-4">
                     <span
-                      className={`text-xs font-bold px-2.5 py-1 rounded-lg ${
+                      className={`text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-md ring-1 ${
                         file.access === 'public'
-                          ? 'bg-emerald-100 text-emerald-700'
-                          : 'bg-amber-100 text-amber-700'
+                          ? 'bg-emerald-500/10 text-emerald-400 ring-emerald-500/20'
+                          : 'bg-amber-500/10 text-amber-400 ring-amber-500/20'
                       }`}
                     >
-                      {file.access === 'public' ? '🌐 Public' : '🔒 Private'}
+                      {file.access.toUpperCase()} PROTOCOL
                     </span>
-                    <button className="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-bold hover:bg-slate-200 opacity-0 group-hover:opacity-100 transition-opacity">
-                      ⋮
+                    <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 text-slate-500 hover:text-white hover:bg-white/10 transition-all">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" /></svg>
                     </button>
                   </div>
                 </motion.div>
@@ -173,19 +182,25 @@ const FileManagement = () => {
       </div>
 
       {/* ── Recently Accessed ── */}
-      <div className="rounded-2xl border border-primary-200/30 bg-white p-6">
-        <h2 className="text-lg font-bold text-slate-900 mb-4">Recently Accessed</h2>
-        <div className="grid md:grid-cols-3 gap-4">
+      <div className="rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl p-10 shadow-2xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-30" />
+        <h2 className="text-xl font-black text-white uppercase tracking-tight mb-8 relative">Cache Manifest (Recent)</h2>
+        <div className="grid md:grid-cols-3 gap-6 relative">
           {files.slice(0, 3).map((file) => {
             const fileInfo = getFileIcon(file.type);
             return (
-              <div key={file.id} className="rounded-lg border border-primary-200/20 p-4 hover:bg-primary-50/30 transition-colors cursor-pointer">
-                <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-2xl ${fileInfo.color} mb-3`}>
+              <div key={file.id} className="rounded-3xl border border-white/5 bg-white/[0.02] p-8 hover:bg-white/5 hover:border-white/10 hover:scale-[1.02] transition-all cursor-pointer group/card">
+                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shadow-inner mb-6 ${fileInfo.color.replace('bg-', 'bg-').replace('-100', '/10').replace('text-', 'text-').replace('-700', '-400')}`}>
                   {fileInfo.icon}
                 </div>
-                <p className="font-bold text-slate-900 text-sm truncate">{file.name}</p>
-                <p className="text-xs text-slate-500 mt-1">{file.size}</p>
-                <p className="text-xs text-slate-400 mt-2">Modified: {file.uploadedAt}</p>
+                <p className="font-black text-white text-sm uppercase tracking-tight group-hover/card:text-primary transition-colors truncate">{file.name}</p>
+                <div className="mt-4 flex flex-col gap-2">
+                    <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-700" />
+                        {file.size}
+                    </p>
+                    <p className="text-[9px] text-slate-600 font-black uppercase tracking-widest">MODIFIED: {file.uploadedAt}</p>
+                </div>
               </div>
             );
           })}

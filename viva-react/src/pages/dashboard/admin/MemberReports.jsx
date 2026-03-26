@@ -88,134 +88,143 @@ const MemberReports = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">Member Reports</h1>
-        <p className="text-sm text-slate-500 mt-1">Export member data as a formatted PDF or Excel-compatible CSV.</p>
+    <div className="max-w-4xl mx-auto p-6 space-y-8 pb-20">
+      {/* ── Page Header ── */}
+      <div className="rounded-[2.5rem] bg-white/5 backdrop-blur-xl px-10 py-10 border border-white/10 shadow-2xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full -mr-40 -mt-40 blur-3xl opacity-50 group-hover:bg-primary/10 transition-all pointer-events-none" />
+        <div className="relative">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Data Extraction</p>
+          <h1 className="mt-3 text-4xl font-black text-white tracking-tight uppercase">Intelligence Harvesting</h1>
+          <p className="text-sm font-medium text-slate-400 mt-2 max-w-2xl">Execute high-fidelity data exports from the core member registry. Generate canonical documentation and analytical manifests.</p>
+        </div>
       </div>
 
       {/* Alerts */}
-      {error && (
-        <div className="px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">{error}</div>
-      )}
-      {successMsg && (
-        <div className="px-4 py-3 rounded-xl bg-green-50 border border-green-200 text-sm text-green-700">{successMsg}</div>
-      )}
+      <div className="space-y-4 animate-in fade-in duration-500">
+        {error && (
+          <div className="px-6 py-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-[10px] font-black uppercase tracking-widest text-rose-400 flex items-center gap-3">
+            <span className="text-lg">⚠</span> {error}
+          </div>
+        )}
+        {successMsg && (
+          <div className="px-6 py-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-black uppercase tracking-widest text-emerald-400 flex items-center gap-3">
+            <span className="text-lg">✓</span> {successMsg}
+          </div>
+        )}
+      </div>
 
       {/* Filter card */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-5">
-        <h2 className="text-sm font-semibold text-slate-800">Filter Report Data</h2>
-        <p className="text-xs text-slate-500">Leave all filters blank to export all members.</p>
-
-        <div className="grid sm:grid-cols-3 gap-4">
+      <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-10 shadow-2xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-20" />
+        <div className="flex justify-between items-start mb-10 relative">
           <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Member Status</label>
-            <select
-              value={filters.status}
-              onChange={e => setF('status', e.target.value)}
-              className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30"
-            >
-              <option value="">All Statuses</option>
-              <option value="active">Active</option>
-              <option value="pending">Pending</option>
-              <option value="suspended">Suspended</option>
-              <option value="expelled">Expelled</option>
-            </select>
+            <h2 className="text-xl font-black text-white uppercase tracking-tight">Export Parameters</h2>
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">Define vector coordinates for data extraction.</p>
           </div>
+          <div className="px-4 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[9px] font-black text-slate-500 uppercase tracking-widest">
+            {filters.status || filters.unit_id || filters.year ? 'FILTER_ACTIVE' : 'GLOBAL_DUMP'}
+          </div>
+        </div>
 
-          <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Organizational Unit</label>
-            <select
-              value={filters.unit_id}
-              onChange={e => setF('unit_id', e.target.value)}
-              className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30"
-            >
-              <option value="">All Units</option>
-              {units.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Join Year</label>
-            <select
-              value={filters.year}
-              onChange={e => setF('year', e.target.value)}
-              className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30"
-            >
-              <option value="">All Years</option>
-              {YEARS.map(y => <option key={y} value={y}>{y}</option>)}
-            </select>
-          </div>
+        <div className="grid sm:grid-cols-3 gap-8 relative">
+          {[
+            { label: 'Member Status', key: 'status', options: [
+              { val: '', label: 'ALL_STATUSES' },
+              { val: 'active', label: 'ACTIVE' },
+              { val: 'pending', label: 'PENDING' },
+              { val: 'suspended', label: 'SUSPENDED' },
+              { val: 'expelled', label: 'EXPELLED' }
+            ]},
+            { label: 'Org Unit', key: 'unit_id', options: [
+              { val: '', label: 'ALL_UNITS' },
+              ...units.map(u => ({ val: u.id, label: u.name.toUpperCase() }))
+            ]},
+            { label: 'Join Cycle', key: 'year', options: [
+              { val: '', label: 'ALL_CYCLES' },
+              ...YEARS.map(y => ({ val: y, label: y }))
+            ]}
+          ].map((field, i) => (
+            <div key={i} className="space-y-3">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">{field.label}</label>
+              <select
+                value={filters[field.key]}
+                onChange={e => setF(field.key, e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-xs text-white font-black uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/40 appearance-none cursor-pointer hover:bg-white/[0.08] transition-all shadow-inner"
+              >
+                {field.options.map((opt, j) => (
+                  <option key={j} value={opt.val} className="bg-slate-900">{opt.label}</option>
+                ))}
+              </select>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Download cards */}
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-2 gap-8">
         {/* PDF */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col gap-4">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center text-2xl flex-shrink-0">
+        <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-10 flex flex-col gap-8 shadow-2xl relative overflow-hidden group/pdf transition-all hover:bg-white/[0.07]">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/5 rounded-full -mr-16 -mt-16 blur-2xl opacity-50 group-hover/pdf:opacity-100 transition-opacity" />
+          <div className="flex items-start gap-6 relative">
+            <div className="w-16 h-16 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-3xl shadow-inner group-hover/pdf:scale-110 transition-transform">
               📄
             </div>
             <div>
-              <h3 className="font-semibold text-slate-900 text-sm">PDF Report</h3>
-              <p className="text-xs text-slate-500 mt-1">
-                Formatted A4 landscape report with summary stats, status badges, and a print-ready table.
-              </p>
+              <h3 className="font-black text-white text-xl uppercase tracking-tight">Canonical PDF</h3>
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">A4 Standard · Print Ready</p>
             </div>
           </div>
-          <div className="text-xs text-slate-400 bg-slate-50 rounded-lg px-3 py-2 space-y-0.5">
-            <p>• NDM header + generation timestamp</p>
-            <p>• Summary totals by status</p>
-            <p>• Full member table (11 columns)</p>
+          <div className="text-[9px] text-slate-500 font-black uppercase tracking-[0.15em] bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-5 space-y-2 relative">
+            <p className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-rose-500" /> NDM IDENTITY HEADER</p>
+            <p className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-rose-500" /> CLUSTER ANALYTICS SUMMARY</p>
+            <p className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-rose-500" /> 11-VECTOR DATA MATRIX</p>
           </div>
           <button
             onClick={downloadPdf}
             disabled={loadingPdf}
-            className="w-full py-2.5 bg-red-600 hover:bg-red-700 disabled:opacity-60 text-white font-semibold rounded-xl text-sm transition-colors flex items-center justify-center gap-2"
+            className="w-full py-5 bg-rose-600 hover:bg-rose-500 disabled:opacity-40 text-white font-black uppercase tracking-[0.2em] rounded-2xl text-[10px] transition-all shadow-xl shadow-rose-900/20 flex items-center justify-center gap-3 relative z-10 active:scale-95"
           >
             {loadingPdf ? (
-              <><span className="animate-spin">⟳</span> Generating…</>
+              <><span className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" /> SYNCHRONIZING...</>
             ) : (
-              <><span>↓</span> Download PDF</>
+              <>↓ INITIATE PDF DOWNLOAD</>
             )}
           </button>
         </div>
 
         {/* Excel / CSV */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col gap-4">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center text-2xl flex-shrink-0">
+        <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-10 flex flex-col gap-8 shadow-2xl relative overflow-hidden group/csv transition-all hover:bg-white/[0.07]">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full -mr-16 -mt-16 blur-2xl opacity-50 group-hover/csv:opacity-100 transition-opacity" />
+          <div className="flex items-start gap-6 relative">
+            <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-3xl shadow-inner group-hover/csv:scale-110 transition-transform">
               📊
             </div>
             <div>
-              <h3 className="font-semibold text-slate-900 text-sm">Excel / CSV Report</h3>
-              <p className="text-xs text-slate-500 mt-1">
-                CSV file with UTF-8 BOM — opens directly in Microsoft Excel and Google Sheets.
-              </p>
+              <h3 className="font-black text-white text-xl uppercase tracking-tight">Binary CSV/XLSX</h3>
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">UTF-8 BOM · Pivot Ready</p>
             </div>
           </div>
-          <div className="text-xs text-slate-400 bg-slate-50 rounded-lg px-3 py-2 space-y-0.5">
-            <p>• 18 data columns including all fields</p>
-            <p>• Compatible with Excel, Sheets, LibreOffice</p>
-            <p>• Sortable, filterable, pivot-ready</p>
+          <div className="text-[9px] text-slate-500 font-black uppercase tracking-[0.15em] bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-5 space-y-2 relative">
+            <p className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-emerald-500" /> 18-VECTOR EXTENDED SCHEMA</p>
+            <p className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-emerald-500" /> CROSS-SYSTEM COMPATIBILITY</p>
+            <p className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-emerald-500" /> ANALYTICS PRE-FORMATTED</p>
           </div>
           <button
             onClick={downloadCsv}
             disabled={loadingCsv}
-            className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white font-semibold rounded-xl text-sm transition-colors flex items-center justify-center gap-2"
+            className="w-full py-5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 text-white font-black uppercase tracking-[0.2em] rounded-2xl text-[10px] transition-all shadow-xl shadow-emerald-900/20 flex items-center justify-center gap-3 relative z-10 active:scale-95"
           >
             {loadingCsv ? (
-              <><span className="animate-spin">⟳</span> Generating…</>
+              <><span className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" /> SYNCHRONIZING...</>
             ) : (
-              <><span>↓</span> Download Excel / CSV</>
+              <>↓ INITIATE CSV HARVEST</>
             )}
           </button>
         </div>
       </div>
 
-      <p className="text-xs text-slate-400 text-center">
-        Reports are generated live from the database. Large datasets may take a moment.
+      <p className="text-[9px] text-slate-600 font-black uppercase tracking-[0.3em] text-center pt-8">
+        Harvested entities are ephemeral snapshots of the core registry. Periodic re-extraction advised.
       </p>
     </div>
   );

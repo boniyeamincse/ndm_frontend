@@ -5,25 +5,25 @@ import api from '../../../services/api';
 const AuditActionMeta = (action) => {
     const a = (action ?? '').toLowerCase();
     const types = {
-        'create': { label: 'Created', bg: 'bg-blue-100', text: 'text-blue-700', icon: '┼' },
-        'update': { label: 'Updated', bg: 'bg-amber-100', text: 'text-amber-700', icon: '⟳' },
-        'delete': { label: 'Deleted', bg: 'bg-red-100', text: 'text-red-700', icon: '✕' },
-        'restore': { label: 'Restored', bg: 'bg-green-100', text: 'text-green-700', icon: '↻' },
-        'approve': { label: 'Approved', bg: 'bg-emerald-100', text: 'text-emerald-700', icon: '✓' },
-        'reject': { label: 'Rejected', bg: 'bg-rose-100', text: 'text-rose-700', icon: '✗' },
-        'promote': { label: 'Promoted', bg: 'bg-purple-100', text: 'text-purple-700', icon: '▲' },
-        'demote': { label: 'Demoted', bg: 'bg-orange-100', text: 'text-orange-700', icon: '▼' },
-        'login': { label: 'Login', bg: 'bg-cyan-100', text: 'text-cyan-700', icon: '○' },
-        'logout': { label: 'Logout', bg: 'bg-slate-100', text: 'text-slate-700', icon: '◉' },
-        'export': { label: 'Exported', bg: 'bg-indigo-100', text: 'text-indigo-700', icon: '↗' },
-        'assign': { label: 'Assigned', bg: 'bg-violet-100', text: 'text-violet-700', icon: '→' },
+        'create': { label: 'Created', bg: 'bg-emerald-500/10', text: 'text-emerald-400', ring: 'ring-emerald-500/20', icon: '┼' },
+        'update': { label: 'Updated', bg: 'bg-primary/10', text: 'text-primary', ring: 'ring-primary/20', icon: '⟳' },
+        'delete': { label: 'Deleted', bg: 'bg-rose-500/10', text: 'text-rose-400', ring: 'ring-rose-500/20', icon: '✕' },
+        'restore': { label: 'Restored', bg: 'bg-indigo-500/10', text: 'text-indigo-400', ring: 'ring-indigo-500/20', icon: '↻' },
+        'approve': { label: 'Approved', bg: 'bg-emerald-500/20', text: 'text-emerald-400', ring: 'ring-emerald-500/30', icon: '✓' },
+        'reject': { label: 'Rejected', bg: 'bg-rose-500/20', text: 'text-rose-400', ring: 'ring-rose-500/30', icon: '✗' },
+        'promote': { label: 'Promoted', bg: 'bg-purple-500/10', text: 'text-purple-400', ring: 'ring-purple-500/20', icon: '▲' },
+        'demote': { label: 'Demoted', bg: 'bg-amber-500/10', text: 'text-amber-400', ring: 'ring-amber-500/20', icon: '▼' },
+        'login': { label: 'Login', bg: 'bg-cyan-500/10', text: 'text-cyan-400', ring: 'ring-cyan-500/20', icon: '○' },
+        'logout': { label: 'Logout', bg: 'bg-white/5', text: 'text-slate-400', ring: 'ring-white/10', icon: '◉' },
+        'export': { label: 'Exported', bg: 'bg-indigo-500/10', text: 'text-indigo-400', ring: 'ring-indigo-500/20', icon: '↗' },
+        'assign': { label: 'Assigned', bg: 'bg-violet-500/10', text: 'text-violet-400', ring: 'ring-violet-500/20', icon: '→' },
     };
 
     for (const [key, type] of Object.entries(types)) {
         if (a.includes(key)) return type;
     }
 
-    return { label: action ?? 'Action', bg: 'bg-slate-100', text: 'text-slate-700', icon: '•' };
+    return { label: action ?? 'Action', bg: 'bg-white/5', text: 'text-slate-400', ring: 'ring-white/10', icon: '•' };
 };
 
 const formatDate = (v) => {
@@ -113,100 +113,110 @@ const AuditLogs = () => {
     }
 
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-5">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
+            {/* ── Page Header ── */}
+            <div className="rounded-[2.5rem] bg-white/5 backdrop-blur-xl px-10 py-10 border border-white/10 shadow-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full -mr-40 -mt-40 blur-3xl opacity-50 group-hover:bg-primary/10 transition-all pointer-events-none" />
+                <div className="relative">
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Security Ledger</p>
+                    <h1 className="mt-3 text-4xl font-black text-white tracking-tight uppercase">Audit Transmissions</h1>
+                    <p className="text-sm font-medium text-slate-400 mt-2 max-w-2xl">High-fidelity immutable recordings of platform transactions and administrative interventions.</p>
+                </div>
+            </div>
+
             {/* ── Summary Cards ── */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                <div className="rounded-xl border border-primary-200/30 bg-gradient-to-br from-primary-50 to-primary-100/30 p-4">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-primary-500">Total Actions</p>
-                    <p className="text-2xl font-black text-primary-900 mt-1">{logs.length}</p>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div className="rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-xl p-6 group hover:bg-white/[0.08] transition-all">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-primary">Global Flux</p>
+                    <p className="text-3xl font-black text-white mt-1">{logs.length}</p>
+                    <p className="text-[10px] font-bold text-slate-500 mt-2 uppercase">Recorded Actions</p>
                 </div>
                 {statsByAction.map(([label, count]) => (
-                    <div key={label} className="rounded-xl border border-slate-200/50 bg-white/50 p-4">
-                        <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">{label}</p>
-                        <p className="text-2xl font-black text-slate-900 mt-1">{count}</p>
+                    <div key={label} className="rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-xl p-6 group hover:bg-white/[0.08] transition-all">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 group-hover:text-slate-300 transition-colors">{label}</p>
+                        <p className="text-3xl font-black text-white mt-1">{count}</p>
+                        <p className="text-[10px] font-bold text-slate-500 mt-2 uppercase tracking-widest">In Context</p>
                     </div>
                 ))}
             </div>
 
             {/* ── Filters ── */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white/5 backdrop-blur-xl p-6 rounded-[2rem] border border-white/10 shadow-inner">
                 <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Date Range</label>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2.5 ml-1">Temporal Window</label>
                     <select
                         value={filters.dateRange}
                         onChange={(e) => {
                             setFilters({ ...filters, dateRange: e.target.value });
                             setPage(1);
                         }}
-                        className="w-full px-3 py-2 rounded-lg border border-primary-200/40 bg-white text-sm text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/30"
+                        className="w-full px-5 py-3 rounded-xl border border-white/10 bg-white/5 text-xs text-white font-black uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/40 appearance-none cursor-pointer"
                     >
-                        <option value="day">Last 24 Hours</option>
-                        <option value="week">Last 7 Days</option>
-                        <option value="month">Last Month</option>
-                        <option value="quarter">Last 3 Months</option>
-                        <option value="">All Time</option>
+                        <option value="day" className="bg-slate-900 font-sans">Last 24 Hours</option>
+                        <option value="week" className="bg-slate-900 font-sans">Last 7 Days</option>
+                        <option value="month" className="bg-slate-900 font-sans">Last Month</option>
+                        <option value="quarter" className="bg-slate-900 font-sans">Last 3 Months</option>
+                        <option value="" className="bg-slate-900 font-sans">Infinite History</option>
                     </select>
                 </div>
                 <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Subject</label>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2.5 ml-1">Entity Subject</label>
                     <input
                         type="text"
-                        placeholder="Filter by entity..."
+                        placeholder="SEARCH HIERARCHY..."
                         value={filters.subject}
                         onChange={(e) => {
                             setFilters({ ...filters, subject: e.target.value });
                             setPage(1);
                         }}
-                        className="w-full px-3 py-2 rounded-lg border border-primary-200/40 bg-white text-sm text-slate-900 font-medium placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/30"
+                        className="w-full px-5 py-3 rounded-xl border border-white/10 bg-white/5 text-xs text-white font-black placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-primary/40 uppercase tracking-widest"
                     />
                 </div>
                 <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Action Type</label>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2.5 ml-1">Protocol Type</label>
                     <select
                         value={filters.actionType}
                         onChange={(e) => {
                             setFilters({ ...filters, actionType: e.target.value });
                             setPage(1);
                         }}
-                        className="w-full px-3 py-2 rounded-lg border border-primary-200/40 bg-white text-sm text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/30"
+                        className="w-full px-5 py-3 rounded-xl border border-white/10 bg-white/5 text-xs text-white font-black uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/40 appearance-none cursor-pointer"
                     >
-                        <option value="">All Actions</option>
-                        <option value="create">Create</option>
-                        <option value="update">Update</option>
-                        <option value="delete">Delete</option>
-                        <option value="approve">Approve</option>
-                        <option value="login">Login</option>
+                        <option value="" className="bg-slate-900 font-sans">All Transmissions</option>
+                        <option value="create" className="bg-slate-900 font-sans">Create</option>
+                        <option value="update" className="bg-slate-900 font-sans">Update</option>
+                        <option value="delete" className="bg-slate-900 font-sans">Delete</option>
+                        <option value="approve" className="bg-slate-900 font-sans">Approve</option>
+                        <option value="login" className="bg-slate-900 font-sans">Login</option>
                     </select>
                 </div>
             </div>
 
             {/* ── Logs Table ── */}
-            <div className="rounded-2xl border border-primary-200/30 bg-gradient-to-br from-white via-white/95 to-primary-50/20 shadow-card overflow-hidden">
+            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 shadow-2xl overflow-hidden">
                 <div className="overflow-x-auto">
                     {loading && logs.length === 0 ? (
-                        <div className="flex items-center justify-center h-32">
-                            <motion.div
-                                animate={{ rotate: 360 }}
-                                transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                                className="rounded-full h-8 w-8 border-2 border-primary-200 border-t-primary-500"
-                            />
+                        <div className="flex flex-col items-center justify-center h-72 space-y-4 animate-pulse">
+                            <div className="w-10 h-10 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Retrieving Secure Archive...</p>
                         </div>
                     ) : logs.length === 0 ? (
-                        <div className="p-8 text-center">
-                            <p className="text-slate-400 font-medium">No audit logs found.</p>
+                        <div className="p-24 text-center">
+                            <div className="text-5xl mb-6 opacity-30">⚡</div>
+                            <h3 className="text-xl font-black text-white uppercase tracking-tight">Ledger Empty</h3>
+                            <p className="text-slate-500 mt-2 text-xs font-bold uppercase tracking-widest leading-relaxed">No transmissions recorded in the current window.</p>
                         </div>
                     ) : (
                         <table className="w-full text-sm">
-                            <thead className="bg-primary-50/40 border-b border-primary-200/20">
-                                <tr className="text-left text-[10px] uppercase tracking-widest text-primary-600 font-black">
-                                    <th className="px-6 py-3">Action</th>
-                                    <th className="px-6 py-3">Subject</th>
-                                    <th className="px-6 py-3">User</th>
-                                    <th className="px-6 py-3">Details</th>
-                                    <th className="px-6 py-3 text-right">Time</th>
+                            <thead>
+                                <tr className="text-left text-[10px] uppercase tracking-[0.2em] text-slate-500 font-black border-b border-white/5 bg-white/[0.02]">
+                                    <th className="px-8 py-5">Protocol Identity</th>
+                                    <th className="px-8 py-5">Subject Topology</th>
+                                    <th className="px-8 py-5">Uplink Source</th>
+                                    <th className="px-8 py-5 text-right">Synchronization</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-primary-100/30">
+                            <tbody className="divide-y divide-white/5">
                                 {logs.map((log, idx) => {
                                     const meta = AuditActionMeta(log.action);
                                     return (
@@ -214,30 +224,29 @@ const AuditLogs = () => {
                                             key={log.id || idx}
                                             initial={{ opacity: 0, x: -10 }}
                                             animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: idx * 0.02 }}
-                                            className="hover:bg-primary-50/30 transition-colors"
+                                            transition={{ delay: idx * 0.01 }}
+                                            className="hover:bg-white/[0.03] transition-colors group"
                                         >
-                                            <td className="px-6 py-4">
-                                                <div className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-lg font-bold text-xs uppercase tracking-tighter ${meta.bg} ${meta.text}`}>
+                                            <td className="px-8 py-5">
+                                                <div className={`inline-flex items-center gap-3 px-3 py-1.5 rounded-lg font-black text-[10px] uppercase tracking-widest ring-1 shadow-inner ${meta.bg} ${meta.text} ${meta.ring}`}>
                                                     <span>{meta.icon}</span>
                                                     {meta.label}
                                                 </div>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <p className="text-slate-900 font-semibold">{log.subject_type || '—'}</p>
-                                                <p className="text-[10px] text-slate-500 font-mono">{log.subject_id || '—'}</p>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <p className="text-slate-900 font-medium">{log.user?.full_name || log.user?.name || 'System'}</p>
-                                                <p className="text-[10px] text-slate-500">{log.user?.email || '—'}</p>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <p className="text-slate-600 text-xs font-medium max-w-xs truncate">
+                                                <p className="text-[10px] font-bold text-slate-400 mt-2 max-w-[240px] leading-relaxed uppercase tracking-tight group-hover:text-slate-200 transition-colors">
                                                     {log.description || log.action || '—'}
                                                 </p>
                                             </td>
-                                            <td className="px-6 py-4 text-right">
-                                                <p className="text-slate-600 text-[10px] font-mono whitespace-nowrap">{formatDate(log.created_at)}</p>
+                                            <td className="px-8 py-5">
+                                                <p className="text-slate-200 font-black uppercase tracking-tight group-hover:text-primary transition-colors text-xs">{log.subject_type || '—'}</p>
+                                                <p className="text-[10px] text-slate-500 font-bold mt-1 uppercase tracking-widest cursor-copy hover:text-slate-300" title="Copy UUID">{log.subject_id || '—'}</p>
+                                            </td>
+                                            <td className="px-8 py-5">
+                                                <p className="text-slate-200 font-black uppercase tracking-tight text-xs">{log.user?.full_name || log.user?.name || 'Kernel Service'}</p>
+                                                <p className="text-[10px] text-slate-500 font-bold mt-1 uppercase tracking-widest">{log.user?.email || 'SYSTEM BROADCAST'}</p>
+                                            </td>
+                                            <td className="px-8 py-5 text-right">
+                                                <p className="text-primary text-[10px] font-black uppercase tracking-widest whitespace-nowrap">{formatDate(log.created_at)}</p>
+                                                <p className="text-[9px] text-slate-600 font-bold uppercase tracking-tighter mt-1">Hash Verified</p>
                                             </td>
                                         </motion.tr>
                                     );
@@ -249,21 +258,21 @@ const AuditLogs = () => {
 
                 {/* Pagination */}
                 {(hasMore || page > 1) && (
-                    <div className="flex items-center justify-between px-6 py-4 border-t border-primary-200/20 bg-primary-50/20">
+                    <div className="flex items-center justify-between px-10 py-6 border-t border-white/5 bg-white/[0.01]">
                         <button
                             onClick={() => setPage(Math.max(1, page - 1))}
                             disabled={page === 1}
-                            className="px-4 py-2 rounded-lg bg-primary-100 text-primary-600 disabled:opacity-40 disabled:cursor-not-allowed font-bold text-xs uppercase tracking-wider hover:bg-primary-200 transition-colors"
+                            className="px-6 py-2.5 rounded-xl border border-white/10 bg-white/5 text-[10px] font-black uppercase tracking-widest text-slate-400 disabled:opacity-30 hover:bg-white/10 hover:text-white transition-all shadow-inner"
                         >
-                            ← Previous
+                            ← Previous Phase
                         </button>
-                        <span className="text-sm font-medium text-slate-600">Page {page}</span>
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Node Cluster {page}</span>
                         <button
                             onClick={() => setPage(page + 1)}
                             disabled={!hasMore && logs.length === 0}
-                            className="px-4 py-2 rounded-lg bg-primary-100 text-primary-600 disabled:opacity-40 disabled:cursor-not-allowed font-bold text-xs uppercase tracking-wider hover:bg-primary-200 transition-colors"
+                            className="px-6 py-2.5 rounded-xl border border-white/10 bg-white/5 text-[10px] font-black uppercase tracking-widest text-primary disabled:opacity-30 hover:bg-primary/10 transition-all shadow-inner"
                         >
-                            Next →
+                            Next Advance →
                         </button>
                     </div>
                 )}

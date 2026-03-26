@@ -40,81 +40,81 @@ const SystemMonitoring = () => {
 
   if (loading)
     return (
-      <div className="flex items-center justify-center h-64">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-          className="rounded-full h-10 w-10 border-b-2 border-primary-600"
-        />
+      <div className="flex flex-col items-center justify-center h-96 space-y-4 animate-pulse">
+        <div className="w-12 h-12 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Initializing Telemetry Mesh...</p>
       </div>
     );
-
-  const getHealthColor = (status) => {
-    const colors = {
-      operational: 'bg-emerald-100 text-emerald-700 border-emerald-300',
-      degraded: 'bg-amber-100 text-amber-700 border-amber-300',
-      down: 'bg-red-100 text-red-700 border-red-300',
-    };
-    return colors[status] || colors.degraded;
-  };
 
   const getPercentColor = (value) => {
     if (value < 60) return 'bg-emerald-500';
     if (value < 80) return 'bg-amber-500';
-    return 'bg-red-500';
+    return 'bg-rose-500';
   };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-7xl mx-auto space-y-8 pb-12">
       {/* ── Page Header ── */}
-      <div className="rounded-2xl bg-gradient-to-br from-white via-white/95 to-primary-50/20 border border-primary-200/30 p-6">
-        <h1 className="text-3xl font-black text-slate-900">System Monitoring</h1>
-        <p className="text-sm text-primary-600 font-medium mt-1">Last checked: {systemHealth?.lastCheck}</p>
+      <div className="rounded-[2.5rem] bg-white/5 backdrop-blur-xl px-10 py-10 border border-white/10 shadow-2xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full -mr-40 -mt-40 blur-3xl opacity-50 group-hover:bg-primary/10 transition-all pointer-events-none" />
+        <div className="relative">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Core Intelligence</p>
+          <h1 className="mt-3 text-4xl font-black text-white tracking-tight uppercase">System Monitoring</h1>
+          <p className="text-sm font-medium text-slate-400 mt-2 max-w-2xl">Real-time telemetry and resource supervision across the NDM Student Movement global cluster.</p>
+          <div className="flex items-center gap-2 mt-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <p className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em] leading-none">Last sync: {systemHealth?.lastCheck}</p>
+          </div>
+        </div>
       </div>
 
       {/* ── Overall Health ── */}
       <div className="grid md:grid-cols-4 gap-4">
-        <div className="rounded-2xl border border-primary-200/30 bg-gradient-to-br from-emerald-50 to-emerald-100/30 p-6">
-          <p className="text-xs font-bold uppercase tracking-wider text-emerald-600">System Status</p>
-          <p className="text-2xl font-black text-emerald-900 mt-2">{systemHealth?.status === 'healthy' ? '✓ Healthy' : '⚠ Degraded'}</p>
-          <p className="text-[10px] text-emerald-700 mt-1">Uptime: {systemHealth?.uptime}</p>
+        <div className="rounded-[2rem] border border-emerald-500/20 bg-emerald-500/10 backdrop-blur-xl p-8 group relative overflow-hidden shadow-2xl">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full -mr-12 -mt-12 blur-2xl" />
+          <p className="text-[10px] font-black uppercase tracking-widest text-emerald-400">System State</p>
+          <p className="text-3xl font-black text-white mt-4 uppercase tracking-tighter">{systemHealth?.status === 'healthy' ? '✓ Nominal' : '⚠ Warning'}</p>
+          <p className="text-[10px] font-bold text-emerald-600/60 mt-2 uppercase tracking-widest">Uptime: {systemHealth?.uptime}</p>
         </div>
 
-        <div className="rounded-2xl border border-primary-200/30 bg-gradient-to-br from-blue-50 to-blue-100/30 p-6">
-          <p className="text-xs font-bold uppercase tracking-wider text-blue-600">Active Users</p>
-          <p className="text-2xl font-black text-blue-900 mt-2">{systemHealth?.activeUsers}</p>
-          <p className="text-[10px] text-blue-700 mt-1">Online now</p>
+        <div className="rounded-[2rem] border border-primary/20 bg-primary/10 backdrop-blur-xl p-8 group relative overflow-hidden shadow-2xl">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-full -mr-12 -mt-12 blur-2xl" />
+          <p className="text-[10px] font-black uppercase tracking-widest text-primary">Neural Traffic</p>
+          <p className="text-3xl font-black text-white mt-4 uppercase tracking-tighter">{systemHealth?.activeUsers}</p>
+          <p className="text-[10px] font-bold text-primary/60 mt-2 uppercase tracking-widest">Active Units</p>
         </div>
 
-        <div className="rounded-2xl border border-primary-200/30 bg-gradient-to-br from-violet-50 to-violet-100/30 p-6">
-          <p className="text-xs font-bold uppercase tracking-wider text-violet-600">Avg Response Time</p>
-          <p className="text-2xl font-black text-violet-900 mt-2">{systemHealth?.avgResponseTime}ms</p>
-          <p className="text-[10px] text-violet-700 mt-1">API performance</p>
+        <div className="rounded-[2rem] border border-indigo-500/20 bg-indigo-500/10 backdrop-blur-xl p-8 group relative overflow-hidden shadow-2xl">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/10 rounded-full -mr-12 -mt-12 blur-2xl" />
+          <p className="text-[10px] font-black uppercase tracking-widest text-indigo-400">Latency Flux</p>
+          <p className="text-3xl font-black text-white mt-4 uppercase tracking-tighter">{systemHealth?.avgResponseTime}ms</p>
+          <p className="text-[10px] font-bold text-indigo-600/60 mt-2 uppercase tracking-widest">Avg Pulse</p>
         </div>
 
-        <div className="rounded-2xl border border-primary-200/30 bg-gradient-to-br from-red-50 to-red-100/30 p-6">
-          <p className="text-xs font-bold uppercase tracking-wider text-red-600">Error Rate</p>
-          <p className="text-2xl font-black text-red-900 mt-2">{systemHealth?.errorRate}%</p>
-          <p className="text-[10px] text-red-700 mt-1">Last 24 hours</p>
+        <div className="rounded-[2rem] border border-rose-500/20 bg-rose-500/10 backdrop-blur-xl p-8 group relative overflow-hidden shadow-2xl">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-rose-500/10 rounded-full -mr-12 -mt-12 blur-2xl" />
+          <p className="text-[10px] font-black uppercase tracking-widest text-rose-400">Chaos Index</p>
+          <p className="text-3xl font-black text-white mt-4 uppercase tracking-tighter">{systemHealth?.errorRate}%</p>
+          <p className="text-[10px] font-bold text-rose-600/60 mt-2 uppercase tracking-widest">Error Vectors</p>
         </div>
       </div>
 
       {/* ── Resource Usage ── */}
-      <div className="grid md:grid-cols-3 gap-4">
+      <div className="grid md:grid-cols-3 gap-6">
         {[
-          { label: 'CPU Usage', value: systemHealth?.cpu, unit: '%' },
-          { label: 'Memory Usage', value: systemHealth?.memory, unit: '%' },
-          { label: 'Disk Usage', value: systemHealth?.disk, unit: '%' },
+          { label: 'CPU LOAD', value: systemHealth?.cpu, unit: '%' },
+          { label: 'MEMORY LOAD', value: systemHealth?.memory, unit: '%' },
+          { label: 'STORAGE LOAD', value: systemHealth?.disk, unit: '%' },
         ].map((item) => (
-          <div key={item.label} className="rounded-2xl border border-primary-200/30 bg-white p-5">
-            <p className="text-xs font-bold uppercase tracking-wider text-primary-600">{item.label}</p>
-            <p className="text-3xl font-black text-slate-900 mt-3">{item.value}{item.unit}</p>
-            <div className="h-2 bg-slate-100/50 rounded-full overflow-hidden mt-3">
+          <div key={item.label} className="rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-xl p-8 group hover:bg-white/[0.08] transition-all shadow-2xl">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-hover:text-slate-300 transition-colors">{item.label}</p>
+            <p className="text-4xl font-black text-white mt-4">{item.value}{item.unit}</p>
+            <div className="h-1.5 bg-white/5 rounded-full overflow-hidden mt-6">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${item.value}%` }}
-                transition={{ duration: 1 }}
-                className={`h-full ${getPercentColor(item.value)}`}
+                transition={{ duration: 1.5, ease: "easeOut" }}
+                className={`h-full opacity-80 group-hover:opacity-100 transition-opacity ${getPercentColor(item.value)}`}
               />
             </div>
           </div>
@@ -122,56 +122,67 @@ const SystemMonitoring = () => {
       </div>
 
       {/* ── Service Status ── */}
-      <div className="rounded-2xl border border-primary-200/30 bg-white p-6">
-        <h2 className="text-lg font-bold text-slate-900 mb-4">Service Status</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl p-10 shadow-2xl overflow-hidden relative group">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-30" />
+        <div className="flex items-center justify-between mb-8">
+            <h2 className="text-xl font-black text-white uppercase tracking-tight">Service Mesh Status</h2>
+            <div className="px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-black uppercase tracking-widest ring-1 ring-emerald-500/20 shadow-inner">All Systems Nominal</div>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { name: 'Database', status: systemHealth?.database },
-            { name: 'Cache', status: systemHealth?.cache },
-            { name: 'API', status: systemHealth?.api },
-            { name: 'Mail Service', status: systemHealth?.mail },
-          ].map((service) => (
-            <div key={service.name} className={`rounded-xl border p-4 ${getHealthColor(service.status)}`}>
-              <p className="font-bold text-sm">{service.name}</p>
-              <p className="text-xs mt-1 font-medium">{service.status === 'operational' ? '🟢 Operational' : '🟡 Degraded'}</p>
-            </div>
-          ))}
+            { name: 'POSTGRES DB', status: systemHealth?.database },
+            { name: 'REDIS CACHE', status: systemHealth?.cache },
+            { name: 'VITE API', status: systemHealth?.api },
+            { name: 'SMTP MAIL', status: systemHealth?.mail },
+          ].map((service) => {
+            const isOp = service.status === 'operational';
+            return (
+                <div key={service.name} className={`rounded-2xl border p-6 transition-all group/item hover:bg-white/[0.04] backdrop-blur-sm ${isOp ? 'bg-emerald-500/5 border-emerald-500/10 text-emerald-400' : 'bg-rose-500/5 border-rose-500/10 text-rose-400'}`}>
+                  <p className="text-[10px] font-black uppercase tracking-widest opacity-60">{service.name}</p>
+                  <p className="text-xs mt-3 font-bold uppercase tracking-tight flex items-center gap-2">
+                    <span className={`w-2 h-2 rounded-full bg-current ${isOp ? 'animate-pulse' : ''}`} />
+                    {isOp ? 'Operational' : 'Critical'}
+                  </p>
+                </div>
+            )
+          })}
         </div>
       </div>
 
       {/* ── Activity Summary ── */}
-      <div className="grid md:grid-cols-2 gap-4">
-        <div className="rounded-2xl border border-primary-200/30 bg-white p-6">
-          <h3 className="font-bold text-slate-900 mb-4">Total API Requests</h3>
-          <p className="text-4xl font-black text-primary-600">{systemHealth?.totalRequests?.toLocaleString()}</p>
-          <p className="text-xs text-slate-500 mt-2">Last 24 hours</p>
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl p-10 group hover:bg-white/[0.08] transition-all shadow-2xl">
+          <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-6">Aggregate Transaction Volume</p>
+          <p className="text-5xl font-black text-primary tracking-tighter">{systemHealth?.totalRequests?.toLocaleString()}</p>
+          <p className="text-[10px] font-bold text-slate-500 mt-4 uppercase tracking-[0.2em]">Total API Handshakes · 24H Epoch</p>
         </div>
 
-        <div className="rounded-2xl border border-primary-200/30 bg-white p-6">
-          <h3 className="font-bold text-slate-900 mb-4">Security Events</h3>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-sm text-slate-700">Failed Login Attempts</span>
-              <span className="font-bold text-red-600">{systemHealth?.failedLogins}</span>
+        <div className="rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl p-10 group hover:bg-white/[0.08] transition-all shadow-2xl">
+          <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-8">Registry Security Threats</p>
+          <div className="space-y-6">
+            <div className="flex justify-between items-center group/line">
+              <span className="text-xs font-bold text-slate-400 group-hover/line:text-white transition-colors uppercase tracking-widest">Refused Handshakes</span>
+              <span className="font-black text-rose-500 text-lg uppercase tracking-widest">{systemHealth?.failedLogins} Events</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-sm text-slate-700">Active Sessions</span>
-              <span className="font-bold text-emerald-600">{systemHealth?.activeUsers}</span>
+            <div className="w-full h-px bg-white/5" />
+            <div className="flex justify-between items-center group/line">
+              <span className="text-xs font-bold text-slate-400 group-hover/line:text-white transition-colors uppercase tracking-widest">Authorized Sessions</span>
+              <span className="font-black text-emerald-400 text-lg uppercase tracking-widest">{systemHealth?.activeUsers} Active</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* ── Action Buttons ── */}
-      <div className="flex gap-3">
-        <button className="px-4 py-2 rounded-lg bg-primary-600 text-white font-bold text-sm hover:bg-primary-700 transition-colors">
-          Refresh Data
+      <div className="flex flex-wrap gap-4 pt-4">
+        <button className="px-8 py-3 rounded-xl bg-primary text-slate-900 font-black text-[10px] uppercase tracking-widest hover:bg-emerald-400 transition-all shadow-lg shadow-primary/20 hover:scale-105 active:scale-95">
+          Sync Monitor
         </button>
-        <button className="px-4 py-2 rounded-lg bg-slate-100 text-slate-900 font-bold text-sm hover:bg-slate-200 transition-colors">
-          View Full Logs
+        <button className="px-8 py-3 rounded-xl bg-white/5 border border-white/10 text-slate-400 font-black text-[10px] uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all shadow-inner hover:scale-105 active:scale-95">
+          Infrastructure Log
         </button>
-        <button className="px-4 py-2 rounded-lg bg-slate-100 text-slate-900 font-bold text-sm hover:bg-slate-200 transition-colors">
-          Export Report
+        <button className="px-8 py-3 rounded-xl bg-white/5 border border-white/10 text-slate-400 font-black text-[10px] uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all shadow-inner hover:scale-105 active:scale-95">
+          Export Telemetry
         </button>
       </div>
     </motion.div>

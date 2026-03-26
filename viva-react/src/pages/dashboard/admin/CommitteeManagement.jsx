@@ -62,57 +62,72 @@ const CommitteeManagement = () => {
     };
 
     return (
-        <div className="p-6 max-w-7xl mx-auto space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-                <div>
-                    <h1 className="text-2xl font-black text-gray-900">Committee Management</h1>
-                    <p className="text-sm text-gray-500 mt-1">Organize the 5-tier political hierarchy system.</p>
+        <div className="max-w-7xl mx-auto p-6 space-y-8 pb-20">
+            {/* ── Page Header ── */}
+            <div className="rounded-[2.5rem] bg-white/5 backdrop-blur-xl px-10 py-10 border border-white/10 shadow-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full -mr-40 -mt-40 blur-3xl opacity-50 group-hover:bg-primary/10 transition-all pointer-events-none" />
+                <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Governance Layer</p>
+                        <h1 className="mt-3 text-4xl font-black text-white tracking-tight uppercase">Organizational Topology</h1>
+                        <p className="text-sm font-medium text-slate-400 mt-2 max-w-2xl">Architect and manage the 5-tier political hierarchy system. Define structural nodes and institutional clusters.</p>
+                    </div>
+                    <Button onClick={() => setShowModal(true)} variant="accent" className="gap-2 shrink-0 font-black uppercase tracking-widest text-[10px] py-4 px-8 shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+                        + Initialize New Unit
+                    </Button>
                 </div>
-                <Button onClick={() => setShowModal(true)} className="gap-2 shrink-0">
-                    + New Committee
-                </Button>
             </div>
 
             {loading ? (
-                <div className="flex justify-center py-20">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                <div className="flex flex-col items-center justify-center py-32 space-y-6">
+                    <div className="w-16 h-16 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 animate-pulse">Syncing Hierarchy Matrix...</p>
                 </div>
             ) : committees.length === 0 ? (
-                <div className="bg-white rounded-3xl border border-gray-100 p-12 text-center">
-                    <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400 text-2xl">
-                        &#128193;
+                <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-20 text-center shadow-2xl relative overflow-hidden group">
+                    <div className="absolute inset-0 bg-primary/5 opacity-30 blur-3xl" />
+                    <div className="relative">
+                        <div className="w-20 h-20 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl animate-bounce">
+                            📁
+                        </div>
+                        <h3 className="text-xl font-black text-white uppercase tracking-tight">No Units Detected</h3>
+                        <p className="text-slate-500 mt-4 max-w-sm mx-auto font-medium text-sm leading-relaxed">The organizational map is currently vacant. Initialize the Central Committee to begin cluster propagation.</p>
+                        <Button onClick={() => setShowModal(true)} variant="outline" className="mt-8 font-black uppercase tracking-widest text-[10px] px-10 py-4">Begin Initialization</Button>
                     </div>
-                    <h3 className="text-lg font-bold text-gray-900">No Committees Found</h3>
-                    <p className="text-gray-500 mt-2 max-w-sm mx-auto">Start building your organizational structure by creating the Central Committee.</p>
                 </div>
             ) : (
-                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
                     {committees.map((committee) => (
                         <div
                             key={committee.id}
-                            className="bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all p-6 relative group"
+                            className="bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 shadow-xl hover:shadow-2xl hover:bg-white/[0.07] hover:border-white/20 transition-all p-8 relative group overflow-hidden"
                         >
-                            <div className="flex justify-between items-start mb-4">
-                                <div className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${getLevelBadgeColor(committee.level)}`}>
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                            
+                            <div className="flex justify-between items-start mb-6 relative">
+                                <div className={`px-4 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-[0.15em] border bg-white/5 ${getLevelBadgeColor(committee.level).replace('bg-', 'text-').replace('-100', '-400').replace('text-700', '').replace('border-', 'border-')}`}>
                                     {committee.level}
                                 </div>
-                                <div className="text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <button className="p-2 hover:bg-gray-50 rounded-lg">&#8942;</button>
+                                <div className="text-slate-500 opacity-0 group-hover:opacity-100 transition-all translate-x-2 group-hover:translate-x-0">
+                                    <button className="p-2 hover:bg-white/10 rounded-xl transition-colors">
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" /></svg>
+                                    </button>
                                 </div>
                             </div>
                             
-                            <h3 className="text-lg font-bold text-gray-900 mb-1 leading-tight">{committee.name}</h3>
-                            <p className="text-sm text-gray-500 mb-6 line-clamp-1">
-                                {committee.parent ? `Under ${committee.parent.name}` : 'National Level Unit'}
+                            <h3 className="text-xl font-black text-white mb-2 leading-tight uppercase tracking-tight group-hover:text-primary transition-colors">{committee.name}</h3>
+                            <p className="text-xs font-bold text-slate-500 mb-8 uppercase tracking-widest flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-slate-700" />
+                                {committee.parent ? `Sub-unit of ${committee.parent.name}` : 'PRIMARY_ROOT_NODE'}
                             </p>
 
-                            <div className="flex items-center justify-between pt-4 border-t border-gray-50">
-                                <span className={`text-xs font-medium px-2 py-1 rounded-md ${committee.status === 'active' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                            <div className="flex items-center justify-between pt-6 border-t border-white/5 relative">
+                                <span className={`text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-md ring-1 ${committee.status === 'active' ? 'bg-emerald-500/10 text-emerald-400 ring-emerald-500/20' : 'bg-rose-500/10 text-rose-400 ring-rose-500/20'}`}>
                                     {committee.status}
                                 </span>
                                 <Link to={`/dashboard/admin/settings/committees/${committee.id}`}>
-                                    <Button variant="outline" size="sm" className="gap-2">
-                                        Manage Members
+                                    <Button variant="outline" size="sm" className="font-black uppercase tracking-widest text-[9px] px-5 border-white/10 hover:bg-white/10">
+                                        Access Registry
                                     </Button>
                                 </Link>
                             </div>
@@ -123,40 +138,68 @@ const CommitteeManagement = () => {
 
             {/* Create Modal */}
             {showModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm">
-                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden">
-                        <div className="p-6 border-b border-gray-100">
-                            <h2 className="text-xl font-bold">Create New Committee</h2>
-                            <p className="text-sm text-gray-500">Define a new political unit in the hierarchy.</p>
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-300">
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        className="bg-slate-900 border border-white/10 rounded-[2.5rem] shadow-2xl w-full max-w-lg overflow-hidden relative"
+                    >
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl" />
+                        
+                        <div className="p-10 border-b border-white/5 relative">
+                            <h2 className="text-2xl font-black text-white uppercase tracking-tight">Initialize Unit</h2>
+                            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-2">Define new operational coordinates in the hierarchy.</p>
                         </div>
-                        <form onSubmit={handleCreate} className="p-6 space-y-4">
-                            <Input
-                                label="Committee Name"
-                                placeholder="e.g. Dhaka District North"
-                                value={form.name}
-                                onChange={e => setForm({...form, name: e.target.value})}
-                                required
-                            />
-                            <Select
-                                label="Level"
-                                options={levels}
-                                value={form.level}
-                                onChange={e => setForm({...form, level: e.target.value})}
-                            />
-                            {form.level !== 'central' && (
-                                <Select
-                                    label="Parent Committee"
-                                    options={[{id: '', name: 'Select Parent...'}, ...committees.map(c => ({ id: c.id, name: c.name }))]}
-                                    value={form.parent_id}
-                                    onChange={e => setForm({...form, parent_id: e.target.value})}
+                        
+                        <form onSubmit={handleCreate} className="p-10 space-y-8 relative">
+                            <div className="space-y-6">
+                                <Input
+                                    label="Unit Designation"
+                                    placeholder="ENTER UNIT NAME (E.G. DHAKA NORTH)"
+                                    value={form.name}
+                                    onChange={e => setForm({...form, name: e.target.value})}
+                                    required
+                                    className="bg-white/5 border-white/10 text-white font-black uppercase placeholder-slate-800"
                                 />
-                            )}
-                            <div className="pt-4 flex justify-end gap-3">
-                                <Button type="button" variant="ghost" onClick={() => setShowModal(false)}>Cancel</Button>
-                                <Button type="submit" isLoading={saving}>Create Unit</Button>
+                                
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Hierarchy Level</label>
+                                        <select
+                                            value={form.level}
+                                            onChange={e => setForm({...form, level: e.target.value})}
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-sm text-white font-black uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all appearance-none cursor-pointer"
+                                        >
+                                            {levels.map(l => (
+                                                <option key={l.id} value={l.id} className="bg-slate-900">{l.name.toUpperCase()}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    {form.level !== 'central' && (
+                                        <div className="space-y-2">
+                                            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Parent Node</label>
+                                            <select
+                                                value={form.parent_id}
+                                                onChange={e => setForm({...form, parent_id: e.target.value})}
+                                                className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-sm text-white font-black uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all appearance-none cursor-pointer"
+                                            >
+                                                <option value="" className="bg-slate-900">SELECT PARENT...</option>
+                                                {committees.map(c => (
+                                                    <option key={c.id} value={c.id} className="bg-slate-900">{c.name.toUpperCase()}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="pt-6 flex justify-end gap-4">
+                                <Button type="button" variant="ghost" onClick={() => setShowModal(false)} className="font-black uppercase tracking-widest text-[10px] text-slate-400 hover:text-white">Cancel</Button>
+                                <Button type="submit" variant="accent" isLoading={saving} className="font-black uppercase tracking-widest text-[10px] px-10 py-4 shadow-xl shadow-primary/20">Commit Initialization</Button>
                             </div>
                         </form>
-                    </div>
+                    </motion.div>
                 </div>
             )}
         </div>

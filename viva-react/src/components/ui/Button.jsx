@@ -18,11 +18,11 @@ const Button = ({
 }) => {
   
   const variants = {
-    primary: 'bg-primary text-white hover:bg-primary-dark shadow-md',
-    accent: 'bg-accent text-white hover:bg-accent-dark shadow-md',
-    gold: 'bg-gold text-primary-dark hover:brightness-110 shadow-md',
-    outline: 'border-2 border-primary text-primary hover:bg-primary hover:text-white',
-    ghost: 'text-primary hover:bg-primary/10',
+    primary: 'bg-primary text-white hover:bg-primary-dark shadow-lg shadow-primary-500/20 ring-1 ring-primary/20',
+    accent: 'bg-accent text-white hover:bg-accent-dark shadow-lg shadow-accent-500/20 ring-1 ring-accent/20',
+    gold: 'bg-gold text-primary-dark hover:brightness-110 shadow-lg shadow-gold-500/20 ring-1 ring-gold/20',
+    outline: 'border-2 border-primary text-primary hover:bg-primary hover:text-white dark:border-primary/50 dark:text-primary-light',
+    ghost: 'text-primary hover:bg-primary/10 dark:text-primary-light dark:hover:bg-white/5',
   };
 
   const sizes = {

@@ -47,224 +47,242 @@ const BulkOperations = () => {
   };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-      {/* ── Header ── */}
-      <div className="rounded-2xl bg-gradient-to-br from-white via-white/95 to-primary-50/20 border border-primary-200/30 p-6">
-        <h1 className="text-3xl font-black text-slate-900">Bulk Operations</h1>
-        <p className="text-sm text-primary-600 font-medium mt-1">Perform actions on multiple members at once</p>
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-7xl mx-auto p-6 space-y-8 pb-20">
+      {/* ── Page Header ── */}
+      <div className="rounded-[2.5rem] bg-white/5 backdrop-blur-xl px-10 py-10 border border-white/10 shadow-2xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full -mr-40 -mt-40 blur-3xl opacity-50 group-hover:bg-primary/10 transition-all pointer-events-none" />
+        <div className="relative">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Organizational Logistics</p>
+          <h1 className="mt-3 text-4xl font-black text-white tracking-tight uppercase">Bulk Operations</h1>
+          <p className="text-sm font-medium text-slate-400 mt-2 max-w-2xl">Execute mass state changes, algorithmic assignments, and high-volume registry injections across the NDM cluster.</p>
+        </div>
       </div>
 
       {/* ── Operation Type Selection ── */}
-      <div className="rounded-2xl border border-primary-200/30 bg-white p-6">
-        <h2 className="text-lg font-bold text-slate-900 mb-4">Select Operation Type</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+      <div className="rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl p-10 shadow-2xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-30" />
+        <h2 className="text-xl font-black text-white uppercase tracking-tight mb-8 relative">Select Logic Vector</h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 relative">
           {operationTypes.map((op) => (
             <button
               key={op.id}
               onClick={() => setOperationType(op.id)}
-              className={`rounded-lg border p-4 text-left transition-all ${
+              className={`rounded-2xl border p-6 text-left transition-all group/btn ${
                 operationType === op.id
-                  ? 'bg-primary-50 border-primary-300 ring-2 ring-primary-200'
-                  : 'bg-slate-50 border-slate-200 hover:border-primary-200'
+                  ? 'bg-primary/10 border-primary shadow-lg shadow-primary/10 scale-[1.02]'
+                  : 'bg-white/5 border-white/10 hover:border-white/20'
               }`}
             >
-              <p className="font-bold text-slate-900 text-sm">{op.label}</p>
-              <p className="text-[10px] text-slate-500 mt-1">{op.desc}</p>
+              <p className={`font-black uppercase tracking-tight text-sm ${operationType === op.id ? 'text-primary' : 'text-white'}`}>{op.label}</p>
+              <p className="text-[10px] text-slate-500 mt-2 font-bold group-hover/btn:text-slate-400 transition-colors uppercase tracking-widest leading-relaxed">{op.desc}</p>
             </button>
           ))}
         </div>
       </div>
 
       {/* ── Operation Configuration ── */}
-      <div className="grid lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 rounded-2xl border border-primary-200/30 bg-white p-6 space-y-5">
-          {operationType === 'status-change' && (
-            <>
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-primary-600 mb-2">New Status</label>
-                <select className="w-full px-4 py-3 rounded-lg border border-primary-200/30 bg-slate-50 text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-300">
-                  <option>Select status...</option>
-                  {statuses.map((s) => (
-                    <option key={s} value={s}>
-                      {s}
-                    </option>
-                  ))}
-                </select>
+      <div className="grid lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl p-10 space-y-8 shadow-2xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-30" />
+          
+          <div className="relative">
+            {operationType === 'status-change' && (
+              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="space-y-3">
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Target Status Protocol</label>
+                  <select className="w-full px-5 py-3 rounded-xl border border-white/10 bg-white/5 text-sm text-white font-black uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/40 appearance-none cursor-pointer">
+                    <option className="bg-slate-900">Select protocol...</option>
+                    {statuses.map((s) => (
+                      <option key={s} value={s} className="bg-slate-900">
+                        {s.toUpperCase()}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="space-y-3">
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Member Registry Selection</label>
+                    <div className="border border-white/10 rounded-[1.5rem] p-6 bg-white/[0.02] max-h-64 overflow-y-auto space-y-2 shadow-inner custom-scrollbar">
+                    {[...Array(10)].map((_, i) => (
+                        <label key={i} className="flex items-center gap-4 p-3 hover:bg-white/5 rounded-xl cursor-pointer group/item transition-all border border-transparent hover:border-white/5">
+                        <input type="checkbox" className="w-5 h-5 rounded bg-white/10 border-white/20 text-primary focus:ring-primary/40 cursor-pointer" />
+                        <div className="flex flex-col">
+                            <span className="text-xs font-black text-slate-300 group-hover/item:text-white uppercase tracking-tight">Member Cluster Alpha-{i + 1}</span>
+                            <span className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">UID: 000{i+1} · Verified</span>
+                        </div>
+                        </label>
+                    ))}
+                    </div>
+                </div>
+                <button
+                  onClick={() => handleExecuteOperation(`Status updated for multiple members`)}
+                  className="w-full px-6 py-4 rounded-2xl bg-primary text-slate-900 font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:bg-emerald-400 hover:scale-[1.02] active:scale-95 transition-all"
+                >
+                  Apply Status Transformation
+                </button>
               </div>
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-primary-600 mb-2">Members to Update</label>
-                <div className="border border-primary-200/30 rounded-lg p-4 bg-slate-50 max-h-48 overflow-y-auto">
-                  {[...Array(10)].map((_, i) => (
-                    <label key={i} className="flex items-center gap-3 p-2 hover:bg-slate-100 rounded cursor-pointer">
-                      <input type="checkbox" className="w-4 h-4" onChange={() => {}} />
-                      <span className="text-sm text-slate-700">Member {i + 1} - member{i + 1}@example.com</span>
+            )}
+
+            {operationType === 'unit-assignment' && (
+              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="space-y-3">
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Organizational Topology Target</label>
+                  <select className="w-full px-5 py-3 rounded-xl border border-white/10 bg-white/5 text-sm text-white font-black uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/40 appearance-none cursor-pointer">
+                    <option className="bg-slate-900">Select target unit...</option>
+                    {units.map((u) => (
+                      <option key={u} value={u} className="bg-slate-900">
+                        {u.toUpperCase()}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <button
+                  onClick={() => handleExecuteOperation(`Members assigned to selected unit`)}
+                  className="w-full px-6 py-4 rounded-2xl bg-primary text-slate-900 font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:bg-emerald-400 hover:scale-[1.02] active:scale-95 transition-all"
+                >
+                  Commit Topology Assignment
+                </button>
+              </div>
+            )}
+
+            {operationType === 'import' && (
+              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="space-y-3">
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Data Ingestion (CSV)</label>
+                  <div className="border-2 border-dashed border-white/10 rounded-[2rem] p-10 text-center bg-white/[0.02] cursor-pointer hover:bg-white/[0.05] hover:border-primary/40 transition-all group/upload relative overflow-hidden">
+                    <input
+                      type="file"
+                      accept=".csv"
+                      onChange={handleFileUpload}
+                      className="hidden"
+                      id="csv-upload"
+                    />
+                    <label htmlFor="csv-upload" className="block cursor-pointer relative z-10">
+                      {uploadFile ? (
+                        <div className="space-y-2">
+                          <p className="text-sm font-black text-primary uppercase tracking-tight">✓ {uploadFile.name}</p>
+                          <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Payload Size: {uploadFile.size} KB · Ready for parsing</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          <p className="text-3xl opacity-40 group-hover/upload:opacity-100 transition-opacity">📄</p>
+                          <p className="text-xs font-black text-slate-300 uppercase tracking-widest mt-2">Initialize CSV Protocol</p>
+                          <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">or drop asset into sector</p>
+                        </div>
+                      )}
                     </label>
-                  ))}
+                  </div>
                 </div>
+                <button
+                  onClick={() => handleExecuteOperation(`Imported members from CSV file`)}
+                  className="w-full px-6 py-4 rounded-2xl bg-primary text-slate-900 font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:bg-emerald-400 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-30"
+                  disabled={!uploadFile}
+                >
+                  Execute Data Ingestion
+                </button>
               </div>
-              <button
-                onClick={() => handleExecuteOperation(`Status updated for multiple members`)}
-                className="w-full px-4 py-3 rounded-lg bg-primary-600 text-white font-bold text-sm hover:bg-primary-700 transition-colors"
-              >
-                Execute Status Change
-              </button>
-            </>
-          )}
+            )}
 
-          {operationType === 'unit-assignment' && (
-            <>
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-primary-600 mb-2">Target Unit</label>
-                <select className="w-full px-4 py-3 rounded-lg border border-primary-200/30 bg-slate-50 text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-300">
-                  <option>Select unit...</option>
-                  {units.map((u) => (
-                    <option key={u} value={u}>
-                      {u}
-                    </option>
-                  ))}
-                </select>
+            {operationType === 'export' && (
+              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="p-6 rounded-2xl bg-primary/5 border border-primary/20 shadow-inner">
+                  <p className="text-[10px] font-black uppercase tracking-[0.15em] text-primary/80 leading-relaxed">
+                    Preparing high-fidelity export of the global member registry. All data will be serialized into canonical CSV format for offline analysis.
+                  </p>
+                </div>
+                <button
+                  onClick={() => handleExecuteOperation(`Exported members data`)}
+                  className="w-full px-6 py-4 rounded-2xl bg-primary text-slate-900 font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:bg-emerald-400 hover:scale-[1.02] active:scale-95 transition-all"
+                >
+                  Drain Cluster Data (Export)
+                </button>
               </div>
-              <button
-                onClick={() => handleExecuteOperation(`Members assigned to selected unit`)}
-                className="w-full px-4 py-3 rounded-lg bg-primary-600 text-white font-bold text-sm hover:bg-primary-700 transition-colors"
-              >
-                Assign to Unit
-              </button>
-            </>
-          )}
+            )}
 
-          {operationType === 'import' && (
-            <>
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-primary-600 mb-3">Upload CSV File</label>
-                <div className="border-2 border-dashed border-primary-300 rounded-lg p-6 text-center bg-primary-50/30 cursor-pointer hover:bg-primary-50 transition-colors">
+            {operationType === 'email-send' && (
+              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="space-y-3">
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Email Subject Header</label>
                   <input
-                    type="file"
-                    accept=".csv"
-                    onChange={handleFileUpload}
-                    className="hidden"
-                    id="csv-upload"
+                    type="text"
+                    placeholder="ENTER BROADCAST SUBJECT..."
+                    className="w-full px-5 py-3 rounded-xl border border-white/10 bg-white/5 text-sm text-white font-black uppercase tracking-widest placeholder-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all shadow-inner"
                   />
-                  <label htmlFor="csv-upload" className="block cursor-pointer">
-                    {uploadFile ? (
-                      <>
-                        <p className="text-sm font-bold text-primary-700">✓ {uploadFile.name}</p>
-                        <p className="text-xs text-primary-600 mt-1">Size: {uploadFile.size} KB</p>
-                      </>
-                    ) : (
-                      <>
-                        <p className="text-lg">📄</p>
-                        <p className="text-sm font-bold text-primary-700 mt-2">Click to upload CSV</p>
-                        <p className="text-xs text-slate-500 mt-1">or drag and drop</p>
-                      </>
-                    )}
-                  </label>
                 </div>
+                <div className="space-y-3">
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Message Payload</label>
+                  <textarea
+                    rows={5}
+                    placeholder="CONSTRUCT BROADCAST CONTENT..."
+                    className="w-full px-5 py-4 rounded-xl border border-white/10 bg-white/5 text-sm text-slate-300 placeholder-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all shadow-inner resize-none leading-relaxed"
+                  />
+                </div>
+                <button
+                  onClick={() => handleExecuteOperation(`Bulk emails sent to members`)}
+                  className="w-full px-6 py-4 rounded-2xl bg-primary text-slate-900 font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:bg-emerald-400 hover:scale-[1.02] active:scale-95 transition-all"
+                >
+                  Initiate Mass Transmission
+                </button>
               </div>
-              <button
-                onClick={() => handleExecuteOperation(`Imported members from CSV file`)}
-                className="w-full px-4 py-3 rounded-lg bg-primary-600 text-white font-bold text-sm hover:bg-primary-700 transition-colors disabled:opacity-50"
-                disabled={!uploadFile}
-              >
-                Import Members
-              </button>
-            </>
-          )}
-
-          {operationType === 'export' && (
-            <>
-              <div className="p-4 rounded-lg bg-primary-50 border border-primary-200">
-                <p className="text-sm text-slate-700">Export all member data to CSV format for analysis or backup.</p>
-              </div>
-              <button
-                onClick={() => handleExecuteOperation(`Exported members data`)}
-                className="w-full px-4 py-3 rounded-lg bg-primary-600 text-white font-bold text-sm hover:bg-primary-700 transition-colors"
-              >
-                📥 Export to CSV
-              </button>
-            </>
-          )}
-
-          {operationType === 'email-send' && (
-            <>
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-primary-600 mb-2">Email Subject</label>
-                <input
-                  type="text"
-                  placeholder="Enter email subject..."
-                  className="w-full px-4 py-3 rounded-lg border border-primary-200/30 bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-300"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-primary-600 mb-2">Email Body</label>
-                <textarea
-                  rows={5}
-                  placeholder="Enter email message..."
-                  className="w-full px-4 py-3 rounded-lg border border-primary-200/30 bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-300 resize-none"
-                />
-              </div>
-              <button
-                onClick={() => handleExecuteOperation(`Bulk emails sent to members`)}
-                className="w-full px-4 py-3 rounded-lg bg-primary-600 text-white font-bold text-sm hover:bg-primary-700 transition-colors"
-              >
-                Send Emails
-              </button>
-            </>
-          )}
+            )}
+          </div>
         </div>
 
         {/* ── Preview/Info Panel ── */}
-        <div className="rounded-2xl border border-primary-200/30 bg-primary-50/50 p-6 h-fit">
-          <h3 className="font-bold text-slate-900 mb-4">Operation Summary</h3>
-          <div className="space-y-3">
-            <div className="p-3 rounded-lg bg-white border border-primary-200/50">
-              <p className="text-[10px] text-primary-600 font-bold uppercase">Type</p>
-              <p className="text-sm font-bold text-slate-900 mt-1">
+        <div className="rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl p-8 h-fit shadow-2xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -mr-16 -mt-16 blur-2xl" />
+          <h3 className="text-xs font-black text-white uppercase tracking-widest mb-8 border-b border-white/5 pb-4">Verification Mesh</h3>
+          <div className="space-y-4 relative">
+            <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 group/stat hover:bg-white/[0.05] transition-all">
+              <p className="text-[8px] text-primary/60 font-black uppercase tracking-widest">Logic Vector</p>
+              <p className="text-xs font-black text-white mt-1 uppercase tracking-tight">
                 {operationTypes.find((op) => op.id === operationType)?.label}
               </p>
             </div>
-            <div className="p-3 rounded-lg bg-white border border-primary-200/50">
-              <p className="text-[10px] text-primary-600 font-bold uppercase">Members Affected</p>
-              <p className="text-sm font-bold text-slate-900 mt-1">To be determined</p>
+            <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 group/stat hover:bg-white/[0.05] transition-all">
+              <p className="text-[8px] text-primary/60 font-black uppercase tracking-widest">Impacted Nodes</p>
+              <p className="text-xs font-black text-slate-400 mt-1 uppercase tracking-tight">ANALYZING CLUSTER...</p>
             </div>
-            <div className="p-3 rounded-lg bg-white border border-primary-200/50">
-              <p className="text-[10px] text-primary-600 font-bold uppercase">Status</p>
-              <p className="text-sm font-bold text-slate-900 mt-1">Ready to execute</p>
+            <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 group/stat hover:bg-white/[0.05] transition-all">
+              <p className="text-[8px] text-primary/60 font-black uppercase tracking-widest">Execution State</p>
+              <p className="text-xs font-black text-emerald-400 mt-1 uppercase tracking-tight">READY_FOR_HANDSHAKE</p>
             </div>
-            <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 mt-4">
-              <p className="text-[10px] text-amber-600 font-bold uppercase">⚠ Warning</p>
-              <p className="text-xs text-amber-700 mt-1">Bulk operations cannot be undone. Please verify before executing.</p>
+            <div className="p-5 rounded-2xl bg-rose-500/10 border border-rose-500/20 mt-6 relative overflow-hidden group/warn">
+              <div className="absolute top-0 right-0 w-16 h-16 bg-rose-500/10 rounded-full blur-xl -mr-8 -mt-8" />
+              <p className="text-[9px] text-rose-400 font-black uppercase tracking-widest relative">⚠ Operational Hazard</p>
+              <p className="text-[10px] text-rose-500/80 font-bold mt-2 leading-relaxed relative uppercase tracking-tight">Bulk mutations are atomic and irreversible within the current block. Verify all parameters before commit.</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* ── Operation History ── */}
-      <div className="rounded-2xl border border-primary-200/30 bg-white p-6">
-        <h2 className="text-lg font-bold text-slate-900 mb-4">Operation History</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-slate-50 border-b border-primary-200/30">
-              <tr className="text-left text-[10px] uppercase tracking-wider text-primary-600 font-bold">
-                <th className="px-4 py-3">Operation Type</th>
-                <th className="px-4 py-3">Date</th>
-                <th className="px-4 py-3">Members Affected</th>
-                <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3">Details</th>
+      <div className="rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl p-10 shadow-2xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-30" />
+        <h2 className="text-xl font-black text-white uppercase tracking-tight mb-8 relative">Event Archive</h2>
+        <div className="overflow-x-auto relative rounded-[1.5rem] border border-white/5 shadow-inner">
+          <table className="w-full text-sm text-left border-collapse">
+            <thead>
+              <tr className="bg-white/5 border-b border-white/10">
+                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Operation Vector</th>
+                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Timestamp</th>
+                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Nodes</th>
+                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">State</th>
+                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Details</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-primary-100/50">
+            <tbody className="divide-y divide-white/5 font-bold uppercase tracking-tight text-[11px]">
               {operationHistory.map((op) => (
-                <tr key={op.id} className="hover:bg-slate-50 transition-colors">
-                  <td className="px-4 py-3 font-bold text-slate-900">{op.type}</td>
-                  <td className="px-4 py-3 text-slate-600 text-xs">{op.date}</td>
-                  <td className="px-4 py-3 font-bold text-slate-900">{op.membersAffected}</td>
-                  <td className="px-4 py-3">
-                    <span className="inline-block px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-700 font-bold text-xs">
-                      ✓ {op.status}
+                <tr key={op.id} className="hover:bg-white/[0.04] transition-all group/row">
+                  <td className="px-6 py-4 font-black text-white group-hover/row:text-primary transition-colors">{op.type}</td>
+                  <td className="px-6 py-4 text-slate-500 font-medium tabular-nums">{op.date}</td>
+                  <td className="px-6 py-4 text-white tabular-nums">{op.membersAffected} Cluster Units</td>
+                  <td className="px-6 py-4">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-emerald-500/10 text-emerald-400 font-black text-[9px] uppercase tracking-widest ring-1 ring-emerald-500/20 shadow-inner">
+                      <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
+                      {op.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-slate-600">{op.details}</td>
+                  <td className="px-6 py-4 text-slate-600 group-hover/row:text-slate-400 transition-colors">{op.details}</td>
                 </tr>
               ))}
             </tbody>

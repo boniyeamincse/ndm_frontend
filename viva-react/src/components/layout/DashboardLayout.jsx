@@ -588,38 +588,41 @@ const DashboardLayout = () => {
     || 'Dashboard';
 
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,#f8fafc_0%,#eef2f7_100%)] flex">
+    <div className="min-h-screen bg-slate-950 flex font-body selection:bg-primary/30 selection:text-white">
 
       {/* Mobile backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-slate-950/60 backdrop-blur-[2px] z-30 lg:hidden"
+          className="fixed inset-0 bg-black/60 backdrop-blur-md z-30 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* ── Sidebar ──────────────────────────────────────────────── */}
       <motion.aside
-        initial={{ x: -300 }}
-        animate={{ x: sidebarOpen || window.innerWidth >= 1024 ? 0 : -300 }}
-        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+        initial={{ x: -320 }}
+        animate={{ x: sidebarOpen || window.innerWidth >= 1024 ? 0 : -320 }}
+        transition={{ type: 'spring', damping: 28, stiffness: 200 }}
         className={`
           fixed top-0 left-0 h-full w-72 text-slate-200 flex flex-col z-40 overflow-hidden
           lg:static lg:translate-x-0 lg:z-auto lg:shrink-0
         `}
       >
-        <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-2xl" />
-        <div className="absolute inset-0 opacity-60 bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.1),transparent_40%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.1),transparent_40%)]" />
+        <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-3xl" />
+        <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_top_left,rgba(53,170,164,0.15),transparent_50%),radial-gradient(circle_at_bottom_right,rgba(220,20,60,0.1),transparent_50%)]" />
         <div className="absolute inset-y-0 right-0 w-px bg-white/5" />
 
         {/* Brand */}
-        <div className="relative px-4 py-4 border-b border-white/10 flex-shrink-0 bg-white/[0.03] backdrop-blur-sm">
-          <Link to="/" className="flex items-center gap-3 rounded-2xl px-3 py-2.5 bg-white/[0.04] border border-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-            <img src={NDM_LOGO_URL} alt="NDSM logo" className="w-10 h-10 object-cover rounded-2xl border border-white/10 shadow-lg shadow-amber-500/20 flex-shrink-0" loading="lazy" />
-            <div>
-              <p className="text-white font-bold text-sm leading-tight tracking-[0.01em]">NDSM</p>
-              <p className="text-slate-400 text-[10px] uppercase tracking-[0.18em] mt-0.5">
-                {isAdmin ? 'Admin Panel' : 'Member Panel'}
+        <div className="relative px-5 py-6 flex-shrink-0">
+          <Link to="/" className="flex items-center gap-3.5 group">
+            <div className="relative">
+              <div className="absolute -inset-1 bg-gradient-to-tr from-primary to-emerald-400 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-500" />
+              <img src={NDM_LOGO_URL} alt="NDSM logo" className="relative w-11 h-11 object-cover rounded-2xl border border-white/10 shadow-2xl flex-shrink-0" loading="lazy" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-white font-black text-base leading-tight tracking-tight uppercase">NDSM</p>
+              <p className="text-primary-400 text-[10px] font-bold uppercase tracking-[0.2em] mt-0.5">
+                {isAdmin ? 'Admin Port' : 'Member Port'}
               </p>
             </div>
           </Link>
@@ -636,18 +639,18 @@ const DashboardLayout = () => {
         </div>
 
         {/* User footer */}
-        <div className="relative p-3 border-t border-white/10 flex-shrink-0 bg-white/[0.03] backdrop-blur-sm">
-          <div className="flex items-center gap-3 px-3 py-3 rounded-2xl bg-white/[0.06] border border-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-            <div className="w-9 h-9 bg-gradient-to-br from-amber-300 to-amber-600 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 shadow shadow-amber-500/20">
+        <div className="relative p-4 border-t border-white/5 flex-shrink-0">
+          <div className="flex items-center gap-3 px-3 py-3 rounded-2xl bg-white/5 border border-white/5 shadow-inner">
+            <div className="w-9 h-9 bg-gradient-to-br from-primary-400 to-primary-600 text-white rounded-full flex items-center justify-center text-xs font-black flex-shrink-0 shadow-lg shadow-primary-500/20">
               {user?.name?.[0]?.toUpperCase() ?? user?.email?.[0]?.toUpperCase() ?? '?'}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-white truncate">
+              <p className="text-xs font-bold text-white truncate">
                 {user?.name || user?.email || 'User'}
               </p>
-              <p className="text-[10px] text-slate-400 capitalize tracking-[0.12em]">{user?.user_type ?? 'member'}</p>
+              <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">{user?.user_type ?? 'member'}</p>
             </div>
-            <button onClick={signOut} title="Sign out" className="text-slate-400 hover:text-red-300 transition-colors flex-shrink-0">
+            <button onClick={signOut} title="Sign out" className="text-slate-500 hover:text-red-400 transition-colors flex-shrink-0">
               <Ic n="logout" s={16} />
             </button>
           </div>
@@ -655,40 +658,47 @@ const DashboardLayout = () => {
       </motion.aside>
 
       {/* ── Main content ─────────────────────────────────────────── */}
-      <div className="flex-1 min-w-0 flex flex-col min-h-screen">
+      <div className="flex-1 min-w-0 flex flex-col min-h-screen relative overflow-hidden">
+        {/* Ambient background decoration */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -mr-64 -mt-64 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/5 rounded-full blur-[100px] -ml-48 -mb-48 pointer-events-none" />
 
         {/* Topbar */}
-        <header className="h-16 bg-gradient-to-r from-slate-900 via-slate-900 to-slate-800 border-b border-slate-700/80 px-4 lg:px-6 flex items-center justify-between gap-4 sticky top-0 z-20 flex-shrink-0 shadow-[0_1px_0_rgba(255,255,255,0.03)]">
-          <div className="flex items-center gap-3 min-w-0">
+        <header className="h-20 bg-slate-900/50 backdrop-blur-xl border-b border-white/5 px-4 lg:px-8 flex items-center justify-between gap-4 sticky top-0 z-30 flex-shrink-0">
+          <div className="flex items-center gap-4 min-w-0">
             <button
               onClick={() => setSidebarOpen(o => !o)}
-              className="lg:hidden p-2 rounded-lg text-slate-200 hover:bg-white/10 transition-colors flex-shrink-0"
+              className="lg:hidden w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-300 hover:bg-white/10 transition-colors flex-shrink-0"
               aria-label="Toggle sidebar"
             >
               <Ic n="menu" s={20} />
             </button>
-            <div className="flex items-center gap-2 min-w-0">
-              <span className="text-slate-500 font-light text-lg hidden sm:block">/</span>
-              <h2 className="text-sm lg:text-base font-semibold text-slate-100 truncate">{pageTitle}</h2>
+            <div className="flex flex-col min-w-0">
+              <div className="flex items-center gap-2 overflow-hidden">
+                <span className="text-slate-600 text-xs font-medium shrink-0 uppercase tracking-widest">Pages</span>
+                <span className="text-slate-700 text-xs shrink-0">/</span>
+                <h2 className="text-sm font-bold text-slate-100 truncate uppercase tracking-widest">{pageTitle}</h2>
+              </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 flex-shrink-0">
+          <div className="flex items-center gap-2 flex-shrink-0">
             {isAdmin && <QuickActions />}
             {isAdmin && <NotificationBell count={notifCount} />}
-            <div className="w-px h-6 bg-slate-700 mx-1 hidden sm:block" />
+            <div className="w-px h-8 bg-white/5 mx-2 hidden sm:block" />
             <ProfileMenu user={user} onSignOut={signOut} isAdmin={isAdmin} />
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-4 lg:p-8 bg-[#f8fafc]/50">
+        <main className="flex-1 overflow-y-auto p-4 lg:p-8 bg-slate-950/20">
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="h-full"
             >
               <Outlet />
             </motion.div>
