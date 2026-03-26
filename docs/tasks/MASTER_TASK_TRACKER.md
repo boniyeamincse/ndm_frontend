@@ -29,9 +29,9 @@ Status logic for **Overall Status**:
 ## Summary
 
 - Total Tasks: 201
-- Completed: 10
-- In Progress: 101
-- Pending: 90
+- Completed: 15
+- In Progress: 131
+- Pending: 60
 
 ## Development Phase Kickoff (2026-03-25)
 
@@ -182,7 +182,7 @@ Status logic for **Overall Status**:
 | 85 | Finalize auth context behavior | Review token bootstrapping, current-user hydration, logout cleanup, and redirect rules. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
 | 86 | Finalize login UX | Improve login validation, error display, pending/suspended messaging, and dashboard redirection. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
 | 87 | Finalize registration stepper UX | Review step-by-step validation, file upload feedback, summaries, and success messaging. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
-| 88 | Add registration draft persistence | Preserve unfinished admission form progress in local storage or session storage. This task can be implemented using AI-assisted development. | In Progress | Pending | In Progress | In Progress |
+| 88 | Add registration draft persistence | Preserve unfinished admission form progress in local storage or session storage. This task can be implemented using AI-assisted development. | Done | Pending | Uploaded | In Progress |
 | 89 | Complete member dashboard summary | Refine profile summary cards, active positions, task snapshots, and ID card access states. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
 | 90 | Complete member profile page | Build editable member profile UI for personal details, education, addresses, and emergency contacts. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
 | 91 | Complete member positions page | Display role/position history, current assignments, and unit hierarchy in a readable layout. This task can be implemented using AI-assisted development. | Done | In Progress | Uploaded | In Progress |
@@ -227,7 +227,7 @@ Status logic for **Overall Status**:
 
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 121 | Set up frontend test framework | Add Vitest or Jest, React Testing Library, coverage reporting, and test scripts. This task can be implemented using AI-assisted development. | Pending | Pending | Pending | Pending |
+| 121 | Set up frontend test framework | Add Vitest or Jest, React Testing Library, coverage reporting, and test scripts. This task can be implemented using AI-assisted development. | Done | Pending | Uploaded | In Progress |
 | 122 | Add router and auth tests | Validate guarded routes, redirects, login state restoration, and logout behavior. This task can be implemented using AI-assisted development. | Pending | Pending | Pending | Pending |
 | 123 | Add registration form tests | Cover step transitions, field validation, file upload state, and submission error handling. This task can be implemented using AI-assisted development. | Pending | Pending | Pending | Pending |
 | 124 | Add member dashboard tests | Test profile rendering, task widgets, ID card download triggers, and empty states. This task can be implemented using AI-assisted development. | Pending | Pending | Pending | Pending |
@@ -305,51 +305,51 @@ Status logic for **Overall Status**:
 
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 170 | Build event creation and publishing module | Implement event creation and publishing workflows for seminars, rallies, meetings, and campus programs with scheduling, unit targeting, approval, and visibility controls. | Pending | Pending | Pending | Pending |
-| 171 | Add RSVP and attendance tracking | Build RSVP workflows, attendance check-in/check-out, attendance validation, and unit-wise participation reports for events and organizational programs. | Pending | Pending | Pending | Pending |
-| 172 | Build campaign planning workflows | Create campaign planning tools for digital and field campaigns including objectives, timeline, resource planning, messaging tracks, and execution checkpoints. | Pending | Pending | Pending | Pending |
-| 173 | Add campaign task assignment to members | Integrate campaign operations with member task assignment, ownership tracking, deadlines, completion verification, and escalation for overdue work. | Pending | Pending | Pending | Pending |
-| 174 | Add event report and media upload workflows | Build post-event reporting with summary, outcomes, attendance insights, budget/effort notes, and media upload management (photos/videos/documents) with moderation controls. | Pending | Pending | Pending | Pending |
+| 170 | Build event creation and publishing module | Implement event creation and publishing workflows for seminars, rallies, meetings, and campus programs with scheduling, unit targeting, approval, and visibility controls. | Done | Pending | Uploaded | In Progress |
+| 171 | Add RSVP and attendance tracking | Build RSVP workflows, attendance check-in/check-out, attendance validation, and unit-wise participation reports for events and organizational programs. | Done | Pending | Uploaded | In Progress |
+| 172 | Build campaign planning workflows | Create campaign planning tools for digital and field campaigns including objectives, timeline, resource planning, messaging tracks, and execution checkpoints. | Done | Pending | Uploaded | In Progress |
+| 173 | Add campaign task assignment to members | Integrate campaign operations with member task assignment, ownership tracking, deadlines, completion verification, and escalation for overdue work. | Done | Pending | Uploaded | In Progress |
+| 174 | Add event report and media upload workflows | Build post-event reporting with summary, outcomes, attendance insights, budget/effort notes, and media upload management (photos/videos/documents) with moderation controls. | Done | Pending | Uploaded | In Progress |
 
 ## Task 18 — Fundraising And Donation Tracking
 
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 175 | Build fundraising campaign goals module | Implement fundraising campaign setup with target amount, timeline, unit ownership, campaign status, and progress indicators for organizational fundraising drives. | Pending | Pending | Pending | Pending |
-| 176 | Build donor records and contribution ledger | Create donor profile and donation ledger workflows with donation source, amount, date, payment channel, receipt reference, and donor consent metadata. | Pending | Pending | Pending | Pending |
-| 177 | Add donation verification and approval flow | Add admin workflows to verify submitted donations, reconcile payment references, flag suspicious entries, and approve or reject donation records with audit trail. | Pending | Pending | Pending | Pending |
-| 178 | Build fundraising dashboards and reports | Provide campaign-wise and unit-wise fundraising analytics with goal achievement, donor trends, repeat donor rates, and exportable report summaries. | Pending | Pending | Pending | Pending |
-| 179 | Add compliance-ready donation reporting | Build compliance reporting for financial transparency including period statements, category summaries, and immutable audit logs for all donation edits and approvals. | Pending | Pending | Pending | Pending |
+| 175 | Build fundraising campaign goals module | Implement fundraising campaign setup with target amount, timeline, unit ownership, campaign status, and progress indicators for organizational fundraising drives. | Done | Passed | Uploaded | Completed |
+| 176 | Build donor records and contribution ledger | Create donor profile and donation ledger workflows with donation source, amount, date, payment channel, receipt reference, and donor consent metadata. | Done | Passed | Uploaded | Completed |
+| 177 | Add donation verification and approval flow | Add admin workflows to verify submitted donations, reconcile payment references, flag suspicious entries, and approve or reject donation records with audit trail. | Done | Passed | Uploaded | Completed |
+| 178 | Build fundraising dashboards and reports | Provide campaign-wise and unit-wise fundraising analytics with goal achievement, donor trends, repeat donor rates, and exportable report summaries. | Done | Passed | Uploaded | Completed |
+| 179 | Add compliance-ready donation reporting | Build compliance reporting for financial transparency including period statements, category summaries, and immutable audit logs for all donation edits and approvals. | Done | Passed | Uploaded | Completed |
 
 ## Task 19 — Membership Renewal And Re-Verification
 
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 180 | Build yearly renewal workflow | Implement annual membership renewal process with renewal window, eligibility checks, renewal fee/criteria support, and renewal confirmation states. | Pending | Pending | Pending | Pending |
-| 181 | Add status auto-expiry rules | Add automated membership status expiry logic for members who do not renew within defined deadlines, including grace period and policy-configurable triggers. | Pending | Pending | Pending | Pending |
-| 182 | Build re-verification process | Create re-verification workflows for member profile updates, document re-check, unit assignment confirmation, and admin approval for continued active status. | Pending | Pending | Pending | Pending |
-| 183 | Add renewal reminder automation | Implement reminder workflows using in-app, SMS, WhatsApp, and email channels for pre-expiry notices, grace-period notices, and final expiry alerts. | Pending | Pending | Pending | Pending |
-| 184 | Build renewal compliance and retention reports | Add reports for renewal rate, expired-member count, re-verification completion, and unit-wise retention performance with period comparisons. | Pending | Pending | Pending | Pending |
+| 180 | Build yearly renewal workflow | Implement annual membership renewal process with renewal window, eligibility checks, renewal fee/criteria support, and renewal confirmation states. | Done | Pending | Uploaded | In Progress |
+| 181 | Add status auto-expiry rules | Add automated membership status expiry logic for members who do not renew within defined deadlines, including grace period and policy-configurable triggers. | Done | Pending | Uploaded | In Progress |
+| 182 | Build re-verification process | Create re-verification workflows for member profile updates, document re-check, unit assignment confirmation, and admin approval for continued active status. | Done | Pending | Uploaded | In Progress |
+| 183 | Add renewal reminder automation | Implement reminder workflows using in-app, SMS, WhatsApp, and email channels for pre-expiry notices, grace-period notices, and final expiry alerts. | Done | Pending | Uploaded | In Progress |
+| 184 | Build renewal compliance and retention reports | Add reports for renewal rate, expired-member count, re-verification completion, and unit-wise retention performance with period comparisons. | Done | Pending | Uploaded | In Progress |
 
 ## Task 20 — Training And Cadre Development
 
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 185 | Build training course module | Implement training module management for course creation, curriculum structure, unit targeting, trainer assignment, and training schedule planning. | Pending | Pending | Pending | Pending |
-| 186 | Add enrollment and completion tracking | Build trainee enrollment and completion workflows with attendance, assessment, progress milestones, and completion state tracking per member. | Pending | Pending | Pending | Pending |
-| 187 | Add certification generation workflow | Create certificate issuance workflows for completed training, including digital certificate templates, verification IDs, and certificate download endpoints. | Pending | Pending | Pending | Pending |
-| 188 | Build leadership pipeline tracker | Add cadre and leadership pipeline tracking with competency levels, promotion readiness, mentorship paths, and role eligibility recommendations. | Pending | Pending | Pending | Pending |
-| 189 | Add training analytics and outcome reporting | Provide analytics for course completion rates, unit-wise skill development, trainer performance, and leadership-development outcomes. | Pending | Pending | Pending | Pending |
+| 185 | Build training course module | Implement training module management for course creation, curriculum structure, unit targeting, trainer assignment, and training schedule planning. | Done | Pending | Uploaded | In Progress |
+| 186 | Add enrollment and completion tracking | Build trainee enrollment and completion workflows with attendance, assessment, progress milestones, and completion state tracking per member. | Done | Pending | Uploaded | In Progress |
+| 187 | Add certification generation workflow | Create certificate issuance workflows for completed training, including digital certificate templates, verification IDs, and certificate download endpoints. | Done | Pending | Uploaded | In Progress |
+| 188 | Build leadership pipeline tracker | Add cadre and leadership pipeline tracking with competency levels, promotion readiness, mentorship paths, and role eligibility recommendations. | Done | Pending | Uploaded | In Progress |
+| 189 | Add training analytics and outcome reporting | Provide analytics for course completion rates, unit-wise skill development, trainer performance, and leadership-development outcomes. | Done | Pending | Uploaded | In Progress |
 
 ## Task 21 — Integration Hub And Mass Outreach Campaigns
 
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 190 | Build SMS, WhatsApp, and email connector hub | Implement integration adapters for SMS, WhatsApp, and email providers with credential management, connector health checks, and fallback routing. | Pending | Pending | Pending | Pending |
-| 191 | Add delivery logs and retry queues | Build centralized delivery logs for all outbound communications with failure reason tracking, retry policies, dead-letter queue handling, and resend tools for admins. | Pending | Pending | Pending | Pending |
-| 192 | Build audience segmentation and targeting engine | Create targeting rules for all-members, role-based, unit-based, status-based, and custom-segment outreach campaigns with preview and count estimation. | Pending | Pending | Pending | Pending |
-| 193 | Build email campaign to all members workflow | Implement bulk email campaign workflows with template management, send scheduling, send throttling, unsubscribe handling, and delivery/open/click analytics for all-member campaigns. | Pending | Pending | Pending | Pending |
-| 194 | Add compliance and communication governance controls | Implement consent checks, unsubscribe enforcement, campaign approval policies, content moderation checks, and communication audit history for all outreach channels. | Pending | Pending | Pending | Pending |
+| 190 | Build SMS, WhatsApp, and email connector hub | Implement integration adapters for SMS, WhatsApp, and email providers with credential management, connector health checks, and fallback routing. | Done | Pending | Uploaded | In Progress |
+| 191 | Add delivery logs and retry queues | Build centralized delivery logs for all outbound communications with failure reason tracking, retry policies, dead-letter queue handling, and resend tools for admins. | Done | Pending | Uploaded | In Progress |
+| 192 | Build audience segmentation and targeting engine | Create targeting rules for all-members, role-based, unit-based, status-based, and custom-segment outreach campaigns with preview and count estimation. | Done | Pending | Uploaded | In Progress |
+| 193 | Build email campaign to all members workflow | Implement bulk email campaign workflows with template management, send scheduling, send throttling, unsubscribe handling, and delivery/open/click analytics for all-member campaigns. | Done | Pending | Uploaded | In Progress |
+| 194 | Add compliance and communication governance controls | Implement consent checks, unsubscribe enforcement, campaign approval policies, content moderation checks, and communication audit history for all outreach channels. | Done | Pending | Uploaded | In Progress |
 
 ## Task 22 — Role-based Dashboard Design UI
 <!-- Note: Backend fix for role-based data filtering is now complete, unblocking UI development for role-specific dashboards. -->
@@ -357,12 +357,12 @@ Status logic for **Overall Status**:
 | ID | Task Name | Description | Dev Status | Test Status | Upload Status | Overall Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 195 | [UI] Refactor DashboardLayout for Glassmorphism | Implement a premium, translucent theme with blur effects, fixed sidebars, and framer-motion staggered entry animations for dashboard widgets. | Done | In Progress | Uploaded | In Progress |
-| 196 | [UI] Unify Sidebar & Permission-Gating | Create a single `RoleSidebar` component that dynamically filters navigation items based on the user's active role and assigned backend permissions. | Pending | Pending | Pending | Pending |
+| 196 | [UI] Unify Sidebar & Permission-Gating | Create a single `RoleSidebar` component that dynamically filters navigation items based on the user's active role and assigned backend permissions. | Done | Pending | Uploaded | In Progress |
 | 197 | [UI] Build Premium Admin Metric Widgets | Design high-fidelity statistical cards with mini-charts (sparklines) for membership growth, status distribution, and unit-level heatmaps. | Done | In Progress | Uploaded | In Progress |
-| 198 | [UI] Design Organizer-specific Dashboard | Build a tailored view for Unit Organizers that filters stats, tasks, and member lists to their specific assigned organizational unit. | Pending | Pending | Pending | Pending |
+| 198 | [UI] Design Organizer-specific Dashboard | Build a tailored view for Unit Organizers that filters stats, tasks, and member lists to their specific assigned organizational unit. | Done | Pending | Uploaded | In Progress |
 | 199 | [UI] Enhance Member Dashboard Experience | Build an interactive member "at-a-glance" view with activity feeds, upcoming events, quick-access unit links, and improved ID card presence. | Done | In Progress | Uploaded | In Progress |
-| 200 | [UI] Apply Role-specific Theming | Apply role-specific visual cues, theme accents, and branding elements to the dashboard layouts to improve context awareness and user experience. | Pending | Pending | Pending | Pending |
-| 201 | [UI] Build Menu And Sub-menu Navigation System | Design and implement a structured dashboard navigation model with expandable menu groups, sub-menu states, active-route highlighting, mobile collapse behavior, icon consistency, and permission-aware visibility across admin, organizer, and member roles. | Pending | Pending | Pending | Pending |
+| 200 | [UI] Apply Role-specific Theming | Apply role-specific visual cues, theme accents, and branding elements to the dashboard layouts to improve context awareness and user experience. | Done | Pending | Uploaded | In Progress |
+| 201 | [UI] Build Menu And Sub-menu Navigation System | Design and implement a structured dashboard navigation model with expandable menu groups, sub-menu states, active-route highlighting, mobile collapse behavior, icon consistency, and permission-aware visibility across admin, organizer, and member roles. | Done | Pending | Uploaded | In Progress |
 
 ### UI Execution Breakdown For Better Work Tracking
 
